@@ -393,7 +393,7 @@ export default function Home() {
               <p className="hero-intro">{t.intro}</p>
               <div className="hero-actions">
                 <button className="primary-button" onClick={() => startWizard()}>{t.start}<span aria-hidden="true">→</span></button>
-                <button className="text-button" onClick={() => startWizard("employer")}>{t.employerStart}</button>
+                <button className="secondary-button" onClick={() => startWizard("employer")}>{t.employerStart}<span aria-hidden="true">→</span></button>
               </div>
               <div className="microcopy"><span><i className="clock-icon" />{t.time}</span><span><i className="lock-icon" />{t.privacy}</span></div>
             </div>

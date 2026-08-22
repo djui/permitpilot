@@ -179,7 +179,7 @@ button { color: inherit; }
 .source-tile span { color: var(--red-dark); font-size: var(--text-caption); font-weight: 750; letter-spacing: .04em; text-transform: uppercase; }
 .source-tile p { margin: 10px 0 0; color: var(--muted); font-size: var(--text-body); line-height: 1.6; }
 .source-tile i { position: absolute; right: 22px; top: 24px; color: #9aa29e; font-style: normal; }
-.secondary-button { min-height: 47px; border: 1px solid #cfd7d1; border-radius: 14px; padding: 0 17px; background: white; color: var(--ink); display: inline-flex; align-items: center; justify-content: center; gap: 24px; font-weight: 700; font-size: var(--text-small); cursor: pointer; transition: transform .2s, border-color .2s; }
+.secondary-button { min-height: 54px; border: 1px solid #cfd7d1; border-radius: 15px; padding: 0 23px; background: white; color: var(--ink); display: inline-flex; align-items: center; justify-content: center; gap: 28px; font-weight: 700; font-size: 14px; cursor: pointer; transition: transform .2s, border-color .2s; }
 .secondary-button:hover { transform: translateY(-2px); border-color: #aab6ae; }
 
 .result-shell { width: min(1180px, calc(100% - 48px)); margin: 0 auto; padding: 64px 0 100px; }
