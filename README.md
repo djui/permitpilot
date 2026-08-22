@@ -10,10 +10,11 @@ official Swiss federal and cantonal sources.
 
 ## Languages
 
-- English
+- English (default)
 - German
 - French
-- Spanish
+- Italian
+- Romansh
 
 ## Local development
 

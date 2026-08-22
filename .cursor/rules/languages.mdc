@@ -24,7 +24,8 @@ historyUi.en.lead = "…"; // other Lang keys unchanged
 ui.en.start = "Find my route";
 ui.de.start = "Meinen Weg finden";
 ui.fr.start = "Trouver ma voie";
-ui.es.start = "Encontrar mi vía";
+ui.it.start = "Trova il mio percorso";
+ui.rm.start = "Chattar mia via";
 ```
 
 ## When adding a language
