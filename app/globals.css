@@ -300,6 +300,7 @@ html.using-pointer .choice:has(:focus-visible) .choice-radio { outline: none; }
 .section-intro h2 { margin: 0; font-size: clamp(36px, 4.2vw, 58px); line-height: 1.05; letter-spacing: -.04em; }
 .section-intro p { margin: 22px 0 0; color: var(--muted); font-size: var(--text-lead); line-height: 1.62; }
 .about-band .section-intro .eyebrow { color: var(--on-inverse-eyebrow); }
+.about-band .section-intro h2 { white-space: pre-line; }
 .about-band .section-intro p { color: var(--on-inverse-muted); }
 .about-inner { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(240px, .7fr); gap: 72px; align-items: end; }
 .about-people { display: flex; flex-wrap: wrap; gap: 12px 28px; margin: 28px 0 0; padding: 0; list-style: none; }
