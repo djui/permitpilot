@@ -7,7 +7,6 @@ import {
   getAnswerLabel,
   getResult,
   permitOfficialLinks,
-  permitSourceUrl,
   languages,
   stepOrder,
   ui,
@@ -272,10 +271,16 @@ export default function Home() {
     window.setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }), 40);
   };
 
-  const changeAnswers = () => {
+  const jumpToQuestion = (id: (typeof stepOrder)[number]) => {
     leaveResult();
+    const index = buildSteps(answers, language).findIndex((step) => step.id === id);
+    setStepIndex(index >= 0 ? index : 0);
     setScreen("wizard");
-    setStepIndex(Math.max(steps.length - 1, 0));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const changeAnswers = () => {
+    jumpToQuestion(steps[Math.max(steps.length - 1, 0)]?.id ?? "audience");
   };
 
   const copyShareLink = async () => {
@@ -290,12 +295,9 @@ export default function Home() {
   };
 
   const actorLabel = t[result.actor];
-  const summaryKeys = ["permit", "nationality", "arrangement", "employmentDuration", "serviceDuration", "canton"];
-  const summaryAnswers = summaryKeys.filter((key) => answers[key]).map((key) => ({
+  const pathAnswers = stepOrder.filter((key) => answers[key]).map((key) => ({
     key,
-    value: answers[key],
     label: getAnswerLabel(key, answers[key], language),
-    url: key === "permit" ? permitSourceUrl(answers[key], answers) : undefined,
   }));
 
   return (
@@ -449,27 +451,45 @@ export default function Home() {
         <section className="result-shell">
           <div className="result-hero">
             <div className="result-title-block">
-              <div className="result-kicker"><span className="result-status-dot" />{t.resultEyebrow}</div>
+              <div className="result-toolbar">
+                <div className="result-kicker"><span className="result-status-dot" />{t.resultEyebrow}</div>
+                <div className="result-actions no-print">
+                  <button type="button" onClick={() => void copyShareLink()}>
+                    <i className={linkCopied ? "action-icon check-icon" : "action-icon link-icon"} aria-hidden="true" />
+                    {linkCopied ? t.copied : t.share}
+                  </button>
+                  <button type="button" onClick={() => window.print()}>
+                    <i className="action-icon print-icon" aria-hidden="true" />
+                    {t.print}
+                  </button>
+                  <button type="button" onClick={changeAnswers}>
+                    <i className="action-icon change-icon" aria-hidden="true" />
+                    {t.change}
+                  </button>
+                </div>
+              </div>
               <div className="result-badge">{result.badge}</div>
               <h1>{result.title}</h1>
               <p>{result.summary}</p>
-              <div className="answer-chips">
-                {summaryAnswers.map((item) => item.url
-                  ? <a href={item.url} target="_blank" rel="noreferrer" key={item.key}>{item.label}<i aria-hidden="true">↗</i></a>
-                  : <span key={item.key}>{item.label}</span>)}
-              </div>
+              <nav className="result-path" aria-label={t.path}>
+                <ol>
+                  {pathAnswers.map((item) => (
+                    <li key={item.key}>
+                      <button type="button" onClick={() => jumpToQuestion(item.key)}>{item.label}</button>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
             </div>
-            <aside className="confidence-card">
-              <span>✓</span><div><strong>{t.confidence}</strong><small>{t.resultIntro}</small></div>
+            <aside className="result-notes">
+              <div className="confidence-card">
+                <span>✓</span><div><strong>{t.confidence}</strong><small>{t.resultIntro}</small></div>
+              </div>
+              <section className="disclaimer-card">
+                <span>i</span><div><strong>{t.disclaimerTitle}</strong><p>{t.disclaimer}</p></div>
+              </section>
             </aside>
           </div>
-
-          <div className="result-actions no-print">
-            <button className="secondary-button" onClick={() => void copyShareLink()}>{linkCopied ? t.copied : t.share}<span>{linkCopied ? "✓" : "↗"}</span></button>
-            <button className="secondary-button" onClick={() => window.print()}>{t.print}<span>↗</span></button>
-            <button className="text-button" onClick={changeAnswers}>{t.change}</button>
-          </div>
-          <p className="share-note no-print">{t.shareNote}</p>
 
           <div className="result-layout">
             <div className="result-main">
@@ -521,10 +541,6 @@ export default function Home() {
                 </div>
                 <small>{t.reviewed}</small>
               </section>
-
-              <section className="disclaimer-card">
-                <span>i</span><div><strong>{t.disclaimerTitle}</strong><p>{t.disclaimer}</p></div>
-              </section>
             </aside>
           </div>
 
@@ -572,7 +588,6 @@ export default function Home() {
 
       <footer className="no-print">
         <Brand onClick={goHome} />
-        <button className="text-button" onClick={goHistory}>{t.history}</button>
         <span>© 2026</span>
       </footer>
     </main>
