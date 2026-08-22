@@ -528,6 +528,13 @@ export default function Home() {
 
       {screen === "result" && (
         <section className="result-shell">
+          <header className="print-masthead print-only">
+            <Brand />
+            <div className="print-masthead-meta">
+              <strong>{t.resultEyebrow}</strong>
+              <small>{t.reviewed}</small>
+            </div>
+          </header>
           <div className="result-hero">
             <div className="result-title-block">
               <div className="result-toolbar">
