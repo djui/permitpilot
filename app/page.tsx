@@ -6,6 +6,8 @@ import {
   cantons,
   getAnswerLabel,
   getResult,
+  permitOfficialLinks,
+  permitSourceUrl,
   languages,
   stepOrder,
   ui,
@@ -289,7 +291,12 @@ export default function Home() {
 
   const actorLabel = t[result.actor];
   const summaryKeys = ["permit", "nationality", "arrangement", "employmentDuration", "serviceDuration", "canton"];
-  const summaryAnswers = summaryKeys.filter((key) => answers[key]).map((key) => getAnswerLabel(key, answers[key], language));
+  const summaryAnswers = summaryKeys.filter((key) => answers[key]).map((key) => ({
+    key,
+    value: answers[key],
+    label: getAnswerLabel(key, answers[key], language),
+    url: key === "permit" ? permitSourceUrl(answers[key], answers) : undefined,
+  }));
 
   return (
     <main className="site-shell">
@@ -400,6 +407,14 @@ export default function Home() {
             <p className="eyebrow">PermitPilot</p>
             <h1>{current.title}</h1>
             <p>{current.hint}</p>
+            {current.id === "permit" && (
+              <p className="permit-sources">
+                <span>{t.officialPages}</span>
+                {permitOfficialLinks(language, answers).map((link) => (
+                  <a href={link.url} target="_blank" rel="noreferrer" key={link.value}>{link.label}<i aria-hidden="true">↗</i></a>
+                ))}
+              </p>
+            )}
 
             {current.kind === "canton" ? (
               <div className="select-wrap">
@@ -438,7 +453,11 @@ export default function Home() {
               <div className="result-badge">{result.badge}</div>
               <h1>{result.title}</h1>
               <p>{result.summary}</p>
-              <div className="answer-chips">{summaryAnswers.map((label) => <span key={label}>{label}</span>)}</div>
+              <div className="answer-chips">
+                {summaryAnswers.map((item) => item.url
+                  ? <a href={item.url} target="_blank" rel="noreferrer" key={item.key}>{item.label}<i aria-hidden="true">↗</i></a>
+                  : <span key={item.key}>{item.label}</span>)}
+              </div>
             </div>
             <aside className="confidence-card">
               <span>✓</span><div><strong>{t.confidence}</strong><small>{t.resultIntro}</small></div>
@@ -473,9 +492,11 @@ export default function Home() {
                 <div className="section-heading"><span className="section-index">02</span><div><h2>{t.paperwork}</h2><p>{t.official}</p></div></div>
                 <ul className="doc-checklist">
                   {result.docs.map((doc) => (
-                    <li key={doc}>
+                    <li key={doc.label}>
                       <span className="doc-check" aria-hidden="true" />
-                      <p>{doc}</p>
+                      {doc.url
+                        ? <a href={doc.url} target="_blank" rel="noreferrer">{doc.label}<i aria-hidden="true">↗</i></a>
+                        : <p>{doc.label}</p>}
                     </li>
                   ))}
                 </ul>

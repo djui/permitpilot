@@ -121,6 +121,10 @@ button { color: inherit; }
 .wizard-card .eyebrow { margin: 0 0 18px; }
 .wizard-card h1 { margin: 0; font-size: clamp(38px, 5vw, 57px); letter-spacing: -.052em; line-height: 1.04; }
 .wizard-card > p:not(.eyebrow) { margin: 18px auto 0; max-width: 530px; color: var(--muted); line-height: 1.6; }
+.permit-sources { max-width: 720px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 14px; font-size: var(--text-caption); }
+.permit-sources span { font-weight: 700; color: var(--faint); }
+.permit-sources a { color: var(--green); text-decoration: none; font-weight: 650; }
+.permit-sources i { font-style: normal; margin-left: 4px; }
 .choice-grid { margin-top: 42px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; text-align: left; }
 .choice-grid-compact { grid-template-columns: repeat(3, 1fr); }
 .choice { position: relative; min-height: 210px; border-radius: 22px; border: 1px solid var(--line); background: rgba(255,255,255,.85); padding: 25px; display: flex; flex-direction: column; align-items: flex-start; cursor: pointer; transition: transform .2s, border-color .2s, box-shadow .2s; }
@@ -171,7 +175,9 @@ button { color: inherit; }
 .result-title-block h1 { margin: 0; max-width: 780px; font-size: clamp(43px, 5vw, 69px); line-height: 1; letter-spacing: -.06em; }
 .result-title-block > p { max-width: 760px; margin: 22px 0 0; color: var(--muted); font-size: var(--text-lead); line-height: 1.62; }
 .answer-chips { margin-top: 25px; display: flex; flex-wrap: wrap; gap: 8px; }
-.answer-chips span { padding: 8px 11px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,.65); color: var(--muted); font-size: var(--text-caption); font-weight: 650; }
+.answer-chips span, .answer-chips a { padding: 8px 11px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,.65); color: var(--muted); font-size: var(--text-caption); font-weight: 650; text-decoration: none; }
+.answer-chips a { color: var(--green); }
+.answer-chips i { font-style: normal; margin-left: 4px; }
 .confidence-card { border: 1px solid #cfddd4; background: #edf5f0; border-radius: 20px; padding: 21px; display: flex; gap: 13px; align-items: flex-start; }
 .confidence-card > span { flex: 0 0 25px; width: 25px; height: 25px; aspect-ratio: 1; display: grid; place-items: center; border-radius: 50%; background: var(--green); color: white; font-size: var(--text-caption); line-height: 1; }
 .confidence-card div { display: grid; gap: 7px; }
@@ -201,7 +207,9 @@ button { color: inherit; }
 .doc-checklist li { display: flex; align-items: flex-start; gap: 14px; padding: 16px 2px; border-bottom: 1px solid #e6ebe6; }
 .doc-checklist li:last-child { border-bottom: 0; padding-bottom: 4px; }
 .doc-check { width: 18px; height: 18px; margin-top: 2px; border-radius: 5px; border: 1.5px solid #9bb5a6; background: #f7faf7; flex: 0 0 auto; }
-.doc-checklist p { margin: 0; color: var(--ink); font-size: var(--text-body); line-height: 1.5; }
+.doc-checklist p, .doc-checklist a { margin: 0; color: var(--ink); font-size: var(--text-body); line-height: 1.5; text-decoration: none; }
+.doc-checklist a { color: var(--green); font-weight: 650; }
+.doc-checklist i { font-style: normal; margin-left: 6px; }
 .result-sidebar { display: grid; gap: 14px; position: sticky; top: 22px; }
 .canton-card, .source-card, .disclaimer-card { border: 1px solid var(--line); border-radius: 21px; background: rgba(255,255,255,.82); padding: 23px; }
 .canton-code { margin-top: 22px; width: 55px; height: 55px; border-radius: 17px; background: var(--red); color: white; display: grid; place-items: center; font-size: 18px; font-weight: 850; box-shadow: 0 10px 24px rgba(185,35,44,.15); }

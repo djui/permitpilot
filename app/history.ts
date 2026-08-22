@@ -15,6 +15,24 @@ export const historyEntries: HistoryEntry[] = [
     date: "2026-08-22",
     kind: "product",
     title: {
+      en: "Official pages on paperwork and permit letters",
+      de: "Offizielle Seiten zu Unterlagen und Bewilligungsbuchstaben",
+      fr: "Pages officielles pour les documents et les lettres de permis",
+      it: "Pagine ufficiali per documenti e lettere di permesso",
+      rm: "Paginas uffizialas per documents e letras da permissiun",
+    },
+    body: {
+      en: "Where an official English SEM or admin.ch page exists, paperwork items and permit letters now open that page. Cantonal application forms still come from the competent canton; this navigator does not invent a federal PDF.",
+      de: "Wo eine offizielle englische Seite von SEM oder admin.ch existiert, öffnen Unterlagen und Bewilligungsbuchstaben diese Seite. Kantonale Gesuchsformulare holst du weiterhin beim zuständigen Kanton; der Navigator erfindet kein Bundes-PDF.",
+      fr: "Lorsqu’une page officielle anglaise du SEM ou d’admin.ch existe, les documents et les lettres de permis l’ouvrent. Les formulaires cantonaux restent ceux du canton compétent ; le navigateur n’invente pas de PDF fédéral.",
+      it: "Dove esiste una pagina ufficiale in inglese di SEM o admin.ch, documenti e lettere di permesso la aprono. I formulari cantonali restano quelli del cantone competente; il navigatore non inventa un PDF federale.",
+      rm: "Nua ch’ina pagina uffiziala englaisa da SEM u admin.ch exista, avran documents e letras da permissiun quella pagina. Formulars chantunals restan quels dal chantun cumpetent; il navigatur n’inventa nagin PDF federal.",
+    },
+  },
+  {
+    date: "2026-08-22",
+    kind: "product",
+    title: {
       en: "Shareable result links",
       de: "Ergebnis per Link teilen",
       fr: "Liens de résultat partageables",

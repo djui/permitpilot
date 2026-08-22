@@ -51,7 +51,7 @@ export const ui = {
     official: "Built from official federal and cantonal guidance", notAdvice: "Guidance, not a binding authority decision",
     back: "Back", next: "Continue", result: "See my route", step: "Step", of: "of", select: "Select one", selectCanton: "Choose the canton where the work will take place",
     resultEyebrow: "Your likely route", confidence: "Source-backed guidance", resultIntro: "Based on the answers you gave. The canton remains the deciding authority.",
-    responsibilities: "Your action plan", paperwork: "Paperwork to prepare", officialLinks: "Official starting points", cantonOffice: "Your cantonal authority",
+    responsibilities: "Your action plan", paperwork: "Paperwork to prepare", officialLinks: "Official starting points", officialPages: "Official pages", cantonOffice: "Your cantonal authority",
     applicant: "Applicant", employer: "Employer", both: "Applicant + employer", authority: "Authority", open: "Open official page", print: "Print summary", share: "Copy link", copied: "Copied", shareNote: "This link opens this route. Wording and official links follow the current navigator.", change: "Change answers", restart: "Start again",
     why: "Why this route", visaLayer: "Entry and visa layer", familyLayer: "Bringing family", reviewed: "Information last reviewed 22 August 2026",
     disclaimerTitle: "Before you rely on this", disclaimer: "This navigator organises official information; it does not issue a permit or replace advice from the competent canton. Rules, forms and quotas can change.",
@@ -67,7 +67,7 @@ export const ui = {
     official: "Auf Basis offizieller Informationen von Bund und Kantonen", notAdvice: "Orientierung, kein verbindlicher Behördenentscheid",
     back: "Zurück", next: "Weiter", result: "Meinen Weg anzeigen", step: "Schritt", of: "von", select: "Bitte wählen", selectCanton: "Kanton des Arbeitsortes wählen",
     resultEyebrow: "Dein voraussichtlicher Weg", confidence: "Quellenbasierte Orientierung", resultIntro: "Auf Grundlage deiner Antworten. Die zuständige kantonale Behörde entscheidet.",
-    responsibilities: "Dein Aktionsplan", paperwork: "Unterlagen vorbereiten", officialLinks: "Offizielle Startpunkte", cantonOffice: "Zuständige kantonale Behörde",
+    responsibilities: "Dein Aktionsplan", paperwork: "Unterlagen vorbereiten", officialLinks: "Offizielle Startpunkte", officialPages: "Offizielle Seiten", cantonOffice: "Zuständige kantonale Behörde",
     applicant: "Antragstellende Person", employer: "Arbeitgeber", both: "Person + Arbeitgeber", authority: "Behörde", open: "Offizielle Seite öffnen", print: "Zusammenfassung drucken", share: "Link kopieren", copied: "Kopiert", shareNote: "Dieser Link öffnet diesen Weg. Texte und offizielle Links folgen dem aktuellen Navigator.", change: "Antworten ändern", restart: "Neu starten",
     why: "Warum dieser Weg", visaLayer: "Einreise und Visum", familyLayer: "Familiennachzug", reviewed: "Informationen zuletzt geprüft am 22. August 2026",
     disclaimerTitle: "Bevor du dich darauf verlässt", disclaimer: "Dieser Navigator ordnet offizielle Informationen. Er erteilt keine Bewilligung und ersetzt keine Auskunft des zuständigen Kantons. Regeln, Formulare und Kontingente können sich ändern.",
@@ -83,7 +83,7 @@ export const ui = {
     official: "Fondé sur les directives officielles fédérales et cantonales", notAdvice: "Orientation, pas une décision contraignante",
     back: "Retour", next: "Continuer", result: "Voir mon parcours", step: "Étape", of: "sur", select: "Sélectionnez", selectCanton: "Choisissez le canton du lieu de travail",
     resultEyebrow: "Votre parcours probable", confidence: "Orientation fondée sur les sources", resultIntro: "D’après vos réponses. L’autorité cantonale reste décisionnaire.",
-    responsibilities: "Votre plan d’action", paperwork: "Documents à préparer", officialLinks: "Points de départ officiels", cantonOffice: "Votre autorité cantonale",
+    responsibilities: "Votre plan d’action", paperwork: "Documents à préparer", officialLinks: "Points de départ officiels", officialPages: "Pages officielles", cantonOffice: "Votre autorité cantonale",
     applicant: "Candidat", employer: "Employeur", both: "Candidat + employeur", authority: "Autorité", open: "Ouvrir la page officielle", print: "Imprimer le résumé", share: "Copier le lien", copied: "Copié", shareNote: "Ce lien ouvre ce parcours. Les textes et liens officiels suivent le navigateur actuel.", change: "Modifier les réponses", restart: "Recommencer",
     why: "Pourquoi ce parcours", visaLayer: "Entrée et visa", familyLayer: "Regroupement familial", reviewed: "Informations vérifiées le 22 août 2026",
     disclaimerTitle: "Avant de vous y fier", disclaimer: "Ce navigateur organise l’information officielle. Il ne délivre aucun permis et ne remplace pas l’avis du canton compétent. Les règles, formulaires et contingents peuvent changer.",
@@ -99,7 +99,7 @@ export const ui = {
     official: "Basato sulle indicazioni ufficiali federali e cantonali", notAdvice: "Orientamento, non una decisione vincolante",
     back: "Indietro", next: "Continua", result: "Vedi il mio percorso", step: "Passo", of: "di", select: "Seleziona", selectCanton: "Scegli il cantone del luogo di lavoro",
     resultEyebrow: "Il tuo percorso probabile", confidence: "Orientamento basato sulle fonti", resultIntro: "In base alle tue risposte. L’autorità cantonale resta decisiva.",
-    responsibilities: "Il tuo piano d’azione", paperwork: "Documenti da preparare", officialLinks: "Punti di partenza ufficiali", cantonOffice: "La tua autorità cantonale",
+    responsibilities: "Il tuo piano d’azione", paperwork: "Documenti da preparare", officialLinks: "Punti di partenza ufficiali", officialPages: "Pagine ufficiali", cantonOffice: "La tua autorità cantonale",
     applicant: "Richiedente", employer: "Datore di lavoro", both: "Richiedente + datore", authority: "Autorità", open: "Apri pagina ufficiale", print: "Stampa il riepilogo", share: "Copia il link", copied: "Copiato", shareNote: "Questo link apre questo percorso. I testi e i link ufficiali seguono il navigatore attuale.", change: "Modifica le risposte", restart: "Ricomincia",
     why: "Perché questo percorso", visaLayer: "Ingresso e visto", familyLayer: "Ricongiungimento familiare", reviewed: "Informazioni verificate il 22 agosto 2026",
     disclaimerTitle: "Prima di farci affidamento", disclaimer: "Questo navigatore organizza informazioni ufficiali; non rilascia un permesso né sostituisce il parere del cantone competente. Norme, formulari e contingenti possono cambiare.",
@@ -115,7 +115,7 @@ export const ui = {
     official: "Sin basa d’indicaziuns uffizialas da Confederaziun e chantuns", notAdvice: "Orientaziun, betg ina decisiun obliganta",
     back: "Enavos", next: "Cuntinuar", result: "Mussar mia via", step: "Pass", of: "da", select: "Tscherna", selectCanton: "Tscherna il chantun dal lieu da lavur",
     resultEyebrow: "Tia via probabla", confidence: "Orientaziun sin basa da funtaunas", resultIntro: "Sin basa da tias respostas. L’autoritad chantunala resta decisiva.",
-    responsibilities: "Tes plan d’acziun", paperwork: "Documents da preparar", officialLinks: "Puncts da partenza uffizials", cantonOffice: "Tia autoritad chantunala",
+    responsibilities: "Tes plan d’acziun", paperwork: "Documents da preparar", officialLinks: "Puncts da partenza uffizials", officialPages: "Paginas uffizialas", cantonOffice: "Tia autoritad chantunala",
     applicant: "Persuna che dumonda", employer: "Patrun", both: "Persuna + patrun", authority: "Autoritad", open: "Avrir la pagina uffiziala", print: "Stampar il resumaziun", share: "Copiar la colliaziun", copied: "Copià", shareNote: "Questa colliaziun avra questa via. Texts e colliaziuns uffizialas suondan il navigatur actual.", change: "Midar las respostas", restart: "Cumenzar danovamain",
     why: "Pertge questa via", visaLayer: "Entrada e visum", familyLayer: "Reuniun da famiglia", reviewed: "Infurmaziuns verifitgadas ils 22 avust 2026",
     disclaimerTitle: "Avant che ta basar sin quai", disclaimer: "Quest navigatur ordinescha infurmaziuns uffizialas; el na dat nagina permissiun e na remplazzà betg la infurmaziun dal chantun cumpetent. Reglas, formulars e contingents pon midar.",
@@ -415,6 +415,69 @@ const sources = {
   cantons: ["All cantonal immigration and labour authorities · SEM", authorityDirectory],
 } as const;
 
+const permitPages = {
+  B: "https://www.sem.admin.ch/sem/en/home/themen/aufenthalt/eu_efta/ausweis_b_eu_efta.html",
+  C: "https://www.sem.admin.ch/sem/en/home/themen/aufenthalt/eu_efta/ausweis_c_eu_efta.html",
+  L: "https://www.sem.admin.ch/sem/en/home/themen/aufenthalt/eu_efta/ausweis_l_eu_efta.html",
+  G: "https://www.sem.admin.ch/sem/en/home/themen/aufenthalt/eu_efta/ausweis_g_eu_efta.html",
+  Ci: "https://www.sem.admin.ch/sem/en/home/themen/aufenthalt/eu_efta/ausweis_ci_eu_efta.html",
+  F: "https://www.sem.admin.ch/sem/en/home/themen/aufenthalt/nicht_eu_efta/ausweis_f__vorlaeufig.html",
+  N: "https://www.sem.admin.ch/sem/en/home/themen/aufenthalt/nicht_eu_efta/ausweis_n__asylsuchende.html",
+  S: "https://www.sem.admin.ch/sem/en/home/themen/aufenthalt/nicht_eu_efta/ausweis_s__schutzbeduerftige.html",
+  refugeeB: sources.asylum[1],
+  otherPermit: "https://www.sem.admin.ch/sem/en/home/themen/aufenthalt/eu_efta.html",
+} as const;
+
+const biometricPermit = "https://www.sem.admin.ch/sem/en/home/themen/aufenthalt/biometr_auslaenderausweis.html";
+const zefixSearch = "https://www.zefix.admin.ch/en/search/entity/welcome";
+const applicationDocuments = sources.documents[1];
+
+export function permitSourceUrl(value: string, answers: Answers = {}): string | undefined {
+  if (value === "G" && (answers.nationality === "third" || answers.nationality === "uk")) return sources.gThird[1];
+  return permitPages[value as keyof typeof permitPages];
+}
+
+export function permitOfficialLinks(lang: Lang, answers: Answers = {}): Array<{ value: string; label: string; url: string }> {
+  return choiceKeys.permit.flatMap((value) => {
+    const url = permitSourceUrl(value, answers);
+    const label = options[lang][value]?.[0];
+    return url && label ? [{ value, label, url }] : [];
+  });
+}
+
+function documentSourceUrl(id: string, answers: Answers): string | undefined {
+  switch (id) {
+    case "cv":
+    case "qualifications":
+    case "recruitment":
+    case "roleCase":
+    case "salary":
+    case "contract":
+    case "id":
+      return applicationDocuments;
+    case "cantonForm":
+      return sources.cantons[1];
+    case "permit":
+    case "photo":
+      return biometricPermit;
+    case "assignment":
+    case "eu12":
+      return sources.notify[1];
+    case "residence":
+      return permitSourceUrl("G", answers);
+    case "business":
+      return sources.self[1];
+    case "register":
+      return zefixSearch;
+    case "civil":
+    case "housing":
+    case "means":
+      return sources.family[1];
+    default:
+      return undefined;
+  }
+}
+
 const routeDef: Record<RouteKey, { actor: Actor; actions: string[]; docs: string[]; sourceIds: Array<keyof typeof sources> }> = {
   swiss: { actor: "employer", actions: ["noPermit"], docs: ["id", "contract"], sourceIds: ["general"] },
   existingOpen: { actor: "both", actions: ["verifyExisting", "ensureConditions"], docs: ["permit", "id", "contract"], sourceIds: ["general", "cantons"] },
@@ -480,8 +543,10 @@ function resolveRoute(a: Answers): RouteKey {
   return "specialist";
 }
 
+export type DocItem = { label: string; url?: string };
+
 export type ResultModel = {
-  key: RouteKey; badge: string; title: string; summary: string; actor: Actor; actions: string[]; docs: string[];
+  key: RouteKey; badge: string; title: string; summary: string; actor: Actor; actions: string[]; docs: DocItem[];
   sourceLinks: Array<{ label: string; url: string }>; canton?: { code: string; name: string; url: string };
   visaNote?: string; familyNote?: string; warning?: string;
 };
@@ -505,7 +570,10 @@ export function getResult(a: Answers, lang: Lang, key: RouteKey = resolveRoute(a
   const result: ResultModel = {
     key, badge, title, summary, actor: def.actor,
     actions: def.actions.map((id) => actionText[lang][id]),
-    docs: def.docs.map((id) => docText[lang][id]),
+    docs: def.docs.map((id) => {
+      const url = documentSourceUrl(id, a);
+      return url ? { label: docText[lang][id], url } : { label: docText[lang][id] };
+    }),
     sourceLinks: def.sourceIds.map((id) => ({ label: sources[id][0], url: sources[id][1] })),
     canton: cantonRow ? { code: cantonRow[0], name: cantonRow[1], url: cantonRow[2] } : undefined,
   };

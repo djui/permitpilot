@@ -147,6 +147,24 @@ function asStringArray(value: unknown): string[] | null {
   return value;
 }
 
+function asDocItems(value: unknown): ResultModel["docs"] | null {
+  if (!Array.isArray(value)) return null;
+  const docs: ResultModel["docs"] = [];
+  for (const item of value) {
+    if (typeof item === "string" && item.length > 0) {
+      docs.push({ label: item });
+      continue;
+    }
+    if (!isRecord(item)) return null;
+    const label = asNonEmptyString(item.label);
+    if (!label) return null;
+    const url = item.url === undefined ? undefined : asNonEmptyString(item.url);
+    if (item.url !== undefined && !url) return null;
+    docs.push(url ? { label, url } : { label });
+  }
+  return docs;
+}
+
 function parseV1(data: unknown): (SharedRoute & ResultModel) | null {
   if (!isRecord(data) || data.v !== 1) return null;
   if (typeof data.lang !== "string" || !LANGS.has(data.lang as Lang)) return null;
@@ -158,7 +176,7 @@ function parseV1(data: unknown): (SharedRoute & ResultModel) | null {
   const title = asNonEmptyString(data.title);
   const summary = asNonEmptyString(data.summary);
   const actions = asStringArray(data.actions);
-  const docs = asStringArray(data.docs);
+  const docs = asDocItems(data.docs);
   if (!key || !isRouteKey(key) || !actor || !ACTORS.has(actor as ResultModel["actor"]) || !badge || !title || !summary || !actions || !docs) {
     return null;
   }
