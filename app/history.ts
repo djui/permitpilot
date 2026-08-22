@@ -15,6 +15,46 @@ export const historyEntries: HistoryEntry[] = [
     date: "2026-08-22",
     kind: "product",
     title: {
+      en: "Clearer study, existing-permit and family routes, plus a dated action plan",
+      de: "Klarere Wege für Studium, bestehende Bewilligungen und Familie, plus datierter Aktionsplan",
+      fr: "Parcours plus clairs pour études, permis existants et famille, plus un plan d’action daté",
+      it: "Percorsi più chiari per studio, permessi esistenti e famiglia, più un piano d’azione datato",
+      rm: "Vias pli cleras per studi, permissiuns existentas e famiglia, plus in plan d’acziun datà",
+    },
+    body: {
+      en: "The wizard now asks whether you are studying, a Swiss graduate or job-seeking; what is changing on an existing B, L or G permit; and whether a second Swiss or EU/EFTA citizenship applies. Results split those cases, add EU non-gainful residence, and spell out family work rights. Each action step names who files it and, where official guidance gives a deadline, when. SEM starting pages open in German, French or Italian when you use those languages. There is a Permit letters index, and the site remembers your language on the next visit.",
+      de: "Der Assistent fragt jetzt, ob du studierst, einen Schweizer Hochschulabschluss hast oder Arbeit suchst; was sich an einer bestehenden B-, L- oder G-Bewilligung ändert; und ob eine zweite Schweizer oder EU/EFTA-Staatsangehörigkeit gilt. Die Ergebnisse trennen diese Fälle, ergänzen den EU-Aufenthalt ohne Erwerbstätigkeit und nennen die Arbeitsrechte der Familie. Jeder Schritt sagt, wer ihn einreicht, und — wo die offizielle Orientierung eine Frist nennt — wann. SEM-Startseiten öffnen auf Deutsch, Französisch oder Italienisch, wenn du diese Sprachen nutzt. Es gibt ein Verzeichnis der Bewilligungsbuchstaben, und die Seite merkt sich deine Sprache beim nächsten Besuch.",
+      fr: "L’assistant demande désormais si vous étudiez, si vous êtes diplômé d’une haute école suisse ou en recherche d’emploi ; ce qui change sur un permis B, L ou G existant ; et s’il existe une seconde citoyenneté suisse ou UE/AELE. Les résultats séparent ces cas, ajoutent le séjour UE sans activité lucrative et précisent l’accès au travail des proches. Chaque étape indique qui dépose et, lorsque l’orientation officielle donne un délai, quand. Les pages de départ du SEM s’ouvrent en allemand, français ou italien selon la langue choisie. Un index des lettres de permis est disponible, et le site retient votre langue à la visite suivante.",
+      it: "La guida chiede ora se studi, se hai un diploma di un’alta scuola svizzera o se cerchi lavoro; che cosa cambia su un permesso B, L o G esistente; e se vale una seconda cittadinanza svizzera o UE/AELS. I risultati separano questi casi, aggiungono il soggiorno UE senza attività lucrativa e precisano l’accesso al lavoro dei familiari. Ogni passo indica chi deposita e, se l’orientamento ufficiale dà un termine, quando. Le pagine SEM di partenza si aprono in tedesco, francese o italiano se usi quelle lingue. C’è un indice delle lettere di permesso e il sito ricorda la lingua alla visita successiva.",
+      rm: "Il gid dumonda ussa sche ti studioschas, has ina conclusiun d’ina scola auta svizra u tschertgas lavur; tge che mida tar ina permissiun B, L u G existenta; e sche ina segunda burgaisia svizra u UE/AELE vala. Ils resultats separan quests cas, cumplettan la dimora UE senza activitad lucrativa e numnan ils dretgs da lavur da la famiglia. Mintga pass di tgi depona ed — nua che l’orientaziun uffiziala dat in termin — cura. Las paginas da partenza dal SEM s’avran en tudestg, franzos u talian sche ti dovras quellas linguas. I dat in register da las letras da permissiun, e la pagina sa regorda tia lingua tar la proxima visita.",
+    },
+  },
+  {
+    date: "2026-08-22",
+    kind: "rules",
+    source: {
+      label: "SEM",
+      url: "https://www.sem.admin.ch/sem/en/home/themen/arbeit/faq.html",
+    },
+    title: {
+      en: "Study, job-change and settlement routes aligned with SEM working guidance",
+      de: "Studien-, Stellenwechsel- und Niederlassungswege an SEM-Arbeitsregeln angeglichen",
+      fr: "Parcours d’études, de changement d’emploi et d’établissement alignés sur le SEM",
+      it: "Percorsi di studio, cambio posto e domicilio allineati alle indicazioni SEM",
+      rm: "Vias da studi, midament da plazza e colonisaziun allineadas tar las indicaziuns SEM",
+    },
+    body: {
+      en: "Student side jobs, Swiss-graduate search stays and EU/EFTA job-seeking are now separate routes, with the old combined study result kept only for older links. Changing employer on a third-country L permit stays limited to the same sector and profession; a B holder can usually change job unless the card carries a condition. Settlement permit C is explained as a 5- or 10-year check, not a promise. UK work results show the 2026 UK quota (2,100 B / 1,400 L), third-country labour results show 4,500 B / 4,000 L, and long posted services note the separate 120-day EU/EFTA service quota. A G permit is not offered if the home is outside a neighbouring border zone. Dual Swiss or EU/EFTA citizenship switches the admission system. Family work rights follow the sponsor. The canton remains the deciding authority.",
+      de: "Nebenjobs im Studium, Jobsuche nach Schweizer Hochschulabschluss und EU/EFTA-Jobsuche sind jetzt getrennte Wege; das frühere Sammelergebnis gilt nur noch für ältere Links. Ein Stellenwechsel mit Drittstaat-L bleibt auf dieselbe Branche und denselben Beruf beschränkt; mit B ist ein Wechsel in der Regel ohne neue Bewilligung möglich, ausser die Karte trägt eine Auflage. Die Niederlassungsbewilligung C wird als 5- oder 10-Jahres-Prüfung erklärt, nicht als Zusage. UK-Arbeitswege zeigen das UK-Kontingent 2026 (2’100 B / 1’400 L), Drittstaat-Arbeitswege 4’500 B / 4’000 L, und lange Entsendungen den Hinweis auf das 120-Tage-Dienstleistungskontingent. G entfällt, wenn der Wohnsitz ausserhalb der Nachbar-Grenzzone liegt. Eine zweite Schweizer oder EU/EFTA-Staatsangehörigkeit wechselt das Zulassungssystem. Die Arbeitsrechte der Familie folgen dem Sponsor. Der Kanton bleibt die entscheidende Behörde.",
+      fr: "L’activité accessoire des étudiants, la recherche d’emploi après un diplôme suisse et la recherche d’emploi UE/AELE sont désormais des parcours distincts ; l’ancien résultat unique ne sert que les anciens liens. Un changement d’employeur avec un L d’État tiers reste limité au même secteur et à la même profession ; un titulaire B peut en principe changer d’emploi, sauf si la carte porte une condition. Le permis C est présenté comme un contrôle à 5 ou 10 ans, pas une promesse. Les résultats UK affichent le contingent 2026 (2 100 B / 1 400 L), ceux des États tiers 4 500 B / 4 000 L, et les longues prestations le contingent distinct au-delà de 120 jours. Le G n’est pas proposé si le domicile est hors zone frontière voisine. Une seconde citoyenneté suisse ou UE/AELE change le régime d’admission. L’accès au travail des proches suit le sponsor. Le canton reste l’autorité décisionnaire.",
+      it: "Il lavoro accessorio degli studenti, la ricerca dopo un diploma svizzero e la ricerca di lavoro UE/AELS sono ora percorsi distinti; il vecchio risultato unico resta solo per i link precedenti. Un cambio di datore con L di Stato terzo resta limitato allo stesso settore e professione; un titolare B può di regola cambiare posto, salvo condizione sulla carta. Il permesso C è spiegato come verifica a 5 o 10 anni, non come promessa. I risultati UK mostrano il contingente 2026 (2’100 B / 1’400 L), quelli di Stati terzi 4’500 B / 4’000 L, e i lunghi distacchi il contingente distinto oltre 120 giorni. Il G non è proposto se il domicilio è fuori dalla zona di frontiera vicina. Una seconda cittadinanza svizzera o UE/AELS cambia il regime di ammissione. L’accesso al lavoro dei familiari segue il sostenitore. Il cantone resta l’autorità che decide.",
+      rm: "Lavurs accessoras da students, tschertga suenter ina conclusiun svizra e tschertga da lavur UE/AELE èn ussa vias separadas; il vegl resultat commün vala mo per colliaziuns veglias. In midament da patrun cun L da stadis terzs resta limità a la medema branscha e professiun; cun B po ins per ordinari midar plazza, nun che la carta portia ina cundiziun. La permissiun C vegn spiegada sco examen da 5 u 10 onns, betg sco promessa. Resultats UK mussan il contingent 2026 (2’100 B / 1’400 L), quels da stadis terzs 4’500 B / 4’000 L, ed emessas lungas l’avis dal contingent separat sur 120 dis. G na vegn betg purschì sche la dimora è ordaifer la zona da cunfin vischina. Ina segunda burgaisia svizra u UE/AELE mida il sistem d’admissiun. Ils dretgs da lavur da la famiglia suondan il sponsur. Il chantun resta l’autoritad decisiva.",
+    },
+  },
+  {
+    date: "2026-08-22",
+    kind: "product",
+    title: {
       en: "Languages, shareable results, legal notices, and dark mode",
       de: "Sprachen, teilbare Ergebnisse, rechtliche Hinweise und dunkler Modus",
       fr: "Langues, résultats partageables, mentions légales et mode sombre",

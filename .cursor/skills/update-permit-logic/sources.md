@@ -9,6 +9,7 @@ Primary pages only. Prefer the language of the page; do not treat a news recap a
 - Swiss government portal · ch.ch — https://www.ch.ch/
 - EU/EFTA free movement FAQ · SEM — https://www.sem.admin.ch/sem/en/home/themen/fza_schweiz-eu-efta/eu-efta_buerger_schweiz/faq.html
 - 90-day notification procedure · SEM — https://www.sem.admin.ch/sem/en/home/themen/fza_schweiz-eu-efta/meldeverfahren.html
+- FAQ – Working · SEM — https://www.sem.admin.ch/sem/en/home/themen/arbeit/faq.html
 - Online notification · EasyGov — https://www.easygov.swiss/easygov/
 - Non-EU/EFTA employment · SEM — https://www.sem.admin.ch/sem/en/home/themen/arbeit/nicht-eu_efta-angehoerige.html
 - Third-country application procedure · SEM — https://www.sem.admin.ch/sem/en/home/themen/arbeit/nicht-eu_efta-angehoerige/verfahrensablauf.html
@@ -16,6 +17,8 @@ Primary pages only. Prefer the language of the page; do not treat a news recap a
 - Entry and nationality checker · SEM — https://www.sem.admin.ch/sem/en/home/themen/einreise.html
 - Employment for asylum and protection statuses · SEM — https://www.sem.admin.ch/sem/en/home/themen/arbeit/erwerbstaetige_asylbereich.html
 - Third-country G permit · SEM — https://www.sem.admin.ch/sem/en/home/themen/aufenthalt/nicht_eu_efta/ausweis_g__grenzgaengerbewilligung.html
+- C EU/EFTA permit · SEM — https://www.sem.admin.ch/sem/en/home/themen/aufenthalt/eu_efta/ausweis_c_eu_efta.html
+- Recognition of foreign qualifications · recognition.swiss — https://www.anerkennung.swiss/en
 - Foreign founders and self-employment · SME Portal — https://www.kmu.admin.ch/en/foreign-national-setting-up-a-business
 - Cantonal immigration and labour authorities · SEM — https://www.sem.admin.ch/sem/en/home/sem/kontakt/kantonale_behoerden/adressen_kantone_und.html
 - 2026 work-permit quotas · Federal Council / admin.ch — https://www.ivi.admin.ch/en/newnsb/7HwBjdg5HpBA

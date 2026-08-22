@@ -452,6 +452,9 @@ html.using-pointer .choice:has(:focus-visible) .choice-radio { outline: none; }
 .timeline-item:not(:last-child) { border-bottom: 1px solid var(--line); }
 .timeline-number { color: var(--faint); font-size: var(--text-caption); font-weight: 800; padding-top: 3px; }
 .timeline-item p { margin: 0; color: var(--ink); font-size: var(--text-body); line-height: 1.6; }
+.timeline-copy { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 10px; }
+.timeline-copy .actor-tag { flex: 0 0 auto; }
+.timeline-copy p { flex: 1 1 12rem; }
 .timeline-item small { display: block; margin-top: 8px; color: var(--faint); font-size: var(--text-caption); }
 .doc-checklist { margin: 8px 0 0; padding: 0; list-style: none; }
 .doc-checklist li { display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--line); }
@@ -493,6 +496,7 @@ html.using-pointer .choice:has(:focus-visible) .choice-radio { outline: none; }
 .history-filters button.active { background: transparent; color: var(--ink); box-shadow: inset 0 -2px 0 var(--ink); }
 .history-list { list-style: none; margin: 0; padding: 0; }
 .history-item { border-top: 1px solid var(--line); padding: 28px 0; }
+.history-item:first-child { border-top: 0; }
 .history-item:last-child { border-bottom: 1px solid var(--line); }
 .history-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
 .history-meta time { color: var(--faint); font-size: var(--text-caption); font-weight: 650; }
@@ -517,6 +521,13 @@ footer .brand-mark svg { width: 15px; height: 15px; }
 .legal-block h2 { margin: 0; font-size: 22px; letter-spacing: -.03em; line-height: 1.2; }
 .legal-block p { margin: 12px 0 0; color: var(--muted); font-size: var(--text-body); line-height: 1.65; }
 .legal-block a { color: var(--green); font-weight: 700; text-decoration: none; border-bottom: 1px solid var(--hair); }
+.permit-index { margin: 40px 0 0; padding: 0; list-style: none; }
+.permit-index li { display: grid; grid-template-columns: 3rem 1fr; gap: 16px; align-items: baseline; padding: 16px 0; border-top: 1px solid var(--line); }
+.permit-index li:last-child { border-bottom: 1px solid var(--line); }
+.permit-letter { color: var(--red-dark); font-size: var(--text-caption); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.permit-index a { color: var(--ink); font-weight: 650; text-decoration: none; font-size: var(--text-body); line-height: 1.45; }
+.permit-index a:hover { text-decoration: underline; }
+.permit-index i { font-style: normal; margin-left: 6px; color: var(--faint); }
 
 @media (max-width: 900px) {
   .topbar { grid-template-columns: 1fr auto; width: min(100% - 32px, 1180px); }

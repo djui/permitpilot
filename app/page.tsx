@@ -29,8 +29,9 @@ import {
   themeModes,
   type ThemeMode,
 } from "./theme";
+import { persistLang, readLang } from "./language";
 
-type Screen = "home" | "wizard" | "result" | "history" | "legal";
+type Screen = "home" | "wizard" | "result" | "history" | "legal" | "permits";
 
 const credits = {
   github: "https://github.com/djui/permitpilot",
@@ -46,7 +47,7 @@ const extras = {
     howTitle: "One clear route through federal rules and cantonal paperwork.",
     howLead: "We ask only what changes the route, then show who files what—and in which order.",
     cards: [["Legally relevant questions", "We ask about citizenship, status, work model, duration and canton—not characteristics that do not affect the route."], ["Responsibilities separated", "Applicant, employer and authority tasks appear in their proper order, including entry and arrival."], ["A result you can check", "Every route points back to SEM, ch.ch, EasyGov and the responsible canton."]],
-    common: "Common routes covered", coverage: "Employees · founders · cross-border commuters · posted services · family · students · B/C/L/G/F/N/S/Ci",
+    common: "Common routes covered", coverage: "Employees · founders · commuters · posted services · family · students · graduates · jobseekers · existing permits · B/C/L/G/F/N/S/Ci",
     sourceTitle: "Federal rules first. The canton remains the deciding authority.",
     sourceLead: "PermitPilot organises official Swiss guidance. Open the source yourself before you file.",
     sources: [
@@ -58,6 +59,8 @@ const extras = {
     aboutTitle: "Designed in France, developed in Sweden. For Switzerland.",
     aboutBody: "PermitPilot is private, unpaid, best-effort work. It is not a Swiss government site and does not speak for SEM, the Confederation or any canton. It organises official information; it does not issue a permit or replace advice from the competent canton.",
     designer: "Design", developer: "Development", githubLabel: "GitHub", unofficial: "Unofficial",
+    permitsTitle: "Swiss permit letters",
+    permitsLead: "Each letter is the status printed on the foreign-national identity document. These are official SEM starting pages, not a decision.",
     contribute: "The source is on GitHub. Issues and pull requests are welcome.",
     githubPrivacyLabel: "GitHub privacy statement",
     legalTitle: "Legal and privacy",
@@ -75,7 +78,7 @@ const extras = {
     howTitle: "Ein klarer Weg durch Bundesregeln und kantonale Formulare.",
     howLead: "Wir fragen nur, was den Weg ändert, und zeigen, wer was in welcher Reihenfolge einreicht.",
     cards: [["Nur rechtlich relevante Fragen", "Wir fragen nach Staatsangehörigkeit, Status, Arbeitsmodell, Dauer und Kanton – nicht nach irrelevanten Merkmalen."], ["Zuständigkeiten getrennt", "Aufgaben von Person, Arbeitgeber und Behörde erscheinen in der richtigen Reihenfolge."], ["Prüfbares Ergebnis", "Jeder Weg führt zu SEM, ch.ch, EasyGov und dem zuständigen Kanton."]],
-    common: "Abgedeckte Standardwege", coverage: "Angestellte · Gründer · Grenzgänger · Entsendungen · Familie · Studium · B/C/L/G/F/N/S/Ci",
+    common: "Abgedeckte Standardwege", coverage: "Angestellte · Gründer · Grenzgänger · Entsendungen · Familie · Studium · Absolventen · Jobsuche · bestehende Bewilligungen · B/C/L/G/F/N/S/Ci",
     sourceTitle: "Zuerst Bundesrecht. Der Kanton bleibt die entscheidende Behörde.",
     sourceLead: "PermitPilot ordnet offizielle Schweizer Informationen. Öffne die Quelle, bevor du einreichst.",
     sources: [
@@ -87,6 +90,8 @@ const extras = {
     aboutTitle: "Entworfen in Frankreich, entwickelt in Schweden. Für die Schweiz.",
     aboutBody: "PermitPilot ist unbezahlte Privatarbeit nach bestem Wissen. Es ist keine Website der Schweizer Behörden und spricht nicht für das SEM, den Bund oder einen Kanton. Es ordnet offizielle Informationen; es erteilt keine Bewilligung und ersetzt keine Auskunft des zuständigen Kantons.",
     designer: "Gestaltung", developer: "Entwicklung", githubLabel: "GitHub", unofficial: "Inoffiziell",
+    permitsTitle: "Schweizer Bewilligungsbuchstaben",
+    permitsLead: "Jeder Buchstabe ist der Status auf dem Ausländerausweis. Das sind offizielle SEM-Startseiten, kein Entscheid.",
     contribute: "Der Quellcode liegt auf GitHub. Issues und Pull Requests sind willkommen.",
     githubPrivacyLabel: "GitHub-Datenschutzerklärung",
     legalTitle: "Rechtliches und Datenschutz",
@@ -104,7 +109,7 @@ const extras = {
     howTitle: "Un parcours clair entre règles fédérales et démarches cantonales.",
     howLead: "Nous ne demandons que ce qui change le parcours, puis indiquons qui dépose quoi, et dans quel ordre.",
     cards: [["Questions juridiquement utiles", "Nous demandons nationalité, statut, modèle de travail, durée et canton – pas les caractéristiques sans effet juridique."], ["Responsabilités séparées", "Les tâches du candidat, de l’employeur et de l’autorité apparaissent dans le bon ordre."], ["Un résultat vérifiable", "Chaque parcours renvoie au SEM, à ch.ch, EasyGov et au canton compétent."]],
-    common: "Parcours courants couverts", coverage: "Salariés · fondateurs · frontaliers · détachements · famille · étudiants · B/C/L/G/F/N/S/Ci",
+    common: "Parcours courants couverts", coverage: "Salariés · fondateurs · frontaliers · détachements · famille · études · diplômés · recherche d’emploi · permis existants · B/C/L/G/F/N/S/Ci",
     sourceTitle: "Les règles fédérales d’abord. Le canton reste l’autorité décisionnaire.",
     sourceLead: "PermitPilot organise l’information officielle suisse. Ouvrez la source avant de déposer un dossier.",
     sources: [
@@ -116,6 +121,8 @@ const extras = {
     aboutTitle: "Conçu en France, développé en Suède. Pour la Suisse.",
     aboutBody: "PermitPilot est un travail privé, non rémunéré, réalisé au mieux. Ce n’est pas un site des autorités suisses et il ne parle ni pour le SEM, ni pour la Confédération, ni pour un canton. Il organise l’information officielle ; il ne délivre aucun permis et ne remplace pas l’avis du canton compétent.",
     designer: "Conception", developer: "Développement", githubLabel: "GitHub", unofficial: "Non officiel",
+    permitsTitle: "Lettres de permis suisses",
+    permitsLead: "Chaque lettre est le statut imprimé sur le titre pour étrangers. Ce sont des pages de départ du SEM, pas une décision.",
     contribute: "Le code source est sur GitHub. Les issues et les pull requests sont les bienvenues.",
     githubPrivacyLabel: "Déclaration de confidentialité GitHub",
     legalTitle: "Mentions et confidentialité",
@@ -133,7 +140,7 @@ const extras = {
     howTitle: "Un percorso chiaro tra regole federali e pratiche cantonali.",
     howLead: "Chiediamo solo ciò che cambia il percorso, poi indichiamo chi deposita cosa e in quale ordine.",
     cards: [["Domande giuridicamente rilevanti", "Chiediamo cittadinanza, statuto, modello di lavoro, durata e cantone — non caratteristiche senza effetto sul percorso."], ["Responsabilità separate", "I compiti di richiedente, datore e autorità appaiono nell’ordine giusto."], ["Un risultato verificabile", "Ogni percorso rimanda a SEM, ch.ch, EasyGov e al cantone competente."]],
-    common: "Percorsi comuni coperti", coverage: "Dipendenti · fondatori · frontalieri · distacchi · famiglia · studenti · B/C/L/G/F/N/S/Ci",
+    common: "Percorsi comuni coperti", coverage: "Dipendenti · fondatori · frontalieri · distacchi · famiglia · studio · diplomati · ricerca di lavoro · permessi esistenti · B/C/L/G/F/N/S/Ci",
     sourceTitle: "Prima le regole federali. Il cantone resta l’autorità che decide.",
     sourceLead: "PermitPilot organizza le indicazioni ufficiali svizzere. Apri la fonte prima di depositare.",
     sources: [
@@ -145,6 +152,8 @@ const extras = {
     aboutTitle: "Progettato in Francia, sviluppato in Svezia. Per la Svizzera.",
     aboutBody: "PermitPilot è un lavoro privato, non retribuito, fatto al meglio delle possibilità. Non è un sito delle autorità svizzere e non parla per la SEM, la Confederazione o un cantone. Organizza informazioni ufficiali; non rilascia un permesso né sostituisce il parere del cantone competente.",
     designer: "Progettazione", developer: "Sviluppo", githubLabel: "GitHub", unofficial: "Non ufficiale",
+    permitsTitle: "Lettere dei permessi svizzeri",
+    permitsLead: "Ogni lettera è lo statuto stampato sul titolo per stranieri. Sono pagine SEM di partenza, non una decisione.",
     contribute: "Il codice è su GitHub. Issue e pull request sono benvenute.",
     githubPrivacyLabel: "Informativa sulla privacy di GitHub",
     legalTitle: "Note legali e privacy",
@@ -162,7 +171,7 @@ const extras = {
     howTitle: "Ina via clera tras reglas federalas e formulars chantunals.",
     howLead: "Nus dumondain mo quai che mida la via e mussain tgi depona tge – ed en tge successiun.",
     cards: [["Mo dumondas giuridicamain relevantas", "Nus dumondain naziunalitad, status, model da lavur, durada e chantun – betg caracteristicas senza effect sin la via."], ["Cumpetenzas separadas", "Incumbensas da persuna, patrun ed autoritad cumparan en la successiun giusta."], ["Resultat verifitgabel", "Mintga via maina tar SEM, ch.ch, EasyGov ed il chantun cumpetent."]],
-    common: "Vias da standard cuvridas", coverage: "Engaschads · fundaturs · pendulars · emessas · famiglia · studi · B/C/L/G/F/N/S/Ci",
+    common: "Vias da standard cuvridas", coverage: "Engaschads · fundaturs · pendulars · emessas · famiglia · studi · absolvents · tschertga da lavur · permissiuns existentas · B/C/L/G/F/N/S/Ci",
     sourceTitle: "L’emprim il dretg federal. Il chantun resta l’autoritad decisiva.",
     sourceLead: "PermitPilot ordinescha infurmaziuns uffizialas svizras. Avra la funtauna avant che deponer.",
     sources: [
@@ -174,6 +183,8 @@ const extras = {
     aboutTitle: "Entaschà en Frantscha, sviluppà en Svezia. Per la Svizra.",
     aboutBody: "PermitPilot è lavur privata, nunpajaida, tenor meglier savida. El n’è betg ina pagina da las autoritads svizras e na discuorra ni per il SEM, ni per la Confederaziun, ni per in chantun. El ordinescha infurmaziuns uffizialas; el na dat nagina permissiun e na remplazzà betg la infurmaziun dal chantun cumpetent.",
     designer: "Design", developer: "Svilup", githubLabel: "GitHub", unofficial: "Betg uffizial",
+    permitsTitle: "Letra da permissiuns svizras",
+    permitsLead: "Mintga letra è il status stampà sin la carta per esters. Quai èn paginas da partenza dal SEM, betg ina decisiun.",
     contribute: "Il code da funtauna è sin GitHub. Issues e pull requests èn bainvegnids.",
     githubPrivacyLabel: "Decleraziun da protecziun da datas da GitHub",
     legalTitle: "Legal e protecziun da datas",
@@ -497,11 +508,14 @@ function scrollToTop() {
 }
 
 export default function Home() {
-  const [language, setLanguage] = useState<Lang>("en");
+  const [language, setLanguage] = useState<Lang>(() => (
+    typeof window === "undefined" ? "en" : readLang()
+  ));
   const [screen, setScreen] = useState<Screen>(() => {
     if (typeof window === "undefined") return "home";
     if (window.location.hash === "#history") return "history";
     if (window.location.hash === "#legal") return "legal";
+    if (window.location.hash === "#permits") return "permits";
     return "home";
   });
   const [historyFilter, setHistoryFilter] = useState<"all" | HistoryKind>("all");
@@ -544,6 +558,10 @@ export default function Home() {
         setScreen("legal");
         return;
       }
+      if (hash === "#permits") {
+        setScreen("permits");
+        return;
+      }
       if (isShareHash(hash)) {
         void decodeShareHash(hash).then((decoded) => {
           if (currentGeneration !== generation) return;
@@ -562,7 +580,7 @@ export default function Home() {
         });
         return;
       }
-      setScreen((previous) => (previous === "history" || previous === "legal" ? "home" : previous));
+      setScreen((previous) => (previous === "history" || previous === "legal" || previous === "permits" ? "home" : previous));
     };
     applyHash();
     window.addEventListener("hashchange", applyHash);
@@ -594,9 +612,11 @@ export default function Home() {
           ? `${h.title} · PermitPilot`
           : screen === "legal"
             ? `${x.legalTitle} · PermitPilot`
-            : "PermitPilot";
+            : screen === "permits"
+              ? `${x.permitsTitle} · PermitPilot`
+              : "PermitPilot";
     document.title = title;
-  }, [screen, current, result.title, h.title, x.legalTitle]);
+  }, [screen, current, result.title, h.title, x.legalTitle, x.permitsTitle]);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -662,6 +682,14 @@ export default function Home() {
     setMenuOpen(false);
     setScreen("legal");
     if (window.location.hash !== "#legal") window.location.hash = "legal";
+    scrollToTop();
+  };
+
+  const goPermits = () => {
+    leaveResult();
+    setMenuOpen(false);
+    setScreen("permits");
+    if (window.location.hash !== "#permits") window.location.hash = "permits";
     scrollToTop();
   };
 
@@ -761,6 +789,7 @@ export default function Home() {
     <>
       <button type="button" onClick={() => navigateHomeSection("how")}>{t.how}</button>
       <button type="button" onClick={() => navigateHomeSection("sources")}>{t.sources}</button>
+      <button type="button" onClick={goPermits}>{t.permits}</button>
       <button type="button" onClick={goHistory}>{t.history}</button>
       <button type="button" onClick={() => navigateHomeSection("about")}>{t.about}</button>
     </>
@@ -793,7 +822,14 @@ export default function Home() {
           >
             {t.menu}
           </button>
-          <LanguageSwitch language={language} onChange={setLanguage} label={t.language} />
+          <LanguageSwitch
+            language={language}
+            onChange={(code) => {
+              persistLang(code);
+              setLanguage(code);
+            }}
+            label={t.language}
+          />
           <ThemeSwitch
             mode={themeMode}
             onChange={setThemeMode}
@@ -1023,12 +1059,14 @@ export default function Home() {
 
           <div className="result-layout">
             <div className="result-main">
-              {(routeMismatch || result.warning || result.visaNote || result.familyNote) && (
+              {(routeMismatch || result.warning || result.visaNote || result.familyNote || result.quotaNote || result.recognitionNote) && (
                 <div className="layer-stack">
                   {routeMismatch && <div className="layer-alert warning"><span>!</span><div><strong>{t.mismatchTitle}</strong><p>{t.mismatchBody}</p></div></div>}
                   {result.warning && <div className="layer-alert warning"><span>!</span><div><strong>{t.why}</strong><p>{result.warning}</p></div></div>}
                   {result.visaNote && <div className="layer-alert"><span>V</span><div><strong>{t.visaLayer}</strong><p>{result.visaNote}</p></div></div>}
                   {result.familyNote && <div className="layer-alert family"><span>+</span><div><strong>{t.familyLayer}</strong><p>{result.familyNote}</p></div></div>}
+                  {result.quotaNote && <div className="layer-alert"><span>Q</span><div><strong>{t.quotaLayer}</strong><p>{result.quotaNote}</p></div></div>}
+                  {result.recognitionNote && <div className="layer-alert"><span>R</span><div><strong>{t.recognitionLayer}</strong><p>{result.recognitionNote}</p></div></div>}
                 </div>
               )}
 
@@ -1038,7 +1076,21 @@ export default function Home() {
                   <p><span className={`actor-tag actor-${result.actor}`}>{actorLabel}</span></p>
                 </div>
                 <div className="timeline">
-                  {result.actions.map((action, index) => <div className="timeline-item" key={action}><span className="timeline-number">{String(index + 1).padStart(2, "0")}</span><div><p>{action}</p>{index === 0 && <small>{t.actionCaveat}</small>}</div></div>)}
+                  {result.actions.map((action, index) => (
+                    <div className="timeline-item" key={`${action.text}-${index}`}>
+                      <span className="timeline-number">{String(index + 1).padStart(2, "0")}</span>
+                      <div>
+                        <div className="timeline-copy">
+                          {action.actor !== result.actor && (
+                            <span className={`actor-tag actor-${action.actor}`}>{t[action.actor]}</span>
+                          )}
+                          <p>{action.text}</p>
+                        </div>
+                        {action.when && <small>{action.when}</small>}
+                        {index === 0 && <small>{t.actionCaveat}</small>}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </section>
 
@@ -1123,6 +1175,24 @@ export default function Home() {
                 {entry.source && (
                   <ExternalLink href={entry.source.url} opensNewTab={t.opensNewTab}>{h.source} · {entry.source.label}<span aria-hidden="true">↗</span></ExternalLink>
                 )}
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
+
+      {screen === "permits" && (
+        <section className="legal-shell">
+          <div className="section-intro">
+            <p className="eyebrow">{t.permits}</p>
+            <h1 ref={headingRef} tabIndex={-1} className="page-heading">{x.permitsTitle}</h1>
+            <p>{x.permitsLead}</p>
+          </div>
+          <ol className="permit-index">
+            {permitOfficialLinks(language).map((link) => (
+              <li key={link.value}>
+                <span className="permit-letter">{link.value === "refugeeB" ? "B" : link.value === "otherPermit" ? "·" : link.value}</span>
+                <ExternalLink href={link.url} opensNewTab={t.opensNewTab}>{link.label}<i aria-hidden="true">↗</i></ExternalLink>
               </li>
             ))}
           </ol>

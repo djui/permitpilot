@@ -3,6 +3,8 @@ import {
   isRouteKey,
   stepOrder,
   type Answers,
+  type Actor,
+  type ActionItem,
   type Lang,
   type ResultModel,
   type RouteKey,
@@ -13,7 +15,7 @@ const ACTORS = new Set<ResultModel["actor"]>(["applicant", "employer", "both", "
 const CANTON_CODES = new Set<string>(cantons.map(([code]) => code));
 const ANSWER_KEYS = new Set<string>(stepOrder);
 const PARAM_VALUE = /^[A-Za-z0-9]+$/u;
-const PAGE_HASHES = new Set(["#history", "#legal"]);
+const PAGE_HASHES = new Set(["#history", "#legal", "#permits"]);
 const MAX_SNAPSHOT_CHARS = 12_000;
 const MAX_SNAPSHOT_BYTES = 8_192;
 
@@ -168,9 +170,23 @@ function asNonEmptyString(value: unknown): string | null {
   return typeof value === "string" && value.length > 0 ? value : null;
 }
 
-function asStringArray(value: unknown): string[] | null {
-  if (!Array.isArray(value) || !value.every((item) => typeof item === "string")) return null;
-  return value;
+function asActions(value: unknown, fallbackActor: Actor): ActionItem[] | null {
+  if (!Array.isArray(value)) return null;
+  const items: ActionItem[] = [];
+  for (const item of value) {
+    if (typeof item === "string" && item.length > 0) {
+      items.push({ text: item, actor: fallbackActor });
+      continue;
+    }
+    if (!isRecord(item)) return null;
+    const text = asNonEmptyString(item.text);
+    const actor = asNonEmptyString(item.actor);
+    if (!text || !actor || !ACTORS.has(actor as Actor)) return null;
+    const when = item.when === undefined ? undefined : asNonEmptyString(item.when);
+    if (item.when !== undefined && !when) return null;
+    items.push(when ? { text, actor: actor as Actor, when } : { text, actor: actor as Actor });
+  }
+  return items;
 }
 
 function isHttpsUrl(url: string): boolean {
@@ -223,9 +239,12 @@ function parseV1(data: unknown): (SharedRoute & ResultModel) | null {
   const badge = asNonEmptyString(data.badge);
   const title = asNonEmptyString(data.title);
   const summary = asNonEmptyString(data.summary);
-  const actions = asStringArray(data.actions);
+  if (!key || !isRouteKey(key) || !actor || !ACTORS.has(actor as Actor) || !badge || !title || !summary) {
+    return null;
+  }
+  const actions = asActions(data.actions, actor as Actor);
   const docs = asDocItems(data.docs);
-  if (!key || !isRouteKey(key) || !actor || !ACTORS.has(actor as ResultModel["actor"]) || !badge || !title || !summary || !actions || !docs) {
+  if (!actions || !docs) {
     return null;
   }
   if (!Array.isArray(data.sourceLinks)) return null;
