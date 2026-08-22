@@ -39,5 +39,13 @@ The production URL is `https://djui.github.io/permitpilot/`.
 
 ## Important
 
-PermitPilot provides general, source-backed guidance—not a legally binding
-permit determination. The responsible Swiss canton makes the binding decision.
+PermitPilot is private, unpaid, best-effort work. It is not a Swiss government
+site and does not speak for SEM, the Confederation, or any canton.
+
+It provides general, source-backed guidance—not a legally binding permit
+determination. The responsible Swiss canton makes the binding decision.
+
+## Contributing
+
+The source is at [github.com/djui/permitpilot](https://github.com/djui/permitpilot).
+Issues and pull requests are welcome.

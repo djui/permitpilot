@@ -54,7 +54,7 @@ export const ui = {
     responsibilities: "Your action plan", paperwork: "Paperwork to prepare", officialLinks: "Official starting points", officialPages: "Official pages", path: "Your path", cantonOffice: "Your cantonal authority",
     applicant: "Applicant", employer: "Employer", both: "Applicant + employer", authority: "Authority", open: "Open official page", print: "Print summary", share: "Copy link", copied: "Copied", change: "Change answers", restart: "Start again",
     why: "Why this route", visaLayer: "Entry and visa layer", familyLayer: "Bringing family", reviewed: "Information last reviewed 22 August 2026",
-    disclaimerTitle: "Before you rely on this", disclaimer: "This navigator organises official information; it does not issue a permit or replace advice from the competent canton. Rules, forms and quotas can change.",
+    disclaimerTitle: "Before you rely on this", disclaimer: "This is private, best-effort work, not a Swiss government service. It organises official information; it does not issue a permit or replace advice from the competent canton. Rules, forms and quotas can change.",
     noData: "Your answers are processed in this browser and are not submitted.", sourceMethod: "Federal rules first, canton-specific filing second.",
   },
   de: {
@@ -70,7 +70,7 @@ export const ui = {
     responsibilities: "Dein Aktionsplan", paperwork: "Unterlagen vorbereiten", officialLinks: "Offizielle Startpunkte", officialPages: "Offizielle Seiten", path: "Dein Weg", cantonOffice: "Zuständige kantonale Behörde",
     applicant: "Antragstellende Person", employer: "Arbeitgeber", both: "Person + Arbeitgeber", authority: "Behörde", open: "Offizielle Seite öffnen", print: "Zusammenfassung drucken", share: "Link kopieren", copied: "Kopiert", change: "Antworten ändern", restart: "Neu starten",
     why: "Warum dieser Weg", visaLayer: "Einreise und Visum", familyLayer: "Familiennachzug", reviewed: "Informationen zuletzt geprüft am 22. August 2026",
-    disclaimerTitle: "Bevor du dich darauf verlässt", disclaimer: "Dieser Navigator ordnet offizielle Informationen. Er erteilt keine Bewilligung und ersetzt keine Auskunft des zuständigen Kantons. Regeln, Formulare und Kontingente können sich ändern.",
+    disclaimerTitle: "Bevor du dich darauf verlässt", disclaimer: "Das ist unbezahlte Privatarbeit nach bestem Wissen, kein Angebot der Schweizer Behörden. Der Navigator ordnet offizielle Informationen. Er erteilt keine Bewilligung und ersetzt keine Auskunft des zuständigen Kantons. Regeln, Formulare und Kontingente können sich ändern.",
     noData: "Deine Antworten werden nur in diesem Browser verarbeitet.", sourceMethod: "Zuerst Bundesrecht, dann das kantonale Verfahren.",
   },
   fr: {
@@ -86,7 +86,7 @@ export const ui = {
     responsibilities: "Votre plan d’action", paperwork: "Documents à préparer", officialLinks: "Points de départ officiels", officialPages: "Pages officielles", path: "Votre parcours", cantonOffice: "Votre autorité cantonale",
     applicant: "Candidat", employer: "Employeur", both: "Candidat + employeur", authority: "Autorité", open: "Ouvrir la page officielle", print: "Imprimer le résumé", share: "Copier le lien", copied: "Copié", change: "Modifier les réponses", restart: "Recommencer",
     why: "Pourquoi ce parcours", visaLayer: "Entrée et visa", familyLayer: "Regroupement familial", reviewed: "Informations vérifiées le 22 août 2026",
-    disclaimerTitle: "Avant de vous y fier", disclaimer: "Ce navigateur organise l’information officielle. Il ne délivre aucun permis et ne remplace pas l’avis du canton compétent. Les règles, formulaires et contingents peuvent changer.",
+    disclaimerTitle: "Avant de vous y fier", disclaimer: "Il s’agit d’un travail privé, réalisé au mieux, et non d’un service des autorités suisses. Ce navigateur organise l’information officielle. Il ne délivre aucun permis et ne remplace pas l’avis du canton compétent. Les règles, formulaires et contingents peuvent changer.",
     noData: "Vos réponses sont traitées uniquement dans ce navigateur.", sourceMethod: "D’abord les règles fédérales, puis le dépôt cantonal.",
   },
   it: {
@@ -102,7 +102,7 @@ export const ui = {
     responsibilities: "Il tuo piano d’azione", paperwork: "Documenti da preparare", officialLinks: "Punti di partenza ufficiali", officialPages: "Pagine ufficiali", path: "Il tuo percorso", cantonOffice: "La tua autorità cantonale",
     applicant: "Richiedente", employer: "Datore di lavoro", both: "Richiedente + datore", authority: "Autorità", open: "Apri pagina ufficiale", print: "Stampa il riepilogo", share: "Copia il link", copied: "Copiato", change: "Modifica le risposte", restart: "Ricomincia",
     why: "Perché questo percorso", visaLayer: "Ingresso e visto", familyLayer: "Ricongiungimento familiare", reviewed: "Informazioni verificate il 22 agosto 2026",
-    disclaimerTitle: "Prima di farci affidamento", disclaimer: "Questo navigatore organizza informazioni ufficiali; non rilascia un permesso né sostituisce il parere del cantone competente. Norme, formulari e contingenti possono cambiare.",
+    disclaimerTitle: "Prima di farci affidamento", disclaimer: "Questo è un lavoro privato, fatto al meglio delle possibilità, non un servizio delle autorità svizzere. Il navigatore organizza informazioni ufficiali; non rilascia un permesso né sostituisce il parere del cantone competente. Norme, formulari e contingenti possono cambiare.",
     noData: "Le tue risposte sono elaborate solo in questo browser.", sourceMethod: "Prima il diritto federale, poi la procedura cantonale.",
   },
   rm: {
@@ -118,7 +118,7 @@ export const ui = {
     responsibilities: "Tes plan d’acziun", paperwork: "Documents da preparar", officialLinks: "Puncts da partenza uffizials", officialPages: "Paginas uffizialas", path: "Tia via", cantonOffice: "Tia autoritad chantunala",
     applicant: "Persuna che dumonda", employer: "Patrun", both: "Persuna + patrun", authority: "Autoritad", open: "Avrir la pagina uffiziala", print: "Stampar il resumaziun", share: "Copiar la colliaziun", copied: "Copià", change: "Midar las respostas", restart: "Cumenzar danovamain",
     why: "Pertge questa via", visaLayer: "Entrada e visum", familyLayer: "Reuniun da famiglia", reviewed: "Infurmaziuns verifitgadas ils 22 avust 2026",
-    disclaimerTitle: "Avant che ta basar sin quai", disclaimer: "Quest navigatur ordinescha infurmaziuns uffizialas; el na dat nagina permissiun e na remplazzà betg la infurmaziun dal chantun cumpetent. Reglas, formulars e contingents pon midar.",
+    disclaimerTitle: "Avant che ta basar sin quai", disclaimer: "Quai è lavur privata tenor meglier savida, betg in servetsch da las autoritads svizras. Quest navigatur ordinescha infurmaziuns uffizialas; el na dat nagina permissiun e na remplazzà betg la infurmaziun dal chantun cumpetent. Reglas, formulars e contingents pon midar.",
     noData: "Tias respostas vegnan elavuradas mo en quest navigatur.", sourceMethod: "L’emprim il dretg federal, lura la procedura chantunala.",
   },
 } as const;

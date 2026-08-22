@@ -26,6 +26,14 @@ import {
 
 type Screen = "home" | "wizard" | "result" | "history";
 
+const credits = {
+  github: "https://github.com/djui/permitpilot",
+  people: [
+    { name: "Julie Thomas", href: "https://www.linkedin.com/in/julie-thomas-99b3b073/", role: "designer" },
+    { name: "Uwe Dauernheim", href: "https://www.linkedin.com/in/uwedauernheim", role: "developer" },
+  ],
+} as const;
+
 const extras = {
   en: {
     howTitle: "One clear route through federal rules and cantonal paperwork.",
@@ -41,7 +49,9 @@ const extras = {
       ["26 cantons", "Cantonal migration offices", "The competent office that processes the application.", "https://www.sem.admin.ch/sem/en/home/sem/kontakt/kantonale_behoerden/adressen_kantone_und.html"],
     ],
     aboutTitle: "Designed in France, developed in Sweden. For Switzerland.",
-    aboutBody: "PermitPilot is an independent navigator. It organises official information; it does not issue a permit or replace advice from the competent canton.",
+    aboutBody: "PermitPilot is private, unpaid, best-effort work. It is not a Swiss government site and does not speak for SEM, the Confederation or any canton. It organises official information; it does not issue a permit or replace advice from the competent canton.",
+    designer: "Design", developer: "Development", githubLabel: "GitHub", unofficial: "Unofficial",
+    contribute: "The source is on GitHub. Issues and pull requests are welcome.",
   },
   de: {
     howTitle: "Ein klarer Weg durch Bundesregeln und kantonale Formulare.",
@@ -57,7 +67,9 @@ const extras = {
       ["26 Kantone", "Kantonale Migrationsämter", "Die zuständige Stelle, die das Gesuch bearbeitet.", "https://www.sem.admin.ch/sem/en/home/sem/kontakt/kantonale_behoerden/adressen_kantone_und.html"],
     ],
     aboutTitle: "Entworfen in Frankreich, entwickelt in Schweden. Für die Schweiz.",
-    aboutBody: "PermitPilot ist ein unabhängiger Navigator. Er ordnet offizielle Informationen; er erteilt keine Bewilligung und ersetzt keine Auskunft des zuständigen Kantons.",
+    aboutBody: "PermitPilot ist unbezahlte Privatarbeit nach bestem Wissen. Es ist keine Website der Schweizer Behörden und spricht nicht für das SEM, den Bund oder einen Kanton. Es ordnet offizielle Informationen; es erteilt keine Bewilligung und ersetzt keine Auskunft des zuständigen Kantons.",
+    designer: "Gestaltung", developer: "Entwicklung", githubLabel: "GitHub", unofficial: "Inoffiziell",
+    contribute: "Der Quellcode liegt auf GitHub. Issues und Pull Requests sind willkommen.",
   },
   fr: {
     howTitle: "Un parcours clair entre règles fédérales et démarches cantonales.",
@@ -73,7 +85,9 @@ const extras = {
       ["26 cantons", "Offices cantonaux des migrations", "L’autorité compétente qui traite la demande.", "https://www.sem.admin.ch/sem/en/home/sem/kontakt/kantonale_behoerden/adressen_kantone_und.html"],
     ],
     aboutTitle: "Conçu en France, développé en Suède. Pour la Suisse.",
-    aboutBody: "PermitPilot est un navigateur indépendant. Il organise l’information officielle ; il ne délivre aucun permis et ne remplace pas l’avis du canton compétent.",
+    aboutBody: "PermitPilot est un travail privé, non rémunéré, réalisé au mieux. Ce n’est pas un site des autorités suisses et il ne parle ni pour le SEM, ni pour la Confédération, ni pour un canton. Il organise l’information officielle ; il ne délivre aucun permis et ne remplace pas l’avis du canton compétent.",
+    designer: "Conception", developer: "Développement", githubLabel: "GitHub", unofficial: "Non officiel",
+    contribute: "Le code source est sur GitHub. Les issues et les pull requests sont les bienvenues.",
   },
   it: {
     howTitle: "Un percorso chiaro tra regole federali e pratiche cantonali.",
@@ -89,7 +103,9 @@ const extras = {
       ["26 cantoni", "Uffici cantonali della migrazione", "L’autorità competente che tratta la domanda.", "https://www.sem.admin.ch/sem/en/home/sem/kontakt/kantonale_behoerden/adressen_kantone_und.html"],
     ],
     aboutTitle: "Progettato in Francia, sviluppato in Svezia. Per la Svizzera.",
-    aboutBody: "PermitPilot è un navigatore indipendente. Organizza informazioni ufficiali; non rilascia un permesso né sostituisce il parere del cantone competente.",
+    aboutBody: "PermitPilot è un lavoro privato, non retribuito, fatto al meglio delle possibilità. Non è un sito delle autorità svizzere e non parla per la SEM, la Confederazione o un cantone. Organizza informazioni ufficiali; non rilascia un permesso né sostituisce il parere del cantone competente.",
+    designer: "Progettazione", developer: "Sviluppo", githubLabel: "GitHub", unofficial: "Non ufficiale",
+    contribute: "Il codice è su GitHub. Issue e pull request sono benvenute.",
   },
   rm: {
     howTitle: "Ina via clera tras reglas federalas e formulars chantunals.",
@@ -105,7 +121,9 @@ const extras = {
       ["26 chantuns", "Uffizis chantunals da migraziun", "L’autoritad cumpetenta che elavura la dumonda.", "https://www.sem.admin.ch/sem/en/home/sem/kontakt/kantonale_behoerden/adressen_kantone_und.html"],
     ],
     aboutTitle: "Entaschà en Frantscha, sviluppà en Svezia. Per la Svizra.",
-    aboutBody: "PermitPilot è in navigatur independent. El ordinescha infurmaziuns uffizialas; el na dat nagina permissiun e na remplazzà betg la infurmaziun dal chantun cumpetent.",
+    aboutBody: "PermitPilot è lavur privata, nunpajaida, tenor meglier savida. El n’è betg ina pagina da las autoritads svizras e na discuorra ni per il SEM, ni per la Confederaziun, ni per in chantun. El ordinescha infurmaziuns uffizialas; el na dat nagina permissiun e na remplazzà betg la infurmaziun dal chantun cumpetent.",
+    designer: "Design", developer: "Svilup", githubLabel: "GitHub", unofficial: "Betg uffizial",
+    contribute: "Il code da funtauna è sin GitHub. Issues e pull requests èn bainvegnids.",
   },
 } as const;
 
@@ -389,12 +407,25 @@ export default function Home() {
                 <p className="eyebrow">{t.about}</p>
                 <h2>{x.aboutTitle}</h2>
                 <p>{x.aboutBody}</p>
+                <ul className="about-people">
+                  {credits.people.map((person) => (
+                    <li key={person.name}>
+                      <a href={person.href} target="_blank" rel="noreferrer" aria-label={`${person.name} · LinkedIn`}>
+                        {person.name}<i aria-hidden="true">↗</i>
+                      </a>
+                      <span>{x[person.role]}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="about-contribute">
+                  {x.contribute}{" "}
+                  <a href={credits.github} target="_blank" rel="noreferrer">{x.githubLabel}<i aria-hidden="true">↗</i></a>
+                </p>
               </div>
               <div className="about-meta">
                 <p>{t.noData}</p>
                 <p>{t.notAdvice}</p>
                 <button className="secondary-button" onClick={() => startWizard()}>{t.start}<span>→</span></button>
-                <button className="text-button" onClick={goHistory}>{t.history}</button>
               </div>
             </div>
           </section>
@@ -588,7 +619,11 @@ export default function Home() {
 
       <footer className="no-print">
         <Brand onClick={goHome} />
-        <span>© 2026</span>
+        <div className="footer-meta">
+          <span>{x.unofficial}</span>
+          <a href={credits.github} target="_blank" rel="noreferrer">{x.githubLabel}</a>
+          <span>© 2026</span>
+        </div>
       </footer>
     </main>
   );

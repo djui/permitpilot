@@ -15,6 +15,24 @@ export const historyEntries: HistoryEntry[] = [
     date: "2026-08-22",
     kind: "product",
     title: {
+      en: "Authors, GitHub, and unofficial status",
+      de: "Autorin und Autor, GitHub und inoffizieller Status",
+      fr: "Auteurs, GitHub et statut non officiel",
+      it: "Autori, GitHub e stato non ufficiale",
+      rm: "Auturs, GitHub e status betg uffizial",
+    },
+    body: {
+      en: "Julie Thomas and Uwe Dauernheim are named on the About page, with LinkedIn profiles. The source is on GitHub and contributions are welcome. The site now states clearly that it is private, best-effort work, not a Swiss government service.",
+      de: "Julie Thomas und Uwe Dauernheim stehen mit LinkedIn-Profilen auf der Seite Über uns. Der Quellcode liegt auf GitHub; Mitwirken ist willkommen. Die Seite sagt klar, dass es unbezahlte Privatarbeit nach bestem Wissen ist – kein Angebot der Schweizer Behörden.",
+      fr: "Julie Thomas et Uwe Dauernheim figurent sur la page À propos, avec leurs profils LinkedIn. Le code source est sur GitHub ; les contributions sont les bienvenues. Le site indique clairement qu’il s’agit d’un travail privé, réalisé au mieux, et non d’un service des autorités suisses.",
+      it: "Julie Thomas e Uwe Dauernheim sono indicati in Chi siamo, con i profili LinkedIn. Il codice è su GitHub e i contributi sono benvenuti. Il sito afferma con chiarezza che è un lavoro privato, fatto al meglio delle possibilità, non un servizio delle autorità svizzere.",
+      rm: "Julie Thomas ed Uwe Dauernheim stattan sin la pagina Davart nus, cun profils LinkedIn. Il code da funtauna è sin GitHub; collavuraziun è bainvegnida. La pagina di cleramain ch’i sa tracta da lavur privata tenor meglier savida, betg d’in servetsch da las autoritads svizras.",
+    },
+  },
+  {
+    date: "2026-08-22",
+    kind: "product",
+    title: {
       en: "Official pages on paperwork and permit letters",
       de: "Offizielle Seiten zu Unterlagen und Bewilligungsbuchstaben",
       fr: "Pages officielles pour les documents et les lettres de permis",
