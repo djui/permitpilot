@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import { type ReactNode, useEffect, useId, useMemo, useRef, useState } from "react";
 import {
   Answers,
   Lang,
@@ -245,6 +245,217 @@ function LanguageFlag({ code }: { code: Lang }) {
   );
 }
 
+function useDismissibleMenu() {
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onPointerDown = (event: PointerEvent) => {
+      if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("pointerdown", onPointerDown);
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
+
+  return { open, setOpen, rootRef };
+}
+
+function LanguageSwitch({
+  language,
+  onChange,
+  label,
+}: {
+  language: Lang;
+  onChange: (code: Lang) => void;
+  label: string;
+}) {
+  const { open, setOpen, rootRef } = useDismissibleMenu();
+  const listId = useId();
+  const current = languages.find((item) => item.code === language) ?? languages[0];
+
+  return (
+    <div className={open ? "bar-switch is-open" : "bar-switch"} ref={rootRef}>
+      <button
+        type="button"
+        className="bar-switch-trigger"
+        aria-label={label}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-controls={listId}
+        onClick={() => setOpen((value) => !value)}
+      >
+        <LanguageFlag code={current.code} />
+        <span>{current.label}</span>
+      </button>
+      {open && (
+        <ul className="bar-menu" id={listId} role="listbox" aria-label={label}>
+          {languages.map((item) => (
+            <li key={item.code} role="presentation">
+              <button
+                type="button"
+                role="option"
+                aria-selected={language === item.code}
+                className={language === item.code ? "active" : ""}
+                onClick={() => {
+                  onChange(item.code);
+                  setOpen(false);
+                }}
+              >
+                <LanguageFlag code={item.code} />
+                <span>{item.name}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+function ThemeIcon({ mode }: { mode: ThemeMode }) {
+  if (mode === "light") {
+    return (
+      <svg className="theme-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+        <circle cx="8" cy="8" r="2.6" fill="none" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M8 1.6v1.6M8 12.8v1.6M1.6 8h1.6M12.8 8h1.6M3.3 3.3l1.1 1.1M11.6 11.6l1.1 1.1M3.3 12.7l1.1-1.1M11.6 4.4l1.1-1.1" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" />
+      </svg>
+    );
+  }
+  if (mode === "dark") {
+    return (
+      <svg className="theme-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+        <path d="M10.2 2.4a6 6 0 1 0 3.4 9.8 5.2 5.2 0 0 1-7.2-7.1 6 6 0 0 0 3.8-2.7z" fill="currentColor" />
+      </svg>
+    );
+  }
+  return (
+    <svg className="theme-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+      <circle cx="8" cy="8" r="5.2" fill="none" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M8 2.8v10.4a5.2 5.2 0 0 0 0-10.4z" fill="currentColor" />
+    </svg>
+  );
+}
+
+function ThemeSwitch({
+  mode,
+  onChange,
+  theme,
+  themeAuto,
+  themeLight,
+  themeDark,
+}: {
+  mode: ThemeMode;
+  onChange: (mode: ThemeMode) => void;
+  theme: string;
+  themeAuto: string;
+  themeLight: string;
+  themeDark: string;
+}) {
+  const { open, setOpen, rootRef } = useDismissibleMenu();
+  const listId = useId();
+  const labels = { auto: themeAuto, light: themeLight, dark: themeDark };
+
+  return (
+    <div className={open ? "bar-switch is-open" : "bar-switch"} ref={rootRef}>
+      <button
+        type="button"
+        className="bar-switch-trigger"
+        aria-label={theme}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-controls={listId}
+        onClick={() => setOpen((value) => !value)}
+      >
+        <ThemeIcon mode={mode} />
+        <span>{labels[mode]}</span>
+      </button>
+      {open && (
+        <ul className="bar-menu" id={listId} role="listbox" aria-label={theme}>
+          {themeModes.map((value) => (
+            <li key={value} role="presentation">
+              <button
+                type="button"
+                role="option"
+                aria-selected={mode === value}
+                className={mode === value ? "active" : ""}
+                onClick={() => {
+                  onChange(value);
+                  setOpen(false);
+                }}
+              >
+                <ThemeIcon mode={value} />
+                <span>{labels[value]}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+function ShareControl({
+  copied,
+  shareLabel,
+  copiedLabel,
+  warn,
+  confirmLabel,
+  onCopy,
+}: {
+  copied: boolean;
+  shareLabel: string;
+  copiedLabel: string;
+  warn: string;
+  confirmLabel: string;
+  onCopy: () => Promise<void>;
+}) {
+  const { open, setOpen, rootRef } = useDismissibleMenu();
+  const dialogId = useId();
+  const confirmRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (open) confirmRef.current?.focus();
+  }, [open]);
+
+  return (
+    <div className="share-switch" ref={rootRef}>
+      <button
+        type="button"
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        aria-controls={dialogId}
+        aria-live="polite"
+        onClick={() => setOpen((value) => !value)}
+      >
+        <i className={copied ? "action-icon check-icon" : "action-icon link-icon"} aria-hidden="true" />
+        {copied ? copiedLabel : shareLabel}
+      </button>
+      {open && (
+        <div className="share-popover no-print" id={dialogId} role="dialog" aria-label={shareLabel}>
+          <p>{warn}</p>
+          <button
+            type="button"
+            ref={confirmRef}
+            onClick={() => {
+              void onCopy().then(() => setOpen(false));
+            }}
+          >
+            {confirmLabel}
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function Brand({ onClick, homeLabel }: { onClick?: () => void; homeLabel?: string }) {
   const content = <><BrandMark /><span className="brand-copy"><strong>Permit Pilot</strong></span></>;
   return onClick
@@ -298,7 +509,6 @@ export default function Home() {
   const [stepIndex, setStepIndex] = useState(0);
   const [pinnedKey, setPinnedKey] = useState<RouteKey | null>(null);
   const [linkCopied, setLinkCopied] = useState(false);
-  const [shareConfirming, setShareConfirming] = useState(false);
   const [shareUrl, setShareUrl] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [themeMode, setThemeMode] = useState<ThemeMode>(() => (
@@ -348,7 +558,6 @@ export default function Home() {
           setPinnedKey(decoded.key);
           setShareUrl(window.location.href);
           setLinkCopied(false);
-          setShareConfirming(false);
           setScreen("result");
         });
         return;
@@ -390,6 +599,20 @@ export default function Home() {
   }, [screen, current, result.title, h.title, x.legalTitle]);
 
   useEffect(() => {
+    const root = document.documentElement;
+    const onPointerDown = () => root.classList.add("using-pointer");
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Tab") root.classList.remove("using-pointer");
+    };
+    window.addEventListener("pointerdown", onPointerDown);
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, []);
+
+  useEffect(() => {
     const first = isFirstRender.current;
     isFirstRender.current = false;
     if (first && screen === "home") return;
@@ -415,7 +638,6 @@ export default function Home() {
   const leaveResult = () => {
     setPinnedKey(null);
     setLinkCopied(false);
-    setShareConfirming(false);
     setShareUrl(null);
     clearHash();
   };
@@ -475,7 +697,6 @@ export default function Home() {
       window.history.replaceState(null, "", path);
       setPinnedKey(next.key);
       setLinkCopied(false);
-      setShareConfirming(false);
       setShareUrl(`${window.location.origin}${path}`);
       setScreen("result");
       scrollToTop();
@@ -499,6 +720,7 @@ export default function Home() {
       target?.scrollIntoView({ behavior: prefersReducedMotion() ? "auto" : "smooth" });
       const heading = target?.querySelector("h2");
       if (heading instanceof HTMLElement) {
+        heading.classList.add("focus-target");
         heading.tabIndex = -1;
         heading.focus();
       }
@@ -519,10 +741,6 @@ export default function Home() {
   };
 
   const copyShareLink = async () => {
-    if (!shareConfirming) {
-      setShareConfirming(true);
-      return;
-    }
     try {
       const url = shareUrl ?? window.location.href;
       await navigator.clipboard.writeText(url);
@@ -575,21 +793,15 @@ export default function Home() {
           >
             {t.menu}
           </button>
-          <div className="language-switch" role="group" aria-label={t.language}>
-            {languages.map(({ code, label, name }) => (
-              <button
-                type="button"
-                key={code}
-                className={language === code ? "active" : ""}
-                onClick={() => setLanguage(code)}
-                aria-label={name}
-                aria-pressed={language === code}
-              >
-                <LanguageFlag code={code} />
-                <span aria-hidden="true">{label}</span>
-              </button>
-            ))}
-          </div>
+          <LanguageSwitch language={language} onChange={setLanguage} label={t.language} />
+          <ThemeSwitch
+            mode={themeMode}
+            onChange={setThemeMode}
+            theme={t.theme}
+            themeAuto={t.themeAuto}
+            themeLight={t.themeLight}
+            themeDark={t.themeDark}
+          />
         </div>
       </header>
 
@@ -768,10 +980,14 @@ export default function Home() {
               <div className="result-toolbar">
                 <div className="result-kicker"><span className="result-status-dot" />{t.resultEyebrow}</div>
                 <div className="result-actions no-print">
-                  <button type="button" onClick={() => void copyShareLink()} aria-live="polite" aria-describedby={shareConfirming ? "share-warn" : undefined}>
-                    <i className={linkCopied ? "action-icon check-icon" : "action-icon link-icon"} aria-hidden="true" />
-                    {linkCopied ? t.copied : shareConfirming ? t.shareConfirm : t.share}
-                  </button>
+                  <ShareControl
+                    copied={linkCopied}
+                    shareLabel={t.share}
+                    copiedLabel={t.copied}
+                    warn={t.shareWarn}
+                    confirmLabel={t.shareConfirm}
+                    onCopy={copyShareLink}
+                  />
                   <button type="button" onClick={() => window.print()}>
                     <i className="action-icon print-icon" aria-hidden="true" />
                     {t.print}
@@ -802,7 +1018,6 @@ export default function Home() {
               <section className="disclaimer-card">
                 <span>i</span><div><strong>{t.disclaimerTitle}</strong><p>{t.disclaimer}</p></div>
               </section>
-                  {shareConfirming && <p id="share-warn" className="share-warn no-print">{t.shareWarn}</p>}
             </aside>
           </div>
 
@@ -818,14 +1033,20 @@ export default function Home() {
               )}
 
               <section className="result-section action-plan">
-                <div className="section-heading"><span className="section-index">01</span><div><h2>{t.responsibilities}</h2><p><span className={`actor-tag actor-${result.actor}`}>{actorLabel}</span></p></div></div>
+                <div className="section-heading">
+                  <h2>{t.responsibilities}</h2>
+                  <p><span className={`actor-tag actor-${result.actor}`}>{actorLabel}</span></p>
+                </div>
                 <div className="timeline">
                   {result.actions.map((action, index) => <div className="timeline-item" key={action}><span className="timeline-number">{String(index + 1).padStart(2, "0")}</span><div><p>{action}</p>{index === 0 && <small>{t.actionCaveat}</small>}</div></div>)}
                 </div>
               </section>
 
               <section className="result-section">
-                <div className="section-heading"><span className="section-index">02</span><div><h2>{t.paperwork}</h2><p>{t.official}</p></div></div>
+                <div className="section-heading">
+                  <h2>{t.paperwork}</h2>
+                  <p>{t.official}</p>
+                </div>
                 <ul className="doc-checklist">
                   {result.docs.map((doc) => (
                     <li key={doc.label}>
@@ -843,8 +1064,10 @@ export default function Home() {
               {result.canton && (
                 <section className="canton-card">
                   <span className="mini-label">{t.cantonOffice}</span>
-                  <div className="canton-code">{result.canton.code}</div>
-                  <h3>{result.canton.name}</h3>
+                  <h3>
+                    {result.canton.name}
+                    <span className="canton-code">{result.canton.code}</span>
+                  </h3>
                   <p>{t.sourceMethod}</p>
                   <ExternalLink href={result.canton.url} opensNewTab={t.opensNewTab}>{t.open}<span aria-hidden="true">↗</span></ExternalLink>
                 </section>
@@ -932,22 +1155,6 @@ export default function Home() {
       <footer className="no-print">
         <Brand onClick={goHome} homeLabel={t.home} />
         <div className="footer-meta">
-          <div className="theme-switch" role="group" aria-label={t.theme}>
-            <span>{t.theme}</span>
-            <div className="theme-switch-options">
-              {themeModes.map((mode) => (
-                <button
-                  type="button"
-                  key={mode}
-                  className={themeMode === mode ? "active" : ""}
-                  onClick={() => setThemeMode(mode)}
-                  aria-pressed={themeMode === mode}
-                >
-                  {mode === "auto" ? t.themeAuto : mode === "light" ? t.themeLight : t.themeDark}
-                </button>
-              ))}
-            </div>
-          </div>
           <span>{x.unofficial}</span>
           <button type="button" onClick={goLegal}>{t.legal}</button>
           <ExternalLink href={credits.github} opensNewTab={t.opensNewTab}>{x.githubLabel}</ExternalLink>
