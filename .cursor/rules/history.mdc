@@ -1,0 +1,41 @@
+---
+description: Keep the public History page current when permit rules or user-visible product capabilities change
+alwaysApply: true
+---
+
+# Public history updates
+
+The History page (`#history`) is a user-facing changelog in `app/history.ts`. Update it in the same change that warrants an entry. Newest entries first.
+
+## Must add an entry
+
+- **`kind: "rules"`** — any change to encoded permit logic, routes, quotas, eligibility, paperwork, or official sources in `app/permit-engine.ts` (or equivalent). Also when rules are re-checked against official sources, even if the outcome is “no change”.
+- **`kind: "product"`** — a change a person using the wizard would notice and care about: new language, new covered route, new result they can act on, or a capability they can now use.
+
+## Do not add an entry
+
+Skip history for anything a user would not come to History to learn:
+
+- dependency, security, or Dependabot updates
+- typos, copy polish, CSS/layout tweaks, favicon/branding
+- refactors, tests, lint, CI, gitignore, tooling, hosting/infra
+- “we rewrote it as a static site” or other internal implementation moves
+
+If unsure, skip. Wrong omission is better than a noise entry.
+
+## How to write the entry
+
+- Date: `YYYY-MM-DD` (use the effective/review date for rules, today for product).
+- `title` and `body` in every current language (`Lang` in `app/permit-engine.ts`).
+- Write for the user, not the repo. Say what changed for them, not which file changed.
+- For official rule changes, set `source: { label, url }` to the primary public source.
+- After a rules review, also refresh the “last reviewed” dates in `historyUi` and `ui.*.verified` / `ui.*.reviewed` in `app/permit-engine.ts`.
+
+```ts
+// ✅ GOOD — user-relevant rules change
+{ date: "2026-01-01", kind: "rules", source: { label: "admin.ch", url: "…" }, title: { en: "2026 work-permit quotas unchanged", /* de/fr/es */ }, body: { en: "On 19 November 2025 the Federal Council kept 2026 quotas at 2025 levels…", /* de/fr/es */ } }
+
+// ❌ BAD — internal or minor
+{ kind: "product", title: { en: "Fix npm audit vulnerabilities" } }
+{ kind: "product", title: { en: "Clearer homepage and a matching mark" } }
+```
