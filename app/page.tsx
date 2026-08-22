@@ -898,7 +898,7 @@ export default function Home() {
               <div className="microcopy">
                 <span><i className="clock-icon" aria-hidden="true" />{t.time}</span>
                 <span><i className="lock-icon" aria-hidden="true" />{t.privacy}</span>
-                <button type="button" className="verified-pill" onClick={goHistory}><span aria-hidden="true" />{t.verified}</button>
+                <button type="button" className="verified-pill" onClick={goHistory}><i className="calendar-icon" aria-hidden="true" />{t.verified}</button>
               </div>
               <p className="hero-guard">{t.notAdvice} · {t.notLegalAdvice}</p>
             </div>
