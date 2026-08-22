@@ -24,18 +24,17 @@ npm ci
 npm run dev
 ```
 
-## Builds
+Then open [http://localhost:5173/](http://localhost:5173/).
+
+## Build
 
 ```bash
-# Cloudflare/OpenAI Sites build
-npm run build
-
-# Static GitHub Pages build
-npm run build:pages
+npm run build        # local static site, served from /
+npm run build:pages  # GitHub Pages static site, served from /permitpilot/
 ```
 
 The GitHub Pages workflow publishes `dist-pages` after every push to `main`.
-The production Pages URL is `https://djui.github.io/permitpilot/`.
+The production URL is `https://djui.github.io/permitpilot/`.
 
 ## Important
 

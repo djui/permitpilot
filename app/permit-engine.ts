@@ -41,7 +41,7 @@ export const cantons = [
 
 export const ui = {
   en: {
-    home: "Home", how: "How it works", sources: "Official sources", about: "About", verified: "Rules checked 20 Aug 2026",
+    home: "Home", how: "How it works", sources: "Official sources", about: "About", history: "History", verified: "Rules checked 20 Aug 2026",
     eyebrow: "Swiss work & residence permits", titleA: "Your route into Switzerland,", titleB: "without the maze.",
     intro: "Answer a few plain-language questions. Get the likely permit route, who files what, and the official forms for your canton.",
     start: "Find my route", employerStart: "I’m hiring someone", time: "Takes about 3 minutes", privacy: "No login · answers stay on this device",
@@ -57,7 +57,7 @@ export const ui = {
     noData: "Your answers are processed in this browser and are not submitted.", sourceMethod: "Federal rules first, canton-specific filing second.",
   },
   de: {
-    home: "Start", how: "So funktioniert’s", sources: "Offizielle Quellen", about: "Über uns", verified: "Regeln geprüft am 20. Aug. 2026",
+    home: "Start", how: "So funktioniert’s", sources: "Offizielle Quellen", about: "Über uns", history: "Verlauf", verified: "Regeln geprüft am 20. Aug. 2026",
     eyebrow: "Schweizer Arbeits- & Aufenthaltsbewilligungen", titleA: "Dein Weg in die Schweiz,", titleB: "ohne Behördendschungel.",
     intro: "Beantworte einige einfache Fragen. Du erhältst den voraussichtlichen Bewilligungsweg, Zuständigkeiten und offizielle Formulare für deinen Kanton.",
     start: "Meinen Weg finden", employerStart: "Ich stelle jemanden ein", time: "Dauert etwa 3 Minuten", privacy: "Kein Login · Antworten bleiben auf diesem Gerät",
@@ -73,7 +73,7 @@ export const ui = {
     noData: "Deine Antworten werden nur in diesem Browser verarbeitet.", sourceMethod: "Zuerst Bundesrecht, dann das kantonale Verfahren.",
   },
   fr: {
-    home: "Accueil", how: "Fonctionnement", sources: "Sources officielles", about: "À propos", verified: "Règles vérifiées le 20 août 2026",
+    home: "Accueil", how: "Fonctionnement", sources: "Sources officielles", about: "À propos", history: "Historique", verified: "Règles vérifiées le 20 août 2026",
     eyebrow: "Permis de travail et de séjour suisses", titleA: "Votre chemin vers la Suisse,", titleB: "sans le labyrinthe.",
     intro: "Répondez à quelques questions simples. Obtenez la voie probable, les responsabilités et les formulaires officiels de votre canton.",
     start: "Trouver ma voie", employerStart: "Je recrute quelqu’un", time: "Environ 3 minutes", privacy: "Sans compte · réponses conservées sur cet appareil",
@@ -89,7 +89,7 @@ export const ui = {
     noData: "Vos réponses sont traitées uniquement dans ce navigateur.", sourceMethod: "D’abord les règles fédérales, puis le dépôt cantonal.",
   },
   es: {
-    home: "Inicio", how: "Cómo funciona", sources: "Fuentes oficiales", about: "Acerca de", verified: "Normas verificadas el 20 ago 2026",
+    home: "Inicio", how: "Cómo funciona", sources: "Fuentes oficiales", about: "Acerca de", history: "Historial", verified: "Normas verificadas el 20 ago 2026",
     eyebrow: "Permisos suizos de trabajo y residencia", titleA: "Tu camino hacia Suiza,", titleB: "sin el laberinto.",
     intro: "Responde unas preguntas sencillas. Obtén la vía probable, quién presenta cada trámite y los formularios oficiales de tu cantón.",
     start: "Encontrar mi vía", employerStart: "Voy a contratar a alguien", time: "Unos 3 minutos", privacy: "Sin cuenta · respuestas solo en este dispositivo",

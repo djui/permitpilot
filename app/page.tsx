@@ -1,6 +1,4 @@
-"use client";
-
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Answers,
   Lang,
@@ -12,29 +10,79 @@ import {
   stepOrder,
   ui,
 } from "./permit-engine";
+import {
+  formatHistoryDate,
+  historyEntries,
+  historyUi,
+  type HistoryKind,
+} from "./history";
 
-type Screen = "home" | "wizard" | "result";
+type Screen = "home" | "wizard" | "result" | "history";
 
 const extras = {
   en: {
-    methodEyebrow: "Designed around the actual decision", methodTitle: "One clear route through federal rules and cantonal paperwork.",
-    cards: [["Legally relevant questions", "We ask about citizenship, status, work model, duration and canton—not characteristics that do not affect the route."], ["Responsibilities separated", "Applicant, employer and authority tasks appear in their proper order, including entry and arrival."], ["Sources you can verify", "Every result points back to SEM, ch.ch, EasyGov and the responsible canton."]],
+    howTitle: "One clear route through federal rules and cantonal paperwork.",
+    howLead: "We ask only what changes the route, then show who files what—and in which order.",
+    cards: [["Legally relevant questions", "We ask about citizenship, status, work model, duration and canton—not characteristics that do not affect the route."], ["Responsibilities separated", "Applicant, employer and authority tasks appear in their proper order, including entry and arrival."], ["A result you can check", "Every route points back to SEM, ch.ch, EasyGov and the responsible canton."]],
     common: "Common routes covered", coverage: "Employees · founders · cross-border commuters · posted services · family · students · B/C/L/G/F/N/S/Ci",
+    sourceTitle: "Federal rules first. The canton remains the deciding authority.",
+    sourceLead: "PermitPilot organises official Swiss guidance. Open the source yourself before you file.",
+    sources: [
+      ["SEM", "State Secretariat for Migration", "Federal rules on admission, permits and visas.", "https://www.sem.admin.ch/"],
+      ["ch.ch", "Swiss government portal", "Plain-language overview of living and working in Switzerland.", "https://www.ch.ch/"],
+      ["EasyGov", "Business point of contact", "Employer notifications and work-permit filings.", "https://www.easygov.swiss/"],
+      ["26 cantons", "Cantonal migration offices", "The competent office that processes the application.", "https://www.sem.admin.ch/sem/en/home/sem/kontakt/kantonale_behoerden/adressen_kantone_und.html"],
+    ],
+    aboutTitle: "Designed in France, developed in Sweden. For Switzerland.",
+    aboutBody: "PermitPilot is an independent navigator. It organises official information; it does not issue a permit or replace advice from the competent canton.",
   },
   de: {
-    methodEyebrow: "Entlang des echten Entscheids", methodTitle: "Ein klarer Weg durch Bundesregeln und kantonale Formulare.",
-    cards: [["Nur rechtlich relevante Fragen", "Wir fragen nach Staatsangehörigkeit, Status, Arbeitsmodell, Dauer und Kanton – nicht nach irrelevanten Merkmalen."], ["Zuständigkeiten getrennt", "Aufgaben von Person, Arbeitgeber und Behörde erscheinen in der richtigen Reihenfolge."], ["Prüfbare Quellen", "Jedes Ergebnis führt zu SEM, ch.ch, EasyGov und dem zuständigen Kanton."]],
+    howTitle: "Ein klarer Weg durch Bundesregeln und kantonale Formulare.",
+    howLead: "Wir fragen nur, was den Weg ändert, und zeigen, wer was in welcher Reihenfolge einreicht.",
+    cards: [["Nur rechtlich relevante Fragen", "Wir fragen nach Staatsangehörigkeit, Status, Arbeitsmodell, Dauer und Kanton – nicht nach irrelevanten Merkmalen."], ["Zuständigkeiten getrennt", "Aufgaben von Person, Arbeitgeber und Behörde erscheinen in der richtigen Reihenfolge."], ["Prüfbares Ergebnis", "Jeder Weg führt zu SEM, ch.ch, EasyGov und dem zuständigen Kanton."]],
     common: "Abgedeckte Standardwege", coverage: "Angestellte · Gründer · Grenzgänger · Entsendungen · Familie · Studium · B/C/L/G/F/N/S/Ci",
+    sourceTitle: "Zuerst Bundesrecht. Der Kanton bleibt die entscheidende Behörde.",
+    sourceLead: "PermitPilot ordnet offizielle Schweizer Informationen. Öffne die Quelle, bevor du einreichst.",
+    sources: [
+      ["SEM", "Staatssekretariat für Migration", "Bundesregeln zu Zulassung, Bewilligungen und Visa.", "https://www.sem.admin.ch/"],
+      ["ch.ch", "Schweizer Behördenportal", "Verständliche Übersicht zu Leben und Arbeiten in der Schweiz.", "https://www.ch.ch/"],
+      ["EasyGov", "Anlaufstelle für Unternehmen", "Meldungen und Bewilligungsgesuche von Arbeitgebern.", "https://www.easygov.swiss/"],
+      ["26 Kantone", "Kantonale Migrationsämter", "Die zuständige Stelle, die das Gesuch bearbeitet.", "https://www.sem.admin.ch/sem/en/home/sem/kontakt/kantonale_behoerden/adressen_kantone_und.html"],
+    ],
+    aboutTitle: "Entworfen in Frankreich, entwickelt in Schweden. Für die Schweiz.",
+    aboutBody: "PermitPilot ist ein unabhängiger Navigator. Er ordnet offizielle Informationen; er erteilt keine Bewilligung und ersetzt keine Auskunft des zuständigen Kantons.",
   },
   fr: {
-    methodEyebrow: "Conçu autour de la vraie décision", methodTitle: "Un parcours clair entre règles fédérales et démarches cantonales.",
-    cards: [["Questions juridiquement utiles", "Nous demandons nationalité, statut, modèle de travail, durée et canton – pas les caractéristiques sans effet juridique."], ["Responsabilités séparées", "Les tâches du candidat, de l’employeur et de l’autorité apparaissent dans le bon ordre."], ["Sources vérifiables", "Chaque résultat renvoie au SEM, à ch.ch, EasyGov et au canton compétent."]],
+    howTitle: "Un parcours clair entre règles fédérales et démarches cantonales.",
+    howLead: "Nous ne demandons que ce qui change le parcours, puis indiquons qui dépose quoi, et dans quel ordre.",
+    cards: [["Questions juridiquement utiles", "Nous demandons nationalité, statut, modèle de travail, durée et canton – pas les caractéristiques sans effet juridique."], ["Responsabilités séparées", "Les tâches du candidat, de l’employeur et de l’autorité apparaissent dans le bon ordre."], ["Un résultat vérifiable", "Chaque parcours renvoie au SEM, à ch.ch, EasyGov et au canton compétent."]],
     common: "Parcours courants couverts", coverage: "Salariés · fondateurs · frontaliers · détachements · famille · étudiants · B/C/L/G/F/N/S/Ci",
+    sourceTitle: "Les règles fédérales d’abord. Le canton reste l’autorité décisionnaire.",
+    sourceLead: "PermitPilot organise l’information officielle suisse. Ouvrez la source avant de déposer un dossier.",
+    sources: [
+      ["SEM", "Secrétariat d’État aux migrations", "Règles fédérales sur l’admission, les permis et les visas.", "https://www.sem.admin.ch/"],
+      ["ch.ch", "Portail des autorités suisses", "Vue d’ensemble claire de la vie et du travail en Suisse.", "https://www.ch.ch/"],
+      ["EasyGov", "Guichet des entreprises", "Annonces et demandes de permis déposées par l’employeur.", "https://www.easygov.swiss/"],
+      ["26 cantons", "Offices cantonaux des migrations", "L’autorité compétente qui traite la demande.", "https://www.sem.admin.ch/sem/en/home/sem/kontakt/kantonale_behoerden/adressen_kantone_und.html"],
+    ],
+    aboutTitle: "Conçu en France, développé en Suède. Pour la Suisse.",
+    aboutBody: "PermitPilot est un navigateur indépendant. Il organise l’information officielle ; il ne délivre aucun permis et ne remplace pas l’avis du canton compétent.",
   },
   es: {
-    methodEyebrow: "Diseñado según la decisión real", methodTitle: "Una ruta clara entre normas federales y trámites cantonales.",
-    cards: [["Preguntas con relevancia legal", "Preguntamos ciudadanía, estatus, modelo de trabajo, duración y cantón; no rasgos que no cambian la ruta."], ["Responsabilidades separadas", "Las tareas del solicitante, empleador y autoridad aparecen en el orden correcto."], ["Fuentes verificables", "Cada resultado enlaza SEM, ch.ch, EasyGov y el cantón competente."]],
+    howTitle: "Una ruta clara entre normas federales y trámites cantonales.",
+    howLead: "Preguntamos solo lo que cambia la ruta y mostramos quién presenta qué, y en qué orden.",
+    cards: [["Preguntas con relevancia legal", "Preguntamos ciudadanía, estatus, modelo de trabajo, duración y cantón; no rasgos que no cambian la ruta."], ["Responsabilidades separadas", "Las tareas del solicitante, empleador y autoridad aparecen en el orden correcto."], ["Un resultado verificable", "Cada ruta enlaza SEM, ch.ch, EasyGov y el cantón competente."]],
     common: "Rutas comunes cubiertas", coverage: "Empleados · fundadores · fronterizos · desplazados · familia · estudiantes · B/C/L/G/F/N/S/Ci",
+    sourceTitle: "Primero las normas federales. El cantón sigue siendo la autoridad que decide.",
+    sourceLead: "PermitPilot organiza la orientación oficial suiza. Abre la fuente antes de presentar.",
+    sources: [
+      ["SEM", "Secretaría de Estado de Migración", "Normas federales sobre admisión, permisos y visados.", "https://www.sem.admin.ch/"],
+      ["ch.ch", "Portal del Gobierno suizo", "Visión general clara de vivir y trabajar en Suiza.", "https://www.ch.ch/"],
+      ["EasyGov", "Ventanilla para empresas", "Notificaciones y solicitudes de permiso del empleador.", "https://www.easygov.swiss/"],
+      ["26 cantones", "Oficinas cantonales de migración", "La autoridad competente que tramita la solicitud.", "https://www.sem.admin.ch/sem/en/home/sem/kontakt/kantonale_behoerden/adressen_kantone_und.html"],
+    ],
+    aboutTitle: "Diseñado en Francia, desarrollado en Suecia. Para Suiza.",
+    aboutBody: "PermitPilot es un navegador independiente. Organiza información oficial; no concede permisos ni sustituye la orientación del cantón competente.",
   },
 } as const;
 
@@ -64,22 +112,53 @@ function OptionSymbol({ value }: { value: string }) {
 
 export default function Home() {
   const [language, setLanguage] = useState<Lang>("en");
-  const [screen, setScreen] = useState<Screen>("home");
+  const [screen, setScreen] = useState<Screen>(() => (
+    typeof window !== "undefined" && window.location.hash === "#history" ? "history" : "home"
+  ));
+  const [historyFilter, setHistoryFilter] = useState<"all" | HistoryKind>("all");
   const [answers, setAnswers] = useState<Answers>({});
   const [stepIndex, setStepIndex] = useState(0);
   const t = ui[language];
   const x = extras[language];
+  const h = historyUi[language];
   const steps = useMemo(() => buildSteps(answers, language), [answers, language]);
   const safeIndex = Math.min(stepIndex, Math.max(steps.length - 1, 0));
   const current = steps[safeIndex];
   const result = useMemo(() => getResult(answers, language), [answers, language]);
+  const visibleHistory = historyFilter === "all"
+    ? historyEntries
+    : historyEntries.filter((entry) => entry.kind === historyFilter);
+
+  useEffect(() => {
+    const syncHash = () => {
+      setScreen(window.location.hash === "#history" ? "history" : (previous) => (
+        previous === "history" ? "home" : previous
+      ));
+    };
+    window.addEventListener("hashchange", syncHash);
+    return () => window.removeEventListener("hashchange", syncHash);
+  }, []);
+
+  const clearHash = () => {
+    if (window.location.hash) {
+      window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
+    }
+  };
 
   const goHome = () => {
+    clearHash();
     setScreen("home");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const goHistory = () => {
+    setScreen("history");
+    if (window.location.hash !== "#history") window.location.hash = "history";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const startWizard = (audience?: "person" | "employer") => {
+    clearHash();
     setAnswers(audience ? { audience } : {});
     setStepIndex(audience ? 1 : 0);
     setScreen("wizard");
@@ -117,6 +196,7 @@ export default function Home() {
   };
 
   const navigateHomeSection = (id: string) => {
+    clearHash();
     setScreen("home");
     window.setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }), 40);
   };
@@ -133,6 +213,7 @@ export default function Home() {
           <button onClick={() => navigateHomeSection("how")}>{t.how}</button>
           <button onClick={() => navigateHomeSection("sources")}>{t.sources}</button>
           <button onClick={() => navigateHomeSection("about")}>{t.about}</button>
+          <button onClick={goHistory}>{t.history}</button>
         </nav>
         <div className="language-switch" aria-label="Language">
           {languages.map(({ code, label, name }) => (
@@ -145,7 +226,7 @@ export default function Home() {
         <>
           <section className="hero">
             <div className="hero-copy">
-              <div className="verified-pill"><span />{t.verified}</div>
+              <button className="verified-pill" onClick={goHistory}><span />{t.verified}</button>
               <p className="eyebrow">{t.eyebrow}</p>
               <h1>{t.titleA}<br /><em>{t.titleB}</em></h1>
               <p className="hero-intro">{t.intro}</p>
@@ -155,7 +236,7 @@ export default function Home() {
               </div>
               <div className="microcopy"><span><i className="clock-icon" />{t.time}</span><span><i className="lock-icon" />{t.privacy}</span></div>
             </div>
-            <aside className="route-card" id="how" aria-label={t.routeTitle}>
+            <aside className="route-card" aria-label={t.routeTitle}>
               <div className="route-card-head">
                 <div><span className="mini-label">{t.routeLabel}</span><h2>{t.routeTitle}</h2></div>
                 <div className="permit-stack" aria-hidden="true"><span>L</span><span>B</span><span>G</span></div>
@@ -163,8 +244,9 @@ export default function Home() {
               <div className="route-list">
                 {t.layers.map(([title, detail], index) => (
                   <div className="route-row" key={title}>
-                    <span className="route-number">0{index + 1}</span><span className="route-dot" />
-                    <div><strong>{title}</strong><small>{detail}</small></div>{index < 3 && <span className="route-line" />}
+                    <span className="route-number">0{index + 1}</span>
+                    <span className="route-track"><span className="route-dot" /></span>
+                    <div><strong>{title}</strong><small>{detail}</small></div>
                   </div>
                 ))}
               </div>
@@ -172,20 +254,54 @@ export default function Home() {
             </aside>
           </section>
 
-          <section className="trust-strip" aria-label="Sources"><span>SEM</span><span>ch.ch</span><span>EasyGov</span><span>26 cantons</span></section>
-
-          <section className="method-section" id="sources">
-            <div className="method-heading"><p className="eyebrow">{x.methodEyebrow}</p><h2>{x.methodTitle}</h2></div>
-            <div className="method-grid">
-              {x.cards.map(([title, detail], index) => <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{detail}</p></article>)}
+          <section className="home-band how-band" id="how">
+            <div className="home-band-inner">
+              <div className="section-intro">
+                <p className="eyebrow">{t.how}</p>
+                <h2>{x.howTitle}</h2>
+                <p>{x.howLead}</p>
+              </div>
+              <div className="method-grid">
+                {x.cards.map(([title, detail], index) => <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{detail}</p></article>)}
+              </div>
+              <div className="coverage"><strong>{x.common}</strong><span>{x.coverage}</span></div>
             </div>
-            <div className="coverage"><strong>{x.common}</strong><span>{x.coverage}</span></div>
           </section>
 
-          <section className="about-strip" id="about">
-            <div><span className="mini-label">{t.official}</span><h2>{t.sourceMethod}</h2></div>
-            <p>{t.noData}</p>
-            <button className="secondary-button" onClick={() => startWizard()}>{t.start}<span>→</span></button>
+          <section className="home-band sources-band" id="sources">
+            <div className="home-band-inner">
+              <div className="section-intro">
+                <p className="eyebrow">{t.sources}</p>
+                <h2>{x.sourceTitle}</h2>
+                <p>{x.sourceLead}</p>
+              </div>
+              <div className="source-grid">
+                {x.sources.map(([name, role, detail, url]) => (
+                  <a className="source-tile" href={url} target="_blank" rel="noreferrer" key={name}>
+                    <strong>{name}</strong>
+                    <span>{role}</span>
+                    <p>{detail}</p>
+                    <i aria-hidden="true">↗</i>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section className="home-band about-band" id="about">
+            <div className="home-band-inner about-inner">
+              <div className="section-intro">
+                <p className="eyebrow">{t.about}</p>
+                <h2>{x.aboutTitle}</h2>
+                <p>{x.aboutBody}</p>
+              </div>
+              <div className="about-meta">
+                <p>{t.noData}</p>
+                <p>{t.notAdvice}</p>
+                <button className="secondary-button" onClick={() => startWizard()}>{t.start}<span>→</span></button>
+                <button className="text-button" onClick={goHistory}>{t.history}</button>
+              </div>
+            </div>
           </section>
         </>
       )}
@@ -302,7 +418,49 @@ export default function Home() {
         </section>
       )}
 
-      <footer className="no-print"><Brand /><p>{t.notAdvice}</p><span>© 2026</span></footer>
+      {screen === "history" && (
+        <section className="history-shell">
+          <div className="section-intro">
+            <p className="eyebrow">{t.history}</p>
+            <h1>{h.title}</h1>
+            <p>{h.lead}</p>
+          </div>
+          <div className="history-filters" role="tablist" aria-label={t.history}>
+            {(["all", "rules", "product"] as const).map((filter) => (
+              <button
+                key={filter}
+                role="tab"
+                aria-selected={historyFilter === filter}
+                className={historyFilter === filter ? "active" : ""}
+                onClick={() => setHistoryFilter(filter)}
+              >
+                {h[filter]}
+              </button>
+            ))}
+          </div>
+          <ol className="history-list">
+            {visibleHistory.map((entry) => (
+              <li className="history-item" key={`${entry.date}-${entry.kind}-${entry.title.en}`}>
+                <div className="history-meta">
+                  <time dateTime={entry.date}>{formatHistoryDate(entry.date, language)}</time>
+                  <span className={`history-kind history-kind-${entry.kind}`}>{h[entry.kind]}</span>
+                </div>
+                <h2>{entry.title[language]}</h2>
+                <p>{entry.body[language]}</p>
+                {entry.source && (
+                  <a href={entry.source.url} target="_blank" rel="noreferrer">{h.source} · {entry.source.label}<span>↗</span></a>
+                )}
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
+
+      <footer className="no-print">
+        <Brand onClick={goHome} />
+        <button className="text-button" onClick={goHistory}>{t.history}</button>
+        <span>© 2026</span>
+      </footer>
     </main>
   );
 }
