@@ -6,19 +6,33 @@
     <title>PermitPilot</title>
     <meta
       name="description"
-      content="Find the likely Swiss work and residence permit route, responsibilities, paperwork and official cantonal sources."
+      content="Find the likely Swiss work and residence permit route. Unofficial guidance; the canton decides."
     />
     <link rel="icon" href="%BASE_URL%favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="%BASE_URL%favicon.svg" />
     <meta property="og:title" content="PermitPilot" />
-    <meta property="og:description" content="Your route to the right Swiss permit." />
+    <meta property="og:description" content="Explore a likely Swiss permit route. Unofficial guidance; the canton decides." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://djui.github.io/permitpilot/" />
-    <meta property="og:image" content="https://djui.github.io/permitpilot/og.png" />
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="PermitPilot" />
-    <meta name="twitter:description" content="Your route to the right Swiss permit." />
-    <meta name="twitter:image" content="https://djui.github.io/permitpilot/og.png" />
+    <meta name="twitter:description" content="Explore a likely Swiss permit route. Unofficial guidance; the canton decides." />
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("permitpilot-theme");
+          var mode = stored === "light" || stored === "dark" || stored === "auto" ? stored : "auto";
+          var dark = mode === "dark" || (mode === "auto" && matchMedia("(prefers-color-scheme: dark)").matches);
+          var theme = dark ? "dark" : "light";
+          document.documentElement.dataset.theme = theme;
+          document.documentElement.dataset.themeMode = mode;
+          document.documentElement.style.colorScheme = theme;
+        } catch (e) {
+          document.documentElement.dataset.theme = "light";
+          document.documentElement.dataset.themeMode = "auto";
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

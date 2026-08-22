@@ -1,0 +1,34 @@
+---
+description: Keep the civic editorial visual system; do not regress into rounded-card slop
+globs: app/globals.css,app/page.tsx
+alwaysApply: false
+---
+
+# Civic editorial UI
+
+PermitPilot is unofficial. Keep Source Sans 3, italic Source Serif 4, Swiss red, green, and the paper palette. Do not copy admin.ch (coat of arms, Frutiger, mandatory red header bar).
+
+## Tokens
+
+- Controls: `--radius: 4px`. Content surfaces: `0`.
+- Separate with whitespace, then a hairline, then a 3–5% background shift. A bordered box is a last resort.
+- No `backdrop-filter`, radial color blobs, soft hover-lifts (`translateY` + shadow), glass pills, or 17–30px radii.
+- Theme: `data-theme="light|dark"` on `html`. Default mode is `auto` (system `prefers-color-scheme`). Recolor via tokens, not extra cards or neon-on-dark.
+
+## Layout
+
+- Default content is borderless. Do not wrap How, sources, history, or result sections in cards.
+- Wizard answers are a single-column radio list (`fieldset` + rows). Height follows the label and hint. No `min-height` tiles, mint badges, or corner arrows.
+- Selected answer: red left rule or filled radio — not a second card border.
+- Semantic left rules only for real status (alerts, disclaimer).
+- Small chips (history kind, actor tag) are allowed. Full-width rounded tiles are not.
+
+```css
+/* ❌ BAD */
+.choice { min-height: 210px; border-radius: 22px; box-shadow: 0 18px 45px rgba(0,0,0,.07); }
+.site-shell { background: radial-gradient(circle, rgba(223,63,63,.06), transparent); }
+
+/* ✅ GOOD */
+.choice { padding: 14px 0; border-top: 1px solid var(--line); box-shadow: inset 3px 0 0 transparent; }
+.choice.selected { box-shadow: inset 3px 0 0 var(--red); }
+```

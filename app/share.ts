@@ -13,6 +13,9 @@ const ACTORS = new Set<ResultModel["actor"]>(["applicant", "employer", "both", "
 const CANTON_CODES = new Set<string>(cantons.map(([code]) => code));
 const ANSWER_KEYS = new Set<string>(stepOrder);
 const PARAM_VALUE = /^[A-Za-z0-9]+$/u;
+const PAGE_HASHES = new Set(["#history", "#legal"]);
+const MAX_SNAPSHOT_CHARS = 12_000;
+const MAX_SNAPSHOT_BYTES = 8_192;
 
 export type SharedRoute = {
   key: RouteKey;
@@ -47,7 +50,7 @@ export async function decodeShareHash(hash: string): Promise<SharedRoute | null>
 }
 
 function parseReadablePath(hash: string): { key: RouteKey; canton?: string; query: string } | null {
-  if (!hash.startsWith("#") || hash === "#history") return null;
+  if (!hash.startsWith("#") || PAGE_HASHES.has(hash)) return null;
   const raw = hash.slice(1);
   const queryIndex = raw.indexOf("?");
   const path = queryIndex === -1 ? raw : raw.slice(0, queryIndex);
@@ -96,8 +99,10 @@ function answerKeys(answers: Answers): string[] {
 }
 
 async function decodeSnapshotHash(hash: string): Promise<SharedRoute | null> {
-  const bytes = base64urlToBytes(hash.slice(3));
-  if (!bytes) return null;
+  const payload = hash.slice(3);
+  if (payload.length > MAX_SNAPSHOT_CHARS) return null;
+  const bytes = base64urlToBytes(payload);
+  if (!bytes || bytes.length > MAX_SNAPSHOT_BYTES) return null;
   const parsed = await bytesToJson(bytes);
   const snapshot = parseV1(parsed);
   if (!snapshot) return null;
@@ -108,17 +113,38 @@ async function bytesToJson(bytes: Uint8Array): Promise<unknown> {
   if (typeof DecompressionStream === "function") {
     try {
       const inflated = await transformBytes(bytes, new DecompressionStream("deflate-raw"));
+      if (!inflated) return null;
       return JSON.parse(new TextDecoder().decode(inflated));
     } catch {
       // Uncompressed payload, or corrupt deflate — try raw JSON next.
     }
   }
+  if (bytes.length > MAX_SNAPSHOT_BYTES) return null;
   return JSON.parse(new TextDecoder().decode(bytes));
 }
 
-async function transformBytes(bytes: Uint8Array, transform: DecompressionStream): Promise<Uint8Array> {
+async function transformBytes(bytes: Uint8Array, transform: DecompressionStream): Promise<Uint8Array | null> {
   const stream = new Blob([bytes as BlobPart]).stream().pipeThrough(transform);
-  return new Uint8Array(await new Response(stream).arrayBuffer()) as Uint8Array;
+  const reader = stream.getReader();
+  const chunks: Uint8Array[] = [];
+  let total = 0;
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    total += value.byteLength;
+    if (total > MAX_SNAPSHOT_BYTES) {
+      await reader.cancel();
+      return null;
+    }
+    chunks.push(value);
+  }
+  const out = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    out.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return out;
 }
 
 function base64urlToBytes(payload: string): Uint8Array | null {
@@ -147,6 +173,27 @@ function asStringArray(value: unknown): string[] | null {
   return value;
 }
 
+function isHttpsUrl(url: string): boolean {
+  try {
+    return new URL(url).protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+function asAnswers(value: unknown): Answers | null {
+  if (!isRecord(value)) return null;
+  const answers: Answers = {};
+  for (const [key, raw] of Object.entries(value)) {
+    if (!ANSWER_KEYS.has(key) || typeof raw !== "string" || !PARAM_VALUE.test(raw)) return null;
+    answers[key] = raw;
+  }
+  const canton = answers.canton;
+  if (canton && !CANTON_CODES.has(canton.toUpperCase())) return null;
+  if (canton) answers.canton = canton.toUpperCase();
+  return answers;
+}
+
 function asDocItems(value: unknown): ResultModel["docs"] | null {
   if (!Array.isArray(value)) return null;
   const docs: ResultModel["docs"] = [];
@@ -159,7 +206,7 @@ function asDocItems(value: unknown): ResultModel["docs"] | null {
     const label = asNonEmptyString(item.label);
     if (!label) return null;
     const url = item.url === undefined ? undefined : asNonEmptyString(item.url);
-    if (item.url !== undefined && !url) return null;
+    if (item.url !== undefined && (!url || !isHttpsUrl(url))) return null;
     docs.push(url ? { label, url } : { label });
   }
   return docs;
@@ -168,7 +215,8 @@ function asDocItems(value: unknown): ResultModel["docs"] | null {
 function parseV1(data: unknown): (SharedRoute & ResultModel) | null {
   if (!isRecord(data) || data.v !== 1) return null;
   if (typeof data.lang !== "string" || !LANGS.has(data.lang as Lang)) return null;
-  if (!isRecord(data.answers) || !Object.values(data.answers).every((value) => typeof value === "string")) return null;
+  const answers = asAnswers(data.answers);
+  if (!answers) return null;
 
   const key = asNonEmptyString(data.key);
   const actor = asNonEmptyString(data.actor);
@@ -187,14 +235,14 @@ function parseV1(data: unknown): (SharedRoute & ResultModel) | null {
     if (!isRecord(link)) return null;
     const label = asNonEmptyString(link.label);
     const url = asNonEmptyString(link.url);
-    if (!label || !url) return null;
+    if (!label || !url || !isHttpsUrl(url)) return null;
     sourceLinks.push({ label, url });
   }
 
   return {
     v: 1,
     lang: data.lang as Lang,
-    answers: { ...data.answers as Answers },
+    answers,
     key,
     actor: actor as ResultModel["actor"],
     badge,

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import {
   Answers,
   Lang,
@@ -23,11 +23,18 @@ import {
   encodeShareHash,
   isShareHash,
 } from "./share";
+import {
+  applyTheme,
+  readThemeMode,
+  themeModes,
+  type ThemeMode,
+} from "./theme";
 
-type Screen = "home" | "wizard" | "result" | "history";
+type Screen = "home" | "wizard" | "result" | "history" | "legal";
 
 const credits = {
   github: "https://github.com/djui/permitpilot",
+  githubPrivacy: "https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement",
   people: [
     { name: "Julie Thomas", href: "https://www.linkedin.com/in/julie-thomas-99b3b073/", role: "designer" },
     { name: "Uwe Dauernheim", href: "https://www.linkedin.com/in/uwedauernheim", role: "developer" },
@@ -52,6 +59,17 @@ const extras = {
     aboutBody: "PermitPilot is private, unpaid, best-effort work. It is not a Swiss government site and does not speak for SEM, the Confederation or any canton. It organises official information; it does not issue a permit or replace advice from the competent canton.",
     designer: "Design", developer: "Development", githubLabel: "GitHub", unofficial: "Unofficial",
     contribute: "The source is on GitHub. Issues and pull requests are welcome.",
+    githubPrivacyLabel: "GitHub privacy statement",
+    legalTitle: "Legal and privacy",
+    legalLead: "These notices describe this unofficial navigator. They are not a substitute for advice from a lawyer or the competent canton.",
+    legalSections: [
+      ["Not a government site", "PermitPilot is a private, unpaid project. It is not a Swiss government site and does not speak for SEM, the Confederation or any canton."],
+      ["Not legal advice", "This navigator is general information. It is not legal, tax or immigration advice, does not issue a permit, and does not replace the competent canton or a qualified advisor."],
+      ["No warranty", "Guidance is best-effort and may be incomplete or out of date. Rules, forms, quotas and cantonal practice can change. The Changes page records when rules were last reviewed. Open the official source before you file."],
+      ["Your answers", "There is no account. Wizard answers are processed in your browser and are not uploaded to PermitPilot. If you copy a result link, the answers are in that link and visible to anyone who opens it. GitHub Pages may log technical data such as IP addresses under GitHub’s privacy statement."],
+      ["Liability", "To the extent the applicable law allows, the authors accept no liability for decisions taken in reliance on this site. Rights that cannot be waived remain unaffected."],
+      ["Contact", "Questions and corrections belong in GitHub issues for this project."],
+    ],
   },
   de: {
     howTitle: "Ein klarer Weg durch Bundesregeln und kantonale Formulare.",
@@ -70,6 +88,17 @@ const extras = {
     aboutBody: "PermitPilot ist unbezahlte Privatarbeit nach bestem Wissen. Es ist keine Website der Schweizer Behörden und spricht nicht für das SEM, den Bund oder einen Kanton. Es ordnet offizielle Informationen; es erteilt keine Bewilligung und ersetzt keine Auskunft des zuständigen Kantons.",
     designer: "Gestaltung", developer: "Entwicklung", githubLabel: "GitHub", unofficial: "Inoffiziell",
     contribute: "Der Quellcode liegt auf GitHub. Issues und Pull Requests sind willkommen.",
+    githubPrivacyLabel: "GitHub-Datenschutzerklärung",
+    legalTitle: "Rechtliches und Datenschutz",
+    legalLead: "Diese Hinweise beschreiben den inoffiziellen Navigator. Sie ersetzen keine Beratung durch eine Anwältin, einen Anwalt oder den zuständigen Kanton.",
+    legalSections: [
+      ["Keine Behördenwebsite", "PermitPilot ist ein unbezahltes privates Projekt. Es ist keine Website der Schweizer Behörden und spricht nicht für das SEM, den Bund oder einen Kanton."],
+      ["Keine Rechtsberatung", "Der Navigator ist allgemeine Information. Er ist keine Rechts-, Steuer- oder Migrationsberatung, erteilt keine Bewilligung und ersetzt weder den zuständigen Kanton noch eine fachkundige Beratung."],
+      ["Keine Gewähr", "Die Orientierung erfolgt nach bestem Wissen und kann unvollständig oder veraltet sein. Regeln, Formulare, Kontingente und kantonale Praxis können sich ändern. Die Seite Änderungen hält fest, wann Regeln zuletzt geprüft wurden. Öffne die offizielle Quelle, bevor du einreichst."],
+      ["Deine Antworten", "Es gibt kein Konto. Antworten im Assistenten bleiben in deinem Browser und werden nicht an PermitPilot hochgeladen. Kopierst du einen Ergebnis-Link, stehen die Antworten darin und sind für jede Person sichtbar, die ihn öffnet. GitHub Pages kann technische Daten wie IP-Adressen gemäss der Datenschutzerklärung von GitHub protokollieren."],
+      ["Haftung", "Soweit das anwendbare Recht es zulässt, übernehmen die Autorin und der Autor keine Haftung für Entscheidungen im Vertrauen auf diese Seite. Unverzichtbare Rechte bleiben unberührt."],
+      ["Kontakt", "Fragen und Korrekturen gehören in die GitHub-Issues dieses Projekts."],
+    ],
   },
   fr: {
     howTitle: "Un parcours clair entre règles fédérales et démarches cantonales.",
@@ -88,6 +117,17 @@ const extras = {
     aboutBody: "PermitPilot est un travail privé, non rémunéré, réalisé au mieux. Ce n’est pas un site des autorités suisses et il ne parle ni pour le SEM, ni pour la Confédération, ni pour un canton. Il organise l’information officielle ; il ne délivre aucun permis et ne remplace pas l’avis du canton compétent.",
     designer: "Conception", developer: "Développement", githubLabel: "GitHub", unofficial: "Non officiel",
     contribute: "Le code source est sur GitHub. Les issues et les pull requests sont les bienvenues.",
+    githubPrivacyLabel: "Déclaration de confidentialité GitHub",
+    legalTitle: "Mentions et confidentialité",
+    legalLead: "Ces avis décrivent ce navigateur non officiel. Ils ne remplacent pas le conseil d’un avocat ou du canton compétent.",
+    legalSections: [
+      ["Pas un site des autorités", "PermitPilot est un projet privé, non rémunéré. Ce n’est pas un site des autorités suisses et il ne parle ni pour le SEM, ni pour la Confédération, ni pour un canton."],
+      ["Pas un conseil juridique", "Ce navigateur est une information générale. Il n’est pas un conseil juridique, fiscal ou en migration, ne délivre aucun permis et ne remplace ni le canton compétent ni un conseiller qualifié."],
+      ["Sans garantie", "L’orientation est fournie au mieux et peut être incomplète ou périmée. Règles, formulaires, contingents et pratique cantonale peuvent changer. La page Changements indique la dernière revue des règles. Ouvrez la source officielle avant de déposer."],
+      ["Vos réponses", "Il n’y a pas de compte. Les réponses du guide restent dans votre navigateur et ne sont pas téléversées vers PermitPilot. Si vous copiez un lien de résultat, les réponses y figurent et sont visibles pour quiconque l’ouvre. GitHub Pages peut enregistrer des données techniques telles que des adresses IP selon la déclaration de confidentialité de GitHub."],
+      ["Responsabilité", "Dans la mesure où le droit applicable le permet, les auteurs n’acceptent aucune responsabilité pour les décisions prises en se fondant sur ce site. Les droits auxquels on ne peut renoncer restent inchangés."],
+      ["Contact", "Questions et corrections : issues GitHub de ce projet."],
+    ],
   },
   it: {
     howTitle: "Un percorso chiaro tra regole federali e pratiche cantonali.",
@@ -106,6 +146,17 @@ const extras = {
     aboutBody: "PermitPilot è un lavoro privato, non retribuito, fatto al meglio delle possibilità. Non è un sito delle autorità svizzere e non parla per la SEM, la Confederazione o un cantone. Organizza informazioni ufficiali; non rilascia un permesso né sostituisce il parere del cantone competente.",
     designer: "Progettazione", developer: "Sviluppo", githubLabel: "GitHub", unofficial: "Non ufficiale",
     contribute: "Il codice è su GitHub. Issue e pull request sono benvenute.",
+    githubPrivacyLabel: "Informativa sulla privacy di GitHub",
+    legalTitle: "Note legali e privacy",
+    legalLead: "Questi avvisi descrivono il navigatore non ufficiale. Non sostituiscono il parere di un avvocato o del cantone competente.",
+    legalSections: [
+      ["Non è un sito delle autorità", "PermitPilot è un progetto privato, non retribuito. Non è un sito delle autorità svizzere e non parla per la SEM, la Confederazione o un cantone."],
+      ["Non è consulenza legale", "Il navigatore è informazione generale. Non è consulenza legale, fiscale o in materia di migrazione, non rilascia un permesso e non sostituisce il cantone competente né un consulente qualificato."],
+      ["Senza garanzia", "L’orientamento è al meglio delle possibilità e può essere incompleto o superato. Norme, formulari, contingenti e prassi cantonale possono cambiare. La pagina Modifiche registra l’ultima verifica delle norme. Apri la fonte ufficiale prima di depositare."],
+      ["Le tue risposte", "Non c’è un account. Le risposte della guida restano nel browser e non vengono caricate su PermitPilot. Se copi un link del risultato, le risposte sono nel link e visibili a chiunque lo apra. GitHub Pages può registrare dati tecnici come indirizzi IP secondo l’informativa sulla privacy di GitHub."],
+      ["Responsabilità", "Nella misura consentita dal diritto applicabile, gli autori non accettano responsabilità per decisioni prese facendo affidamento su questo sito. Restano salvi i diritti a cui non si può rinunciare."],
+      ["Contatto", "Domande e correzioni: issue GitHub di questo progetto."],
+    ],
   },
   rm: {
     howTitle: "Ina via clera tras reglas federalas e formulars chantunals.",
@@ -124,11 +175,29 @@ const extras = {
     aboutBody: "PermitPilot è lavur privata, nunpajaida, tenor meglier savida. El n’è betg ina pagina da las autoritads svizras e na discuorra ni per il SEM, ni per la Confederaziun, ni per in chantun. El ordinescha infurmaziuns uffizialas; el na dat nagina permissiun e na remplazzà betg la infurmaziun dal chantun cumpetent.",
     designer: "Design", developer: "Svilup", githubLabel: "GitHub", unofficial: "Betg uffizial",
     contribute: "Il code da funtauna è sin GitHub. Issues e pull requests èn bainvegnids.",
+    githubPrivacyLabel: "Decleraziun da protecziun da datas da GitHub",
+    legalTitle: "Legal e protecziun da datas",
+    legalLead: "Quests avis describan quest navigatur betg uffizial. Els na remplazzan betg il consel d’in advocat u dal chantun cumpetent.",
+    legalSections: [
+      ["Betg ina pagina da las autoritads", "PermitPilot è in project privat, nunpajaì. El n’è betg ina pagina da las autoritads svizras e na discuorra ni per il SEM, ni per la Confederaziun, ni per in chantun."],
+      ["Betg consel giuridic", "Il navigatur è infurmaziun generala. El n’è betg consel giuridic, fiscal u da migraziun, na dat nagina permissiun e na remplazzà ni il chantun cumpetent ni in consel qualificà."],
+      ["Nagina garanzia", "L’orientaziun succeda tenor meglier savida e po esser incumpletta u veglia. Reglas, formulars, contingents e pratica chantunala pon midar. La pagina Midadas registrescha cura che las reglas èn vegnidas verifitgadas l’ultima giada. Avra la funtauna uffiziala avant che deponer."],
+      ["Tias respostas", "I na dat nagin conto. Las respostas dal gid restan en tes navigatur e na vegnan betg chargiadas tar PermitPilot. Sche ti copieschias ina colliaziun dal resultat, stattan las respostas en la colliaziun e visiblas per mintgin che l’avra. GitHub Pages po protocollar datas tecnicas sco adressas IP tenor la decleraziun da protecziun da datas da GitHub."],
+      ["Responsabladad", "En la mesira che il dretg applicabel permitta, n’acceptan ils auturs nagina responsabladad per decisiuns prendidas en fiducia sin questa pagina. Dretgs che na sa laschan betg desister restan nuntractads."],
+      ["Contact", "Dumondas e correcziuns appartegnan a las issues GitHub da quest project."],
+    ],
   },
 } as const;
 
-function SwissMark() {
-  return <span className="swiss-mark" aria-hidden="true"><span /></span>;
+function BrandMark() {
+  return (
+    <span className="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 16 16" focusable="false">
+        <path d="M8 1.2c-2.6 0-4.7 2-4.7 4.5 0 3.4 4.7 9.1 4.7 9.1s4.7-5.7 4.7-9.1c0-2.5-2.1-4.5-4.7-4.5z" fill="#fff" />
+        <circle cx="8" cy="5.6" r="1.7" fill="currentColor" />
+      </svg>
+    </span>
+  );
 }
 
 function LanguageFlag({ code }: { code: Lang }) {
@@ -176,37 +245,67 @@ function LanguageFlag({ code }: { code: Lang }) {
   );
 }
 
-function Brand({ onClick }: { onClick?: () => void }) {
-  const content = <><SwissMark /><span className="brand-copy"><strong>Permit Pilot</strong></span></>;
-  return onClick ? <button className="brand" onClick={onClick} aria-label="PermitPilot home">{content}</button> : <div className="brand">{content}</div>;
+function Brand({ onClick, homeLabel }: { onClick?: () => void; homeLabel?: string }) {
+  const content = <><BrandMark /><span className="brand-copy"><strong>Permit Pilot</strong></span></>;
+  return onClick
+    ? <button type="button" className="brand" onClick={onClick} aria-label={homeLabel ? `PermitPilot · ${homeLabel}` : "PermitPilot"}>{content}</button>
+    : <div className="brand">{content}</div>;
 }
 
-function OptionSymbol({ value }: { value: string }) {
-  const labels: Record<string, string> = {
-    person: "01", employer: "02", new: "+", existing: "✓", swiss: "CH", eu: "EU", uk: "UK", third: "•••",
-    local: "⌂", frontier: "↔", posted: "↗", self: "◇", familyRoute: "+", study: "A",
-    B: "B", C: "C", L: "L", G: "G", Ci: "Ci", refugeeB: "B", F: "F", N: "N", S: "S", otherPermit: "?",
-    baseSwiss: "CH", baseEu: "EU", baseUk: "UK", baseOther: "•••", resEu: "EU", resNeighbor: "↔", resOther: "•••",
-    visa: "V", exempt: "✓", schengen: "ID", unsure: "?", under3: "<3", three12: "L", twelveplus: "B",
-    under8: "≤8", nine90: "90", over90: ">90", general: "○", priority: "!", regulated: "R",
-    yes: "✓", no: "×", familyYes: "+", familyNo: "—", strong: "◆", uncertain: "?", weak: "○",
-    sponsorSwissC: "CH", sponsorEu: "EU", sponsorThirdB: "B", sponsorThirdL: "L", sponsorOther: "?",
-    spouse: "∞", registered: "=", unmarried: "≈", child: "+", parent: "↑",
-  };
-  return <span className="option-symbol" aria-hidden="true">{labels[value] ?? "·"}</span>;
+function NewTabHint({ label }: { label: string }) {
+  return <span className="visually-hidden"> ({label})</span>;
+}
+
+function ExternalLink({
+  href,
+  children,
+  className,
+  ariaLabel,
+  opensNewTab,
+}: {
+  href: string;
+  children: ReactNode;
+  className?: string;
+  ariaLabel?: string;
+  opensNewTab: string;
+}) {
+  return (
+    <a href={href} target="_blank" rel="noreferrer" className={className} aria-label={ariaLabel}>
+      {children}
+      {!ariaLabel && <NewTabHint label={opensNewTab} />}
+    </a>
+  );
+}
+
+function prefersReducedMotion() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? "auto" : "smooth" });
 }
 
 export default function Home() {
   const [language, setLanguage] = useState<Lang>("en");
-  const [screen, setScreen] = useState<Screen>(() => (
-    typeof window !== "undefined" && window.location.hash === "#history" ? "history" : "home"
-  ));
+  const [screen, setScreen] = useState<Screen>(() => {
+    if (typeof window === "undefined") return "home";
+    if (window.location.hash === "#history") return "history";
+    if (window.location.hash === "#legal") return "legal";
+    return "home";
+  });
   const [historyFilter, setHistoryFilter] = useState<"all" | HistoryKind>("all");
   const [answers, setAnswers] = useState<Answers>({});
   const [stepIndex, setStepIndex] = useState(0);
   const [pinnedKey, setPinnedKey] = useState<RouteKey | null>(null);
   const [linkCopied, setLinkCopied] = useState(false);
+  const [shareConfirming, setShareConfirming] = useState(false);
   const [shareUrl, setShareUrl] = useState<string | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [themeMode, setThemeMode] = useState<ThemeMode>(() => (
+    typeof window === "undefined" ? "auto" : readThemeMode()
+  ));
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const isFirstRender = useRef(true);
   const t = ui[language];
   const x = extras[language];
   const h = historyUi[language];
@@ -214,9 +313,10 @@ export default function Home() {
   const safeIndex = Math.min(stepIndex, Math.max(steps.length - 1, 0));
   const current = steps[safeIndex];
   const result = useMemo(
-    () => getResult(answers, language, pinnedKey ?? undefined),
-    [answers, language, pinnedKey],
+    () => getResult(answers, language),
+    [answers, language],
   );
+  const routeMismatch = pinnedKey !== null && pinnedKey !== result.key;
   const visibleHistory = historyFilter === "all"
     ? historyEntries
     : historyEntries.filter((entry) => entry.kind === historyFilter);
@@ -228,6 +328,10 @@ export default function Home() {
       const hash = window.location.hash;
       if (hash === "#history") {
         setScreen("history");
+        return;
+      }
+      if (hash === "#legal") {
+        setScreen("legal");
         return;
       }
       if (isShareHash(hash)) {
@@ -244,11 +348,12 @@ export default function Home() {
           setPinnedKey(decoded.key);
           setShareUrl(window.location.href);
           setLinkCopied(false);
+          setShareConfirming(false);
           setScreen("result");
         });
         return;
       }
-      setScreen((previous) => (previous === "history" ? "home" : previous));
+      setScreen((previous) => (previous === "history" || previous === "legal" ? "home" : previous));
     };
     applyHash();
     window.addEventListener("hashchange", applyHash);
@@ -257,6 +362,49 @@ export default function Home() {
       window.removeEventListener("hashchange", applyHash);
     };
   }, []);
+
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
+
+  useEffect(() => {
+    applyTheme(themeMode);
+    if (themeMode !== "auto") return;
+    const query = window.matchMedia("(prefers-color-scheme: dark)");
+    const onChange = () => applyTheme("auto");
+    query.addEventListener("change", onChange);
+    return () => query.removeEventListener("change", onChange);
+  }, [themeMode]);
+
+  useEffect(() => {
+    const title = screen === "wizard" && current
+      ? `${current.title} · PermitPilot`
+      : screen === "result"
+        ? `${result.title} · PermitPilot`
+        : screen === "history"
+          ? `${h.title} · PermitPilot`
+          : screen === "legal"
+            ? `${x.legalTitle} · PermitPilot`
+            : "PermitPilot";
+    document.title = title;
+  }, [screen, current, result.title, h.title, x.legalTitle]);
+
+  useEffect(() => {
+    const first = isFirstRender.current;
+    isFirstRender.current = false;
+    if (first && screen === "home") return;
+    if (screen === "home") return;
+    headingRef.current?.focus();
+  }, [screen, safeIndex]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [menuOpen]);
 
   const clearHash = () => {
     if (window.location.hash) {
@@ -267,28 +415,41 @@ export default function Home() {
   const leaveResult = () => {
     setPinnedKey(null);
     setLinkCopied(false);
+    setShareConfirming(false);
     setShareUrl(null);
     clearHash();
   };
 
   const goHome = () => {
     leaveResult();
+    setMenuOpen(false);
     setScreen("home");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    scrollToTop();
+    window.setTimeout(() => headingRef.current?.focus(), 0);
   };
 
   const goHistory = () => {
+    setMenuOpen(false);
     setScreen("history");
     if (window.location.hash !== "#history") window.location.hash = "history";
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    scrollToTop();
+  };
+
+  const goLegal = () => {
+    leaveResult();
+    setMenuOpen(false);
+    setScreen("legal");
+    if (window.location.hash !== "#legal") window.location.hash = "legal";
+    scrollToTop();
   };
 
   const startWizard = (audience?: "person" | "employer") => {
     leaveResult();
+    setMenuOpen(false);
     setAnswers(audience ? { audience } : {});
     setStepIndex(audience ? 1 : 0);
     setScreen("wizard");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    scrollToTop();
   };
 
   const setAnswer = (value: string) => {
@@ -314,13 +475,14 @@ export default function Home() {
       window.history.replaceState(null, "", path);
       setPinnedKey(next.key);
       setLinkCopied(false);
+      setShareConfirming(false);
       setShareUrl(`${window.location.origin}${path}`);
       setScreen("result");
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      scrollToTop();
       return;
     }
     setStepIndex(safeIndex + 1);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    scrollToTop();
   };
 
   const previousStep = () => {
@@ -330,16 +492,26 @@ export default function Home() {
 
   const navigateHomeSection = (id: string) => {
     leaveResult();
+    setMenuOpen(false);
     setScreen("home");
-    window.setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }), 40);
+    window.setTimeout(() => {
+      const target = document.getElementById(id);
+      target?.scrollIntoView({ behavior: prefersReducedMotion() ? "auto" : "smooth" });
+      const heading = target?.querySelector("h2");
+      if (heading instanceof HTMLElement) {
+        heading.tabIndex = -1;
+        heading.focus();
+      }
+    }, 40);
   };
 
   const jumpToQuestion = (id: (typeof stepOrder)[number]) => {
     leaveResult();
+    setMenuOpen(false);
     const index = buildSteps(answers, language).findIndex((step) => step.id === id);
     setStepIndex(index >= 0 ? index : 0);
     setScreen("wizard");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    scrollToTop();
   };
 
   const changeAnswers = () => {
@@ -347,6 +519,10 @@ export default function Home() {
   };
 
   const copyShareLink = async () => {
+    if (!shareConfirming) {
+      setShareConfirming(true);
+      return;
+    }
     try {
       const url = shareUrl ?? window.location.href;
       await navigator.clipboard.writeText(url);
@@ -363,39 +539,76 @@ export default function Home() {
     label: getAnswerLabel(key, answers[key], language),
   }));
 
+  const navItems = (
+    <>
+      <button type="button" onClick={() => navigateHomeSection("how")}>{t.how}</button>
+      <button type="button" onClick={() => navigateHomeSection("sources")}>{t.sources}</button>
+      <button type="button" onClick={goHistory}>{t.history}</button>
+      <button type="button" onClick={() => navigateHomeSection("about")}>{t.about}</button>
+    </>
+  );
+
   return (
-    <main className="site-shell">
+    <div className="site-shell">
+      <a
+        href="#main"
+        className="skip-link no-print"
+        onClick={(event) => {
+          event.preventDefault();
+          document.getElementById("main")?.focus();
+        }}
+      >
+        {t.skipToContent}
+      </a>
       <header className="topbar no-print">
-        <Brand onClick={goHome} />
-        <nav className="desktop-nav" aria-label="Primary navigation">
-          <button onClick={() => navigateHomeSection("how")}>{t.how}</button>
-          <button onClick={() => navigateHomeSection("sources")}>{t.sources}</button>
-          <button onClick={goHistory}>{t.history}</button>
-          <button onClick={() => navigateHomeSection("about")}>{t.about}</button>
+        <Brand onClick={goHome} homeLabel={t.home} />
+        <nav id="primary-nav" className={menuOpen ? "desktop-nav is-open" : "desktop-nav"} aria-label={t.primaryNav}>
+          {navItems}
         </nav>
-        <div className="language-switch" aria-label="Language">
-          {languages.map(({ code, label, name }) => (
-            <button key={code} title={name} className={language === code ? "active" : ""} onClick={() => setLanguage(code)} aria-pressed={language === code}>
-              <LanguageFlag code={code} />
-              <span>{label}</span>
-            </button>
-          ))}
+        <div className="topbar-end">
+          <button
+            type="button"
+            className="menu-toggle"
+            aria-expanded={menuOpen}
+            aria-controls="primary-nav"
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            {t.menu}
+          </button>
+          <div className="language-switch" role="group" aria-label={t.language}>
+            {languages.map(({ code, label, name }) => (
+              <button
+                type="button"
+                key={code}
+                className={language === code ? "active" : ""}
+                onClick={() => setLanguage(code)}
+                aria-label={name}
+                aria-pressed={language === code}
+              >
+                <LanguageFlag code={code} />
+                <span aria-hidden="true">{label}</span>
+              </button>
+            ))}
+          </div>
         </div>
       </header>
+
+      <main id="main" tabIndex={-1}>
 
       {screen === "home" && (
         <>
           <section className="hero">
             <div className="hero-copy">
-              <button className="verified-pill" onClick={goHistory}><span />{t.verified}</button>
+              <button type="button" className="verified-pill" onClick={goHistory}><span aria-hidden="true" />{t.verified}</button>
               <p className="eyebrow">{t.eyebrow}</p>
-              <h1>{t.titleA}<br /><em>{t.titleB}</em></h1>
+              <h1 ref={headingRef} tabIndex={-1} className="page-heading">{t.titleA}<br /><em>{t.titleB}</em></h1>
               <p className="hero-intro">{t.intro}</p>
               <div className="hero-actions">
-                <button className="primary-button" onClick={() => startWizard()}>{t.start}<span aria-hidden="true">→</span></button>
-                <button className="secondary-button" onClick={() => startWizard("employer")}>{t.employerStart}<span aria-hidden="true">→</span></button>
+                <button type="button" className="primary-button" onClick={() => startWizard()}>{t.start}<span aria-hidden="true">→</span></button>
+                <button type="button" className="secondary-button" onClick={() => startWizard("employer")}>{t.employerStart}<span aria-hidden="true">→</span></button>
               </div>
-              <div className="microcopy"><span><i className="clock-icon" />{t.time}</span><span><i className="lock-icon" />{t.privacy}</span></div>
+              <div className="microcopy"><span><i className="clock-icon" aria-hidden="true" />{t.time}</span><span><i className="lock-icon" aria-hidden="true" />{t.privacy}</span></div>
+              <p className="hero-guard">{t.notAdvice} · {t.notLegalAdvice}</p>
             </div>
             <aside className="route-card" aria-label={t.routeTitle}>
               <div className="route-card-head">
@@ -411,7 +624,7 @@ export default function Home() {
                   </div>
                 ))}
               </div>
-              <div className="route-footer"><span className="source-seal"><SwissMark /></span><div><strong>{t.official}</strong><small>{t.notAdvice}</small></div></div>
+              <div className="route-footer"><span className="source-seal"><BrandMark /></span><div><strong>{t.official}</strong><small>{t.notAdvice}</small></div></div>
             </aside>
           </section>
 
@@ -438,12 +651,12 @@ export default function Home() {
               </div>
               <div className="source-grid">
                 {x.sources.map(([name, role, detail, url]) => (
-                  <a className="source-tile" href={url} target="_blank" rel="noreferrer" key={name}>
+                  <ExternalLink className="source-tile" href={url} key={name} opensNewTab={t.opensNewTab}>
                     <strong>{name}</strong>
                     <span>{role}</span>
                     <p>{detail}</p>
                     <i aria-hidden="true">↗</i>
-                  </a>
+                  </ExternalLink>
                 ))}
               </div>
             </div>
@@ -458,22 +671,22 @@ export default function Home() {
                 <ul className="about-people">
                   {credits.people.map((person) => (
                     <li key={person.name}>
-                      <a href={person.href} target="_blank" rel="noreferrer" aria-label={`${person.name} · LinkedIn`}>
+                      <ExternalLink href={person.href} ariaLabel={`${person.name} · LinkedIn (${t.opensNewTab})`} opensNewTab={t.opensNewTab}>
                         {person.name}<i aria-hidden="true">↗</i>
-                      </a>
+                      </ExternalLink>
                       <span>{x[person.role]}</span>
                     </li>
                   ))}
                 </ul>
                 <p className="about-contribute">
                   {x.contribute}{" "}
-                  <a href={credits.github} target="_blank" rel="noreferrer">{x.githubLabel}<i aria-hidden="true">↗</i></a>
+                  <ExternalLink href={credits.github} opensNewTab={t.opensNewTab}>{x.githubLabel}<i aria-hidden="true">↗</i></ExternalLink>
                 </p>
               </div>
               <div className="about-meta">
                 <p>{t.noData}</p>
                 <p>{t.notAdvice}</p>
-                <button className="secondary-button" onClick={() => startWizard()}>{t.start}<span>→</span></button>
+                <button type="button" className="secondary-button" onClick={() => startWizard()}>{t.start}<span aria-hidden="true">→</span></button>
               </div>
             </div>
           </section>
@@ -481,18 +694,18 @@ export default function Home() {
       )}
 
       {screen === "wizard" && current && (
-        <section className="wizard-shell" aria-live="polite">
-          <div className="wizard-progress"><span style={{ width: `${((safeIndex + 1) / steps.length) * 100}%` }} /></div>
-          <div className="wizard-meta"><button onClick={previousStep}>← {t.back}</button><span>{t.step} {safeIndex + 1} {t.of} {steps.length}</span></div>
+        <section className="wizard-shell">
+          <div className="wizard-progress" aria-hidden="true"><span style={{ width: `${((safeIndex + 1) / steps.length) * 100}%` }} /></div>
+          <div className="wizard-meta"><button type="button" onClick={previousStep}><span aria-hidden="true">← </span>{t.back}</button><span>{t.step} {safeIndex + 1} {t.of} {steps.length}</span></div>
           <div className="wizard-card">
             <p className="eyebrow">PermitPilot</p>
-            <h1>{current.title}</h1>
+            <h1 ref={headingRef} tabIndex={-1} className="page-heading" id="wizard-question">{current.title}</h1>
             <p>{current.hint}</p>
             {current.id === "permit" && (
               <p className="permit-sources">
                 <span>{t.officialPages}</span>
                 {permitOfficialLinks(language, answers).map((link) => (
-                  <a href={link.url} target="_blank" rel="noreferrer" key={link.value}>{link.label}<i aria-hidden="true">↗</i></a>
+                  <ExternalLink href={link.url} key={link.value} opensNewTab={t.opensNewTab}>{link.label}<i aria-hidden="true">↗</i></ExternalLink>
                 ))}
               </p>
             )}
@@ -504,23 +717,36 @@ export default function Home() {
                   <option value="" disabled>{t.select}</option>
                   {cantons.map(([code, name]) => <option value={code} key={code}>{code} · {name}</option>)}
                 </select>
-                <span className="select-arrow">↓</span>
+                <span className="select-arrow" aria-hidden="true">↓</span>
               </div>
             ) : (
-              <div className={`choice-grid ${current.options && current.options.length > 6 ? "choice-grid-compact" : ""}`}>
+              <fieldset className={`choice-list ${current.options && current.options.length > 6 ? "choice-list-compact" : ""}`}>
+                <legend className="visually-hidden">{current.title}</legend>
                 {current.options?.map((option) => (
-                  <button key={option.value} className={answers[current.id] === option.value ? "choice selected" : "choice"} onClick={() => setAnswer(option.value)} aria-pressed={answers[current.id] === option.value}>
-                    <OptionSymbol value={option.value} /><strong>{option.label}</strong><small>{option.detail}</small><i>→</i>
-                  </button>
+                  <label key={option.value} className={answers[current.id] === option.value ? "choice selected" : "choice"} htmlFor={`${current.id}-${option.value}`}>
+                    <input
+                      id={`${current.id}-${option.value}`}
+                      type="radio"
+                      name={current.id}
+                      value={option.value}
+                      checked={answers[current.id] === option.value}
+                      onChange={() => setAnswer(option.value)}
+                    />
+                    <span className="choice-radio" aria-hidden="true" />
+                    <span className="choice-copy">
+                      {option.label}
+                      <small>{option.detail}</small>
+                    </span>
+                  </label>
                 ))}
-              </div>
+              </fieldset>
             )}
 
             <div className="wizard-actions">
-              <button className="primary-button wizard-next" disabled={!answers[current.id]} onClick={nextStep}>
+              <button type="button" className="primary-button wizard-next" disabled={!answers[current.id]} onClick={nextStep}>
                 {safeIndex === steps.length - 1 ? t.result : t.next}<span aria-hidden="true">→</span>
               </button>
-              <small><i className="lock-icon" />{t.noData}</small>
+              <small><i className="lock-icon" aria-hidden="true" />{t.noData}</small>
             </div>
           </div>
         </section>
@@ -531,8 +757,10 @@ export default function Home() {
           <header className="print-masthead print-only">
             <Brand />
             <div className="print-masthead-meta">
-              <strong>{t.resultEyebrow}</strong>
+              <strong>{x.unofficial}</strong>
+              <small>{t.resultEyebrow}</small>
               <small>{t.reviewed}</small>
+              <small>{t.notLegalAdvice}</small>
             </div>
           </header>
           <div className="result-hero">
@@ -540,9 +768,9 @@ export default function Home() {
               <div className="result-toolbar">
                 <div className="result-kicker"><span className="result-status-dot" />{t.resultEyebrow}</div>
                 <div className="result-actions no-print">
-                  <button type="button" onClick={() => void copyShareLink()}>
+                  <button type="button" onClick={() => void copyShareLink()} aria-live="polite" aria-describedby={shareConfirming ? "share-warn" : undefined}>
                     <i className={linkCopied ? "action-icon check-icon" : "action-icon link-icon"} aria-hidden="true" />
-                    {linkCopied ? t.copied : t.share}
+                    {linkCopied ? t.copied : shareConfirming ? t.shareConfirm : t.share}
                   </button>
                   <button type="button" onClick={() => window.print()}>
                     <i className="action-icon print-icon" aria-hidden="true" />
@@ -555,7 +783,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="result-badge">{result.badge}</div>
-              <h1>{result.title}</h1>
+              <h1 ref={headingRef} tabIndex={-1} className="page-heading">{result.title}</h1>
               <p>{result.summary}</p>
               <nav className="result-path" aria-label={t.path}>
                 <ol>
@@ -569,18 +797,20 @@ export default function Home() {
             </div>
             <aside className="result-notes">
               <div className="confidence-card">
-                <span>✓</span><div><strong>{t.confidence}</strong><small>{t.resultIntro}</small></div>
+                <span>i</span><div><strong>{t.confidence}</strong><small>{t.resultIntro}</small></div>
               </div>
               <section className="disclaimer-card">
                 <span>i</span><div><strong>{t.disclaimerTitle}</strong><p>{t.disclaimer}</p></div>
               </section>
+                  {shareConfirming && <p id="share-warn" className="share-warn no-print">{t.shareWarn}</p>}
             </aside>
           </div>
 
           <div className="result-layout">
             <div className="result-main">
-              {(result.warning || result.visaNote || result.familyNote) && (
+              {(routeMismatch || result.warning || result.visaNote || result.familyNote) && (
                 <div className="layer-stack">
+                  {routeMismatch && <div className="layer-alert warning"><span>!</span><div><strong>{t.mismatchTitle}</strong><p>{t.mismatchBody}</p></div></div>}
                   {result.warning && <div className="layer-alert warning"><span>!</span><div><strong>{t.why}</strong><p>{result.warning}</p></div></div>}
                   {result.visaNote && <div className="layer-alert"><span>V</span><div><strong>{t.visaLayer}</strong><p>{result.visaNote}</p></div></div>}
                   {result.familyNote && <div className="layer-alert family"><span>+</span><div><strong>{t.familyLayer}</strong><p>{result.familyNote}</p></div></div>}
@@ -590,7 +820,7 @@ export default function Home() {
               <section className="result-section action-plan">
                 <div className="section-heading"><span className="section-index">01</span><div><h2>{t.responsibilities}</h2><p><span className={`actor-tag actor-${result.actor}`}>{actorLabel}</span></p></div></div>
                 <div className="timeline">
-                  {result.actions.map((action, index) => <div className="timeline-item" key={action}><span className="timeline-number">{String(index + 1).padStart(2, "0")}</span><div><p>{action}</p>{index === 0 && <small>{t.sourceMethod}</small>}</div></div>)}
+                  {result.actions.map((action, index) => <div className="timeline-item" key={action}><span className="timeline-number">{String(index + 1).padStart(2, "0")}</span><div><p>{action}</p>{index === 0 && <small>{t.actionCaveat}</small>}</div></div>)}
                 </div>
               </section>
 
@@ -601,7 +831,7 @@ export default function Home() {
                     <li key={doc.label}>
                       <span className="doc-check" aria-hidden="true" />
                       {doc.url
-                        ? <a href={doc.url} target="_blank" rel="noreferrer">{doc.label}<i aria-hidden="true">↗</i></a>
+                        ? <ExternalLink href={doc.url} opensNewTab={t.opensNewTab}>{doc.label}<i aria-hidden="true">↗</i></ExternalLink>
                         : <p>{doc.label}</p>}
                     </li>
                   ))}
@@ -616,21 +846,25 @@ export default function Home() {
                   <div className="canton-code">{result.canton.code}</div>
                   <h3>{result.canton.name}</h3>
                   <p>{t.sourceMethod}</p>
-                  <a href={result.canton.url} target="_blank" rel="noreferrer">{t.open}<span>↗</span></a>
+                  <ExternalLink href={result.canton.url} opensNewTab={t.opensNewTab}>{t.open}<span aria-hidden="true">↗</span></ExternalLink>
                 </section>
               )}
 
               <section className="source-card">
                 <span className="mini-label">{t.officialLinks}</span>
                 <div className="source-links">
-                  {result.sourceLinks.map(({ label, url }) => <a href={url} target="_blank" rel="noreferrer" key={url}><span className="source-dot" />{label}<i>↗</i></a>)}
+                  {result.sourceLinks.map(({ label, url }) => (
+                    <ExternalLink href={url} key={url} opensNewTab={t.opensNewTab}>
+                      <span className="source-dot" aria-hidden="true" />{label}<i aria-hidden="true">↗</i>
+                    </ExternalLink>
+                  ))}
                 </div>
                 <small>{t.reviewed}</small>
               </section>
             </aside>
           </div>
 
-          <div className="result-footer-action no-print"><button className="primary-button" onClick={() => startWizard()}>{t.restart}<span>→</span></button></div>
+          <div className="result-footer-action no-print"><button type="button" className="primary-button" onClick={() => startWizard()}>{t.restart}<span aria-hidden="true">→</span></button></div>
         </section>
       )}
 
@@ -638,15 +872,15 @@ export default function Home() {
         <section className="history-shell">
           <div className="section-intro">
             <p className="eyebrow">{t.history}</p>
-            <h1>{h.title}</h1>
+            <h1 ref={headingRef} tabIndex={-1} className="page-heading">{h.title}</h1>
             <p>{h.lead}</p>
           </div>
-          <div className="history-filters" role="tablist" aria-label={t.history}>
+          <div className="history-filters" role="group" aria-label={t.history}>
             {(["all", "rules", "product"] as const).map((filter) => (
               <button
+                type="button"
                 key={filter}
-                role="tab"
-                aria-selected={historyFilter === filter}
+                aria-pressed={historyFilter === filter}
                 className={historyFilter === filter ? "active" : ""}
                 onClick={() => setHistoryFilter(filter)}
               >
@@ -664,7 +898,7 @@ export default function Home() {
                 <h2>{entry.title[language]}</h2>
                 <p>{entry.body[language]}</p>
                 {entry.source && (
-                  <a href={entry.source.url} target="_blank" rel="noreferrer">{h.source} · {entry.source.label}<span>↗</span></a>
+                  <ExternalLink href={entry.source.url} opensNewTab={t.opensNewTab}>{h.source} · {entry.source.label}<span aria-hidden="true">↗</span></ExternalLink>
                 )}
               </li>
             ))}
@@ -672,14 +906,55 @@ export default function Home() {
         </section>
       )}
 
+      {screen === "legal" && (
+        <section className="legal-shell">
+          <div className="section-intro">
+            <p className="eyebrow">{t.legal}</p>
+            <h1 ref={headingRef} tabIndex={-1} className="page-heading">{x.legalTitle}</h1>
+            <p>{x.legalLead}</p>
+          </div>
+          {x.legalSections.map(([title, detail]) => (
+            <section className="legal-block" key={title}>
+              <h2>{title}</h2>
+              <p>{detail}</p>
+            </section>
+          ))}
+          <p className="legal-block">
+            <ExternalLink href={credits.githubPrivacy} opensNewTab={t.opensNewTab}>{x.githubPrivacyLabel}<i aria-hidden="true"> ↗</i></ExternalLink>
+            {" · "}
+            <ExternalLink href={credits.github} opensNewTab={t.opensNewTab}>{x.githubLabel}<i aria-hidden="true"> ↗</i></ExternalLink>
+          </p>
+        </section>
+      )}
+
+      </main>
+
       <footer className="no-print">
-        <Brand onClick={goHome} />
+        <Brand onClick={goHome} homeLabel={t.home} />
         <div className="footer-meta">
+          <div className="theme-switch" role="group" aria-label={t.theme}>
+            <span>{t.theme}</span>
+            <div className="theme-switch-options">
+              {themeModes.map((mode) => (
+                <button
+                  type="button"
+                  key={mode}
+                  className={themeMode === mode ? "active" : ""}
+                  onClick={() => setThemeMode(mode)}
+                  aria-pressed={themeMode === mode}
+                >
+                  {mode === "auto" ? t.themeAuto : mode === "light" ? t.themeLight : t.themeDark}
+                </button>
+              ))}
+            </div>
+          </div>
           <span>{x.unofficial}</span>
-          <a href={credits.github} target="_blank" rel="noreferrer">{x.githubLabel}</a>
+          <button type="button" onClick={goLegal}>{t.legal}</button>
+          <ExternalLink href={credits.github} opensNewTab={t.opensNewTab}>{x.githubLabel}</ExternalLink>
           <span>© 2026</span>
+          <span className="footer-affil">{t.notAffiliated}</span>
         </div>
       </footer>
-    </main>
+    </div>
   );
 }
