@@ -45,8 +45,8 @@ const credits = {
 const extras = {
   en: {
     howTitle: "One clear route through federal rules and cantonal paperwork.",
-    howLead: "We ask only what changes the route, then show who files what—and in which order.",
-    cards: [["Legally relevant questions", "We ask about citizenship, status, work model, duration and canton—not characteristics that do not affect the route."], ["Responsibilities separated", "Applicant, employer and authority tasks appear in their proper order, including entry and arrival."], ["A result you can check", "Every route points back to SEM, ch.ch, EasyGov and the responsible canton."]],
+    howLead: "Only questions that change the route, then who files what—and in which order.",
+    cards: [["Legally relevant questions", "Questions cover citizenship, status, work model, duration and canton—not characteristics that do not affect the route."], ["Responsibilities separated", "Applicant, employer and authority tasks appear in their proper order, including entry and arrival."], ["A result you can check", "Every route points back to SEM, ch.ch, EasyGov and the responsible canton."]],
     common: "Common routes covered", coverage: "Employees · founders · commuters · posted services · family · students · graduates · jobseekers · existing permits · B/C/L/G/F/N/S/Ci",
     sourceTitle: "Federal rules first. The canton remains the deciding authority.",
     sourceLead: "PermitPilot organises official Swiss guidance. Open the source yourself before you file.",
@@ -76,8 +76,8 @@ const extras = {
   },
   de: {
     howTitle: "Ein klarer Weg durch Bundesregeln und kantonale Formulare.",
-    howLead: "Wir fragen nur, was den Weg ändert, und zeigen, wer was in welcher Reihenfolge einreicht.",
-    cards: [["Nur rechtlich relevante Fragen", "Wir fragen nach Staatsangehörigkeit, Status, Arbeitsmodell, Dauer und Kanton – nicht nach irrelevanten Merkmalen."], ["Zuständigkeiten getrennt", "Aufgaben von Person, Arbeitgeber und Behörde erscheinen in der richtigen Reihenfolge."], ["Prüfbares Ergebnis", "Jeder Weg führt zu SEM, ch.ch, EasyGov und dem zuständigen Kanton."]],
+    howLead: "Nur Fragen, die den Weg ändern – dann wer was in welcher Reihenfolge einreicht.",
+    cards: [["Nur rechtlich relevante Fragen", "Die Fragen betreffen Staatsangehörigkeit, Status, Arbeitsmodell, Dauer und Kanton – nicht irrelevante Merkmale."], ["Zuständigkeiten getrennt", "Aufgaben von Person, Arbeitgeber und Behörde erscheinen in der richtigen Reihenfolge."], ["Prüfbares Ergebnis", "Jeder Weg führt zu SEM, ch.ch, EasyGov und dem zuständigen Kanton."]],
     common: "Abgedeckte Standardwege", coverage: "Angestellte · Gründer · Grenzgänger · Entsendungen · Familie · Studium · Absolventen · Jobsuche · bestehende Bewilligungen · B/C/L/G/F/N/S/Ci",
     sourceTitle: "Zuerst Bundesrecht. Der Kanton bleibt die entscheidende Behörde.",
     sourceLead: "PermitPilot ordnet offizielle Schweizer Informationen. Öffne die Quelle, bevor du einreichst.",
@@ -107,8 +107,8 @@ const extras = {
   },
   fr: {
     howTitle: "Un parcours clair entre règles fédérales et démarches cantonales.",
-    howLead: "Nous ne demandons que ce qui change le parcours, puis indiquons qui dépose quoi, et dans quel ordre.",
-    cards: [["Questions juridiquement utiles", "Nous demandons nationalité, statut, modèle de travail, durée et canton – pas les caractéristiques sans effet juridique."], ["Responsabilités séparées", "Les tâches du candidat, de l’employeur et de l’autorité apparaissent dans le bon ordre."], ["Un résultat vérifiable", "Chaque parcours renvoie au SEM, à ch.ch, EasyGov et au canton compétent."]],
+    howLead: "Uniquement ce qui change le parcours, puis qui dépose quoi, et dans quel ordre.",
+    cards: [["Questions juridiquement utiles", "Les questions portent sur la nationalité, le statut, le modèle de travail, la durée et le canton – pas les caractéristiques sans effet juridique."], ["Responsabilités séparées", "Les tâches du candidat, de l’employeur et de l’autorité apparaissent dans le bon ordre."], ["Un résultat vérifiable", "Chaque parcours renvoie au SEM, à ch.ch, EasyGov et au canton compétent."]],
     common: "Parcours courants couverts", coverage: "Salariés · fondateurs · frontaliers · détachements · famille · études · diplômés · recherche d’emploi · permis existants · B/C/L/G/F/N/S/Ci",
     sourceTitle: "Les règles fédérales d’abord. Le canton reste l’autorité décisionnaire.",
     sourceLead: "PermitPilot organise l’information officielle suisse. Ouvrez la source avant de déposer un dossier.",
@@ -138,8 +138,8 @@ const extras = {
   },
   it: {
     howTitle: "Un percorso chiaro tra regole federali e pratiche cantonali.",
-    howLead: "Chiediamo solo ciò che cambia il percorso, poi indichiamo chi deposita cosa e in quale ordine.",
-    cards: [["Domande giuridicamente rilevanti", "Chiediamo cittadinanza, statuto, modello di lavoro, durata e cantone — non caratteristiche senza effetto sul percorso."], ["Responsabilità separate", "I compiti di richiedente, datore e autorità appaiono nell’ordine giusto."], ["Un risultato verificabile", "Ogni percorso rimanda a SEM, ch.ch, EasyGov e al cantone competente."]],
+    howLead: "Solo ciò che cambia il percorso, poi chi deposita cosa e in quale ordine.",
+    cards: [["Domande giuridicamente rilevanti", "Le domande riguardano cittadinanza, statuto, modello di lavoro, durata e cantone — non caratteristiche senza effetto sul percorso."], ["Responsabilità separate", "I compiti di richiedente, datore e autorità appaiono nell’ordine giusto."], ["Un risultato verificabile", "Ogni percorso rimanda a SEM, ch.ch, EasyGov e al cantone competente."]],
     common: "Percorsi comuni coperti", coverage: "Dipendenti · fondatori · frontalieri · distacchi · famiglia · studio · diplomati · ricerca di lavoro · permessi esistenti · B/C/L/G/F/N/S/Ci",
     sourceTitle: "Prima le regole federali. Il cantone resta l’autorità che decide.",
     sourceLead: "PermitPilot organizza le indicazioni ufficiali svizzere. Apri la fonte prima di depositare.",
@@ -169,8 +169,8 @@ const extras = {
   },
   rm: {
     howTitle: "Ina via clera tras reglas federalas e formulars chantunals.",
-    howLead: "Nus dumondain mo quai che mida la via e mussain tgi depona tge – ed en tge successiun.",
-    cards: [["Mo dumondas giuridicamain relevantas", "Nus dumondain naziunalitad, status, model da lavur, durada e chantun – betg caracteristicas senza effect sin la via."], ["Cumpetenzas separadas", "Incumbensas da persuna, patrun ed autoritad cumparan en la successiun giusta."], ["Resultat verifitgabel", "Mintga via maina tar SEM, ch.ch, EasyGov ed il chantun cumpetent."]],
+    howLead: "Mo quai che mida la via, lura tgi depona tge – ed en tge successiun.",
+    cards: [["Mo dumondas giuridicamain relevantas", "Las dumondas concernan naziunalitad, status, model da lavur, durada e chantun – betg caracteristicas senza effect sin la via."], ["Cumpetenzas separadas", "Incumbensas da persuna, patrun ed autoritad cumparan en la successiun giusta."], ["Resultat verifitgabel", "Mintga via maina tar SEM, ch.ch, EasyGov ed il chantun cumpetent."]],
     common: "Vias da standard cuvridas", coverage: "Engaschads · fundaturs · pendulars · emessas · famiglia · studi · absolvents · tschertga da lavur · permissiuns existentas · B/C/L/G/F/N/S/Ci",
     sourceTitle: "L’emprim il dretg federal. Il chantun resta l’autoritad decisiva.",
     sourceLead: "PermitPilot ordinescha infurmaziuns uffizialas svizras. Avra la funtauna avant che deponer.",
@@ -521,6 +521,7 @@ export default function Home() {
   const [historyFilter, setHistoryFilter] = useState<"all" | HistoryKind>("all");
   const [answers, setAnswers] = useState<Answers>({});
   const [stepIndex, setStepIndex] = useState(0);
+  const [wizardDir, setWizardDir] = useState<"forward" | "back">("forward");
   const [pinnedKey, setPinnedKey] = useState<RouteKey | null>(null);
   const [linkCopied, setLinkCopied] = useState(false);
   const [shareUrl, setShareUrl] = useState<string | null>(null);
@@ -697,6 +698,7 @@ export default function Home() {
     leaveResult();
     setMenuOpen(false);
     setAnswers(audience ? { audience } : {});
+    setWizardDir("forward");
     setStepIndex(audience ? 1 : 0);
     setScreen("wizard");
     scrollToTop();
@@ -730,12 +732,14 @@ export default function Home() {
       scrollToTop();
       return;
     }
+    setWizardDir("forward");
     setStepIndex(safeIndex + 1);
     scrollToTop();
   };
 
   const previousStep = () => {
     if (safeIndex === 0) return goHome();
+    setWizardDir("back");
     setStepIndex(safeIndex - 1);
   };
 
@@ -759,7 +763,9 @@ export default function Home() {
     leaveResult();
     setMenuOpen(false);
     const index = buildSteps(answers, language).findIndex((step) => step.id === id);
-    setStepIndex(index >= 0 ? index : 0);
+    const nextIndex = index >= 0 ? index : 0;
+    setWizardDir(nextIndex < safeIndex ? "back" : "forward");
+    setStepIndex(nextIndex);
     setScreen("wizard");
     scrollToTop();
   };
@@ -847,7 +853,6 @@ export default function Home() {
         <>
           <section className="hero">
             <div className="hero-copy">
-              <button type="button" className="verified-pill" onClick={goHistory}><span aria-hidden="true" />{t.verified}</button>
               <p className="eyebrow">{t.eyebrow}</p>
               <h1 ref={headingRef} tabIndex={-1} className="page-heading">{t.titleA}<br /><em>{t.titleB}</em></h1>
               <p className="hero-intro">{t.intro}</p>
@@ -855,7 +860,11 @@ export default function Home() {
                 <button type="button" className="primary-button" onClick={() => startWizard()}>{t.start}<span aria-hidden="true">→</span></button>
                 <button type="button" className="secondary-button" onClick={() => startWizard("employer")}>{t.employerStart}<span aria-hidden="true">→</span></button>
               </div>
-              <div className="microcopy"><span><i className="clock-icon" aria-hidden="true" />{t.time}</span><span><i className="lock-icon" aria-hidden="true" />{t.privacy}</span></div>
+              <div className="microcopy">
+                <span><i className="clock-icon" aria-hidden="true" />{t.time}</span>
+                <span><i className="lock-icon" aria-hidden="true" />{t.privacy}</span>
+                <button type="button" className="verified-pill" onClick={goHistory}><span aria-hidden="true" />{t.verified}</button>
+              </div>
               <p className="hero-guard">{t.notAdvice} · {t.notLegalAdvice}</p>
             </div>
             <aside className="route-card" aria-label={t.routeTitle}>
@@ -945,7 +954,7 @@ export default function Home() {
         <section className="wizard-shell">
           <div className="wizard-progress" aria-hidden="true"><span style={{ width: `${((safeIndex + 1) / steps.length) * 100}%` }} /></div>
           <div className="wizard-meta"><button type="button" onClick={previousStep}><span aria-hidden="true">← </span>{t.back}</button><span>{t.step} {safeIndex + 1} {t.of} {steps.length}</span></div>
-          <div className="wizard-card">
+          <div key={current.id} className={`wizard-card wizard-enter-${wizardDir}`}>
             <p className="eyebrow">PermitPilot</p>
             <h1 ref={headingRef} tabIndex={-1} className="page-heading" id="wizard-question">{current.title}</h1>
             <p>{current.hint}</p>
