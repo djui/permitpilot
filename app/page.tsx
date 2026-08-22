@@ -399,9 +399,14 @@ export default function Home() {
 
               <section className="result-section">
                 <div className="section-heading"><span className="section-index">02</span><div><h2>{t.paperwork}</h2><p>{t.official}</p></div></div>
-                <div className="document-grid">
-                  {result.docs.map((doc) => <div className="document-item" key={doc}><span className="paper-icon" /><p>{doc}</p></div>)}
-                </div>
+                <ul className="doc-checklist">
+                  {result.docs.map((doc) => (
+                    <li key={doc}>
+                      <span className="doc-check" aria-hidden="true" />
+                      <p>{doc}</p>
+                    </li>
+                  ))}
+                </ul>
               </section>
             </div>
 
