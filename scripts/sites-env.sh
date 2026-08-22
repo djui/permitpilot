@@ -13,6 +13,14 @@ mkdir -p \
 
 export SITES_ENV_READY=1
 export SITES_PROJECT_ROOT="${project_root}"
+
+# macOS ships BSD utilities; build scripts need GNU timeout from coreutils.
+if [[ "$(uname -s)" == "Darwin" ]]; then
+  coreutils_gnubin="$(brew --prefix coreutils 2>/dev/null)/libexec/gnubin"
+  if [[ -d "${coreutils_gnubin}" ]]; then
+    export PATH="${coreutils_gnubin}:${PATH}"
+  fi
+fi
 export HOME="${runtime_root}/home"
 export XDG_CONFIG_HOME="${runtime_root}/xdg-config"
 export TMPDIR="${runtime_root}/tmp"
