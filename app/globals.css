@@ -177,8 +177,9 @@ button { color: inherit; }
 .confidence-card div { display: grid; gap: 7px; }
 .confidence-card strong { font-size: var(--text-caption); }
 .confidence-card small { color: var(--muted); line-height: 1.5; font-size: var(--text-caption); }
-.result-actions { margin: 20px 0 34px; display: flex; justify-content: flex-end; align-items: center; gap: 22px; }
+.result-actions { margin: 20px 0 10px; display: flex; justify-content: flex-end; align-items: center; gap: 22px; }
 .result-actions .text-button { font-size: var(--text-small); }
+.share-note { margin: 0 0 34px; text-align: right; color: var(--faint); font-size: var(--text-caption); line-height: 1.5; }
 .result-layout { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(280px, .65fr); gap: 30px; align-items: start; }
 .result-main { display: grid; gap: 24px; }
 .result-section { border: 1px solid var(--line); border-radius: 24px; background: rgba(255,255,255,.82); padding: 31px; }
@@ -307,6 +308,7 @@ footer .swiss-mark { width: 28px; height: 28px; border-radius: 8px; box-shadow: 
   .choice-grid-compact .choice { min-height: 155px; }
   .result-actions { align-items: stretch; flex-direction: column; }
   .result-actions .text-button { align-self: center; }
+  .share-note { text-align: center; }
 }
 
 @media print {

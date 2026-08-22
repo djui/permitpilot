@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Answers,
   Lang,
@@ -9,6 +9,7 @@ import {
   languages,
   stepOrder,
   ui,
+  type ResultModel,
 } from "./permit-engine";
 import {
   formatHistoryDate,
@@ -16,6 +17,13 @@ import {
   historyUi,
   type HistoryKind,
 } from "./history";
+import {
+  decodeShareHash,
+  encodeShareHash,
+  isShareHash,
+  resultFromSnapshot,
+  snapshotFromResult,
+} from "./share";
 
 type Screen = "home" | "wizard" | "result" | "history";
 
@@ -134,25 +142,57 @@ export default function Home() {
   const [historyFilter, setHistoryFilter] = useState<"all" | HistoryKind>("all");
   const [answers, setAnswers] = useState<Answers>({});
   const [stepIndex, setStepIndex] = useState(0);
+  const [snapshot, setSnapshot] = useState<ResultModel | null>(null);
+  const [linkCopied, setLinkCopied] = useState(false);
+  const [shareUrl, setShareUrl] = useState<string | null>(null);
+  const shareEncode = useRef<Promise<string> | null>(null);
   const t = ui[language];
   const x = extras[language];
   const h = historyUi[language];
   const steps = useMemo(() => buildSteps(answers, language), [answers, language]);
   const safeIndex = Math.min(stepIndex, Math.max(steps.length - 1, 0));
   const current = steps[safeIndex];
-  const result = useMemo(() => getResult(answers, language), [answers, language]);
+  const liveResult = useMemo(() => getResult(answers, language), [answers, language]);
+  const result = snapshot ?? liveResult;
   const visibleHistory = historyFilter === "all"
     ? historyEntries
     : historyEntries.filter((entry) => entry.kind === historyFilter);
 
   useEffect(() => {
-    const syncHash = () => {
-      setScreen(window.location.hash === "#history" ? "history" : (previous) => (
-        previous === "history" ? "home" : previous
-      ));
+    let generation = 0;
+    const applyHash = () => {
+      const currentGeneration = ++generation;
+      const hash = window.location.hash;
+      if (hash === "#history") {
+        setScreen("history");
+        return;
+      }
+      if (isShareHash(hash)) {
+        void decodeShareHash(hash).then((decoded) => {
+          if (currentGeneration !== generation) return;
+          if (!decoded) {
+            setSnapshot(null);
+            setScreen("home");
+            window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
+            return;
+          }
+          setLanguage(decoded.lang);
+          setAnswers(decoded.answers);
+          setSnapshot(resultFromSnapshot(decoded));
+          setShareUrl(window.location.href);
+          setLinkCopied(false);
+          setScreen("result");
+        });
+        return;
+      }
+      setScreen((previous) => (previous === "history" ? "home" : previous));
     };
-    window.addEventListener("hashchange", syncHash);
-    return () => window.removeEventListener("hashchange", syncHash);
+    applyHash();
+    window.addEventListener("hashchange", applyHash);
+    return () => {
+      generation = -1;
+      window.removeEventListener("hashchange", applyHash);
+    };
   }, []);
 
   const clearHash = () => {
@@ -161,8 +201,16 @@ export default function Home() {
     }
   };
 
-  const goHome = () => {
+  const leaveResult = () => {
+    setSnapshot(null);
+    setLinkCopied(false);
+    setShareUrl(null);
+    shareEncode.current = null;
     clearHash();
+  };
+
+  const goHome = () => {
+    leaveResult();
     setScreen("home");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -174,7 +222,7 @@ export default function Home() {
   };
 
   const startWizard = (audience?: "person" | "employer") => {
-    clearHash();
+    leaveResult();
     setAnswers(audience ? { audience } : {});
     setStepIndex(audience ? 1 : 0);
     setScreen("wizard");
@@ -198,8 +246,19 @@ export default function Home() {
   const nextStep = () => {
     if (!current || !answers[current.id]) return;
     if (safeIndex >= steps.length - 1) {
+      const next = getResult(answers, language);
+      setSnapshot(next);
+      setLinkCopied(false);
+      setShareUrl(null);
       setScreen("result");
       window.scrollTo({ top: 0, behavior: "smooth" });
+      shareEncode.current = encodeShareHash(snapshotFromResult(next, language, answers)).then((hash) => {
+        const path = `${window.location.pathname}${window.location.search}${hash}`;
+        window.history.replaceState(null, "", path);
+        const url = `${window.location.origin}${path}`;
+        setShareUrl(url);
+        return url;
+      }).catch(() => window.location.href);
       return;
     }
     setStepIndex(safeIndex + 1);
@@ -212,9 +271,26 @@ export default function Home() {
   };
 
   const navigateHomeSection = (id: string) => {
-    clearHash();
+    leaveResult();
     setScreen("home");
     window.setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }), 40);
+  };
+
+  const changeAnswers = () => {
+    leaveResult();
+    setScreen("wizard");
+    setStepIndex(Math.max(steps.length - 1, 0));
+  };
+
+  const copyShareLink = async () => {
+    try {
+      const url = shareUrl ?? (shareEncode.current ? await shareEncode.current : window.location.href);
+      await navigator.clipboard.writeText(url);
+      setLinkCopied(true);
+      window.setTimeout(() => setLinkCopied(false), 2000);
+    } catch {
+      setLinkCopied(false);
+    }
   };
 
   const actorLabel = t[result.actor];
@@ -376,9 +452,11 @@ export default function Home() {
           </div>
 
           <div className="result-actions no-print">
+            <button className="secondary-button" onClick={() => void copyShareLink()}>{linkCopied ? t.copied : t.share}<span>{linkCopied ? "✓" : "↗"}</span></button>
             <button className="secondary-button" onClick={() => window.print()}>{t.print}<span>↗</span></button>
-            <button className="text-button" onClick={() => { setScreen("wizard"); setStepIndex(Math.max(steps.length - 1, 0)); }}>{t.change}</button>
+            <button className="text-button" onClick={changeAnswers}>{t.change}</button>
           </div>
+          <p className="share-note no-print">{t.shareNote}</p>
 
           <div className="result-layout">
             <div className="result-main">
