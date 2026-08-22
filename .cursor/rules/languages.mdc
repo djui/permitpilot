@@ -1,0 +1,34 @@
+---
+description: Keep every current UI language complete whenever copy or a language is added
+alwaysApply: true
+---
+
+# Current languages
+
+Source of truth: `Lang` and `languages` in `app/permit-engine.ts`. The site must fully support every code listed there. Do not add a language to the switcher until every copy table is complete.
+
+## When adding or changing copy
+
+Every user-facing string must exist for **all current `Lang` keys** in the same change. That includes `ui`, `questions`, `options`, `routeText`, `actionText`, `docText`, `layers` in `app/permit-engine.ts`; `extras` in `app/page.tsx`; and `historyUi` plus every `title`/`body` in `app/history.ts`.
+
+- Type new copy maps as `Record<Lang, …>` so a missing language fails the typecheck.
+- Translate for the user; do not leave another language as English, empty, or a machine-placeholder.
+- Date formatting uses `dateLocales` in `app/history.ts` — add a locale when `Lang` grows.
+
+```ts
+// ❌ BAD — English-only, or a new key missing in other languages
+ui.en.start = "Find my route";
+historyUi.en.lead = "…"; // other Lang keys unchanged
+
+// ✅ GOOD — same key, every current language
+ui.en.start = "Find my route";
+ui.de.start = "Meinen Weg finden";
+ui.fr.start = "Trouver ma voie";
+ui.es.start = "Encontrar mi vía";
+```
+
+## When adding a language
+
+Update `Lang`, `languages`, every `Record<Lang, …>` table above, `dateLocales`, and the Languages list in `README.md`. Then add a **product** History entry (users can now use the site in that language).
+
+Do not require translating `index.html` meta tags (document language stays `en`) or code comments.
