@@ -26,7 +26,9 @@ function htmlCsp(): Plugin {
 }
 
 export default defineConfig(({ command }) => ({
-  base: "/",
+  // Relative so assets work both at /permitpilot/ on github.io and at the
+  // custom-domain apex once DNS exists.
+  base: "./",
   plugins: [react(), ...(command === "build" ? [htmlCsp()] : [])],
   build: {
     outDir: "dist-pages",

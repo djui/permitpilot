@@ -23,8 +23,8 @@ test("static GitHub Pages build includes the PermitPilot shell", async () => {
   assert.match(html, /Content-Security-Policy/);
   assert.doesNotMatch(html, /og\.png/);
   assert.match(html, /id="root"/);
-  assert.match(html, /\/assets\/index-.*\.js/);
-  assert.match(html, /href="\/favicon\.svg"/);
+  assert.match(html, /\.\/assets\/index-.*\.js/);
+  assert.match(html, /href="\.\/favicon\.svg"/);
   assert.match(html, /og:url" content="https:\/\/permitpilot\.ch\/"/);
 });
 

@@ -34,7 +34,8 @@ npm run build        # static site, served from /
 ```
 
 The GitHub Pages workflow publishes `dist-pages` after every push to `main`.
-The production URL is `https://permitpilot.ch/`.
+Until `permitpilot.ch` is registered and pointed at Pages, the live site is
+`https://djui.github.io/permitpilot/`.
 
 ## Important
 
