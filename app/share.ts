@@ -8,7 +8,7 @@ import {
   type Lang,
   type ResultModel,
   type RouteKey,
-} from "./permit-engine";
+} from "./permit-engine.ts";
 
 const LANGS = new Set<Lang>(["en", "de", "fr", "it", "rm"]);
 const ACTORS = new Set<ResultModel["actor"]>(["applicant", "employer", "both", "authority"]);

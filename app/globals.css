@@ -460,6 +460,18 @@ html.using-pointer .choice:has(:focus-visible) .choice-radio { outline: none; }
   border-radius: var(--radius);
 }
 .share-popover p { margin: 0 0 10px; color: var(--warn-text); font-size: var(--text-caption); line-height: 1.45; font-weight: 650; }
+.share-url {
+  display: block;
+  width: 100%;
+  margin: 0 0 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--control-line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--text-caption);
+}
 .share-popover button {
   width: 100%;
   min-height: 32px;

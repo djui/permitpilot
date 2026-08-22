@@ -10,7 +10,7 @@
     "build": "vite build",
     "build:pages": "GITHUB_PAGES=1 vite build",
     "preview": "vite preview",
-    "test": "npm run build:pages && node --test tests/rendered-html.test.mjs && node --experimental-strip-types --test tests/routes.test.ts",
+    "test": "npm run build:pages && node --test tests/rendered-html.test.mjs && node --experimental-strip-types --test tests/routes.test.ts tests/share.test.ts",
     "lint": "eslint ."
   },
   "dependencies": {

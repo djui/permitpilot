@@ -415,26 +415,41 @@ function ThemeSwitch({
 
 function ShareControl({
   copied,
+  failed,
   shareLabel,
   copiedLabel,
   warn,
+  failLabel,
+  urlLabel,
+  url,
   confirmLabel,
   onCopy,
 }: {
   copied: boolean;
+  failed: boolean;
   shareLabel: string;
   copiedLabel: string;
   warn: string;
+  failLabel: string;
+  urlLabel: string;
+  url: string;
   confirmLabel: string;
-  onCopy: () => Promise<void>;
+  onCopy: () => Promise<boolean>;
 }) {
   const { open, setOpen, rootRef } = useDismissibleMenu();
   const dialogId = useId();
   const confirmRef = useRef<HTMLButtonElement>(null);
+  const urlRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (open) confirmRef.current?.focus();
-  }, [open]);
+    if (!open) return;
+    if (failed) {
+      urlRef.current?.focus();
+      urlRef.current?.select();
+      return;
+    }
+    confirmRef.current?.focus();
+  }, [open, failed]);
 
   return (
     <div className="share-switch" ref={rootRef}>
@@ -451,12 +466,25 @@ function ShareControl({
       </button>
       {open && (
         <div className="share-popover no-print" id={dialogId} role="dialog" aria-label={shareLabel}>
-          <p>{warn}</p>
+          <p>{failed ? failLabel : warn}</p>
+          {failed && (
+            <input
+              ref={urlRef}
+              className="share-url"
+              type="text"
+              readOnly
+              aria-label={urlLabel}
+              value={url}
+              onFocus={(event) => event.currentTarget.select()}
+            />
+          )}
           <button
             type="button"
             ref={confirmRef}
             onClick={() => {
-              void onCopy().then(() => setOpen(false));
+              void onCopy().then((ok) => {
+                if (ok) setOpen(false);
+              });
             }}
           >
             {confirmLabel}
@@ -524,6 +552,7 @@ export default function Home() {
   const [wizardDir, setWizardDir] = useState<"forward" | "back">("forward");
   const [pinnedKey, setPinnedKey] = useState<RouteKey | null>(null);
   const [linkCopied, setLinkCopied] = useState(false);
+  const [shareFailed, setShareFailed] = useState(false);
   const [shareUrl, setShareUrl] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [themeMode, setThemeMode] = useState<ThemeMode>(() => (
@@ -577,6 +606,7 @@ export default function Home() {
           setPinnedKey(decoded.key);
           setShareUrl(window.location.href);
           setLinkCopied(false);
+          setShareFailed(false);
           setScreen("result");
         });
         return;
@@ -727,6 +757,7 @@ export default function Home() {
       window.history.replaceState(null, "", path);
       setPinnedKey(next.key);
       setLinkCopied(false);
+      setShareFailed(false);
       setShareUrl(`${window.location.origin}${path}`);
       setScreen("result");
       scrollToTop();
@@ -775,13 +806,17 @@ export default function Home() {
   };
 
   const copyShareLink = async () => {
+    const url = shareUrl ?? window.location.href;
     try {
-      const url = shareUrl ?? window.location.href;
       await navigator.clipboard.writeText(url);
+      setShareFailed(false);
       setLinkCopied(true);
       window.setTimeout(() => setLinkCopied(false), 2000);
+      return true;
     } catch {
       setLinkCopied(false);
+      setShareFailed(true);
+      return false;
     }
   };
 
@@ -1027,9 +1062,13 @@ export default function Home() {
                 <div className="result-actions no-print">
                   <ShareControl
                     copied={linkCopied}
+                    failed={shareFailed}
                     shareLabel={t.share}
                     copiedLabel={t.copied}
                     warn={t.shareWarn}
+                    failLabel={t.shareFail}
+                    urlLabel={t.shareUrlLabel}
+                    url={shareUrl ?? (typeof window === "undefined" ? "" : window.location.href)}
                     confirmLabel={t.shareConfirm}
                     onCopy={copyShareLink}
                   />

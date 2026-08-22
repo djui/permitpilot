@@ -15,6 +15,46 @@ export const historyEntries: HistoryEntry[] = [
     date: "2026-08-22",
     kind: "product",
     title: {
+      en: "Hiring results now speak to the employer, and a share-link fallback",
+      de: "Ergebnisse für Anstellungen sprechen den Arbeitgeber an, plus Fallback beim Teilen",
+      fr: "Les résultats d’embauche s’adressent à l’employeur, plus un secours pour le lien",
+      it: "I risultati di assunzione parlano al datore, più un ripiego per il link",
+      rm: "Resultats d’engaschi discurran tar il patrun, plus in fallback per parter",
+    },
+    body: {
+      en: "If you start with “I’m hiring someone”, the result title, summary and several steps now say what you file and what the hire does. If the browser blocks copying a result link, the site shows the URL so you can select and copy it yourself.",
+      de: "Startest du mit „Ich stelle jemanden ein“, nennen Titel, Kurztext und mehrere Schritte jetzt, was du einreichst und was die beschäftigte Person tut. Blockiert der Browser das Kopieren des Ergebnis-Links, zeigt die Seite die URL zum selbst Markieren und Kopieren.",
+      fr: "Si vous commencez par « Je recrute quelqu’un », le titre, le résumé et plusieurs étapes disent désormais ce que vous déposez et ce que fait la personne embauchée. Si le navigateur bloque la copie du lien, le site affiche l’URL à sélectionner.",
+      it: "Se parti da «Sto assumendo qualcuno», titolo, sintesi e vari passi dicono ora che cosa depositi tu e che cosa fa la persona assunta. Se il browser blocca la copia del link, il sito mostra l’URL da selezionare.",
+      rm: "Sche ti cumenzas cun «Jau engaschi insatgi», numnan titel, resumaziun e plirs pass ussa tge che ti deponas e tge che la persuna engaschada fa. Sche il navigatur blocca il copiar da la colliaziun, mussa la pagina l’URL per marcheschar e copiar sez.",
+    },
+  },
+  {
+    date: "2026-08-22",
+    kind: "rules",
+    source: {
+      label: "SEM",
+      url: "https://www.sem.admin.ch/sem/en/home/themen/fza_schweiz-eu-efta/eu-efta_buerger_schweiz/faq.html",
+    },
+    title: {
+      en: "Family relationship notes, UK hire badges, and cantonal starting pages",
+      de: "Hinweise zur Familienbeziehung, UK-Anstellungsbadge und kantonale Startseiten",
+      fr: "Notes sur le lien familial, badges UK et pages de départ cantonales",
+      it: "Note sul legame familiare, badge UK e pagine di partenza cantonali",
+      rm: "Avis davart la relaziun da famiglia, badges UK e paginas da partenza chantunalas",
+    },
+    body: {
+      en: "Family results now follow the relationship you named. A registered partnership follows the spouse route. Children use the EU/EFTA under-21 or dependency test, or the national under-18 rule. Dependent parents may join an EU/EFTA sponsor but do not automatically gain work access; they are not a standard national-law category for Swiss, C, B or L sponsors. Another or unclear sponsor status goes to a specialist canton check. UK local employment keeps the same filing path but shows a UK-quota L or B badge. Starting pages for Graubünden, Ticino and Uri now open the current migration-office page. The canton remains the deciding authority.",
+      de: "Familienergebnisse folgen jetzt der genannten Beziehung. Eine eingetragene Partnerschaft folgt dem Ehegattenweg. Kinder nutzen den EU/EFTA-Test unter 21 bzw. Abhängigkeit oder die nationale Regel unter 18. Abhängige Eltern können zu einem EU/EFTA-Sponsor nachziehen, erhalten aber keinen automatischen Arbeitszugang; nach nationalem Recht sind sie für Schweizer, C, B oder L keine Standardkategorie. Ein anderer oder unklarer Sponsorstatus führt zur Spezialprüfung. Britische lokale Anstellungen behalten denselben Gesuchsweg, zeigen aber ein L- oder B-Badge mit UK-Kontingent. Startseiten für Graubünden, Tessin und Uri öffnen die aktuelle Migrationsseite. Der Kanton bleibt die entscheidende Behörde.",
+      fr: "Les résultats familiaux suivent désormais le lien indiqué. Un partenariat enregistré suit la voie du conjoint. Les enfants relèvent du test UE/AELE sous 21 ans ou à charge, ou de la règle nationale sous 18 ans. Les parents à charge peuvent rejoindre un sponsor UE/AELE sans droit automatique au travail ; ce n’est pas une catégorie ordinaire du droit national pour un sponsor suisse, C, B ou L. Un autre statut de sponsor mène à un contrôle spécialisé. Un emploi local britannique garde la même procédure, avec un badge L ou B au contingent UK. Les pages de départ des Grisons, du Tessin et d’Uri ouvrent le service des migrations actuel. Le canton reste l’autorité décisionnaire.",
+      it: "I risultati familiari seguono ora il legame indicato. Un’unione registrata segue la via del coniuge. I figli usano il test UE/AELS sotto i 21 anni o a carico, oppure la regola nazionale sotto i 18. I genitori a carico possono raggiungere un sostenitore UE/AELS senza diritto automatico al lavoro; non sono una categoria ordinaria di diritto nazionale per un sostenitore svizzero, C, B o L. Un altro statuto del sostenitore va a un esame specializzato. Un impiego locale britannico tiene la stessa procedura, con un badge L o B del contingente UK. Le pagine di partenza di Grigioni, Ticino e Uri aprono l’ufficio della migrazione attuale. Il cantone resta l’autorità che decide.",
+      rm: "Ils resultats da famiglia suondan ussa la relaziun numnada. In partenadi registrà suonda la via dals conjugals. Uffants dovran il test UE/AELE sut 21 onns u dependencia, u la regla naziunala sut 18. Geniturs dependents pon suandar in sponsur UE/AELE, ma na recievan betg automaticamain access da lavur; tenor il dretg naziunal n’èn els nagina categoria standard per sponsurs svizzers, C, B u L. In auter status dal sponsur maina tar l’examen spezial. In engaschi local britannic mantegna la medema procedura, cun in badge L u B dal contingent UK. Las paginas da partenza dal Grischun, dal Tessin e d’Uri avran l’uffizi da migraziun actual. Il chantun resta l’autoritad decisiva.",
+    },
+  },
+  {
+    date: "2026-08-22",
+    kind: "product",
+    title: {
       en: "Clearer study, existing-permit and family routes, plus a dated action plan",
       de: "Klarere Wege für Studium, bestehende Bewilligungen und Familie, plus datierter Aktionsplan",
       fr: "Parcours plus clairs pour études, permis existants et famille, plus un plan d’action daté",

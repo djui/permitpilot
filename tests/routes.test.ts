@@ -48,6 +48,7 @@ test("family routes follow the sponsor", () => {
   assert.equal(resolveRoute({ status: "new", nationality: "third", arrangement: "familyRoute", sponsor: "sponsorEu" }), "familyEu");
   assert.equal(resolveRoute({ status: "new", nationality: "third", arrangement: "familyRoute", sponsor: "sponsorSwissC" }), "familySwissC");
   assert.equal(resolveRoute({ status: "new", nationality: "third", arrangement: "familyRoute", sponsor: "sponsorThirdB" }), "familyThird");
+  assert.equal(resolveRoute({ status: "new", nationality: "third", arrangement: "familyRoute", sponsor: "sponsorOther" }), "specialist");
 });
 
 test("study without studyPhase keeps the generic fallback", () => {
@@ -141,7 +142,8 @@ test("getResult returns dated action items and UK quota note", () => {
   assert.ok(third.actions.length > 0);
   assert.equal(typeof third.actions[0].text, "string");
   assert.ok(third.actions[0].actor);
-  assert.match(third.badge, /B/);
+  assert.match(third.badge, /UK quota/);
+  assert.match(third.title, /UK labour-market/);
   assert.ok(third.quotaNote);
 
   const uncertain = getResult({
@@ -227,6 +229,83 @@ test("SEM starting URLs follow the UI language", () => {
     canton: "ZH",
   }, "rm");
   assert.ok(rm.sourceLinks.every((link) => !link.url.includes("/sem/rm/")));
+});
+
+test("family relationship notes follow SEM circles", () => {
+  const registered = getResult({
+    status: "new",
+    nationality: "third",
+    arrangement: "familyRoute",
+    sponsor: "sponsorEu",
+    relationship: "registered",
+    canton: "VD",
+  }, "en");
+  assert.match(registered.familyNote ?? "", /registered partnership/i);
+
+  const childEu = getResult({
+    status: "new",
+    nationality: "third",
+    arrangement: "familyRoute",
+    sponsor: "sponsorEu",
+    relationship: "child",
+    canton: "VD",
+  }, "en");
+  assert.match(childEu.familyNote ?? "", /under 21/);
+
+  const childThird = getResult({
+    status: "new",
+    nationality: "third",
+    arrangement: "familyRoute",
+    sponsor: "sponsorThirdB",
+    relationship: "child",
+    canton: "ZH",
+  }, "en");
+  assert.match(childThird.familyNote ?? "", /under 18/);
+
+  const parentThird = getResult({
+    status: "new",
+    nationality: "third",
+    arrangement: "familyRoute",
+    sponsor: "sponsorSwissC",
+    relationship: "parent",
+    canton: "BE",
+  }, "en");
+  assert.match(parentThird.warning ?? "", /not a standard/i);
+});
+
+test("posted priority sector uses the notification route", () => {
+  assert.equal(resolveRoute({
+    status: "new",
+    nationality: "eu",
+    arrangement: "posted",
+    employerBase: "baseEu",
+    serviceDuration: "under8",
+    sector: "priority",
+  }), "serviceNotify");
+});
+
+test("weak qualification warns on third-country labour routes", () => {
+  const result = getResult({
+    status: "new",
+    nationality: "third",
+    arrangement: "local",
+    qualified: "weak",
+    canton: "ZH",
+  }, "en");
+  assert.match(result.warning ?? "", /unlikely/i);
+});
+
+test("employer audience uses hiring titles and hire-facing steps", () => {
+  const result = getResult({
+    audience: "employer",
+    status: "new",
+    nationality: "eu",
+    arrangement: "local",
+    employmentDuration: "twelveplus",
+    canton: "ZH",
+  }, "en");
+  assert.match(result.title, /Hire on a B EU\/EFTA/i);
+  assert.ok(result.actions.some((item) => /The hire registers/i.test(item.text)));
 });
 
 test("dated actions exist on EasyGov notification", () => {

@@ -21,7 +21,7 @@ export const cantons = [
   ["FR", "Fribourg / Freiburg", "https://www.fr.ch/dsjs/spomi"],
   ["GE", "Genève", "https://www.ge.ch/organisation/office-cantonal-population-migrations-ocpm"],
   ["GL", "Glarus", "https://www.gl.ch/verwaltung/sicherheit-und-justiz/justiz/migration.html/1215"],
-  ["GR", "Graubünden / Grigioni", "https://www.gr.ch/DE/institutionen/verwaltung/djsg/afm"],
+  ["GR", "Graubünden / Grigioni", "https://www.gr.ch/DE/institutionen/verwaltung/djsg/afm/Seiten/start.aspx"],
   ["JU", "Jura", "https://www.jura.ch/fr/Autorites/Administration/DSJP/SPOP/Service-de-la-population-SPOP.html"],
   ["LU", "Luzern", "https://migration.lu.ch/"],
   ["NE", "Neuchâtel", "https://www.ne.ch/autorites/decs/smig"],
@@ -32,8 +32,8 @@ export const cantons = [
   ["SO", "Solothurn", "https://so.ch/verwaltung/departement-des-innern/migrationsamt/"],
   ["SZ", "Schwyz", "https://www.sz.ch/behoerden/verwaltung/volkswirtschaftsdepartement/amt-fuer-migration.html/8756-8758-8802-10373-10961"],
   ["TG", "Thurgau", "https://migrationsamt.tg.ch/"],
-  ["TI", "Ticino", "https://www.ti.ch/popolazione"],
-  ["UR", "Uri", "https://www.ur.ch/arbeit/6424"],
+  ["TI", "Ticino", "https://www4.ti.ch/di/spop/chi-siamo/ufficio-della-migrazione/"],
+  ["UR", "Uri", "https://www.ur.ch/unterinstanzen/907"],
   ["VD", "Vaud", "https://www.vd.ch/deiep/spop"],
   ["VS", "Valais / Wallis", "https://www.vs.ch/web/spm"],
   ["ZG", "Zug", "https://zg.ch/de/sicherheitsdirektion/amt-fuer-migration"],
@@ -62,6 +62,8 @@ export const ui = {
     notAffiliated: "Not affiliated with SEM, the Confederation or any canton.",
     shareWarn: "The link includes your answers. Anyone who opens it can see them.",
     shareConfirm: "Copy anyway",
+    shareFail: "Copy failed. Select the link and copy it yourself.",
+    shareUrlLabel: "Result link",
     mismatchTitle: "This link named another route",
     mismatchBody: "Today’s navigator shows the route that matches these answers. Confirm with the canton before you rely on either version.",
     actionCaveat: "Typical steps from official guidance — confirm timing and forms with the canton.",
@@ -87,6 +89,8 @@ export const ui = {
     notAffiliated: "Nicht verbunden mit dem SEM, dem Bund oder einem Kanton.",
     shareWarn: "Der Link enthält deine Antworten. Wer ihn öffnet, kann sie sehen.",
     shareConfirm: "Trotzdem kopieren",
+    shareFail: "Kopieren fehlgeschlagen. Markiere den Link und kopiere ihn selbst.",
+    shareUrlLabel: "Ergebnis-Link",
     mismatchTitle: "Dieser Link nannte einen anderen Weg",
     mismatchBody: "Der Navigator zeigt heute den Weg, der zu diesen Antworten passt. Vor einer Entscheidung den Kanton fragen.",
     actionCaveat: "Typische Schritte laut offizieller Orientierung — Fristen und Formulare beim Kanton bestätigen.",
@@ -112,6 +116,8 @@ export const ui = {
     notAffiliated: "Sans lien avec le SEM, la Confédération ou un canton.",
     shareWarn: "Le lien contient vos réponses. Quiconque l’ouvre peut les voir.",
     shareConfirm: "Copier quand même",
+    shareFail: "La copie a échoué. Sélectionnez le lien et copiez-le vous-même.",
+    shareUrlLabel: "Lien du résultat",
     mismatchTitle: "Ce lien nommait un autre parcours",
     mismatchBody: "Le navigateur d’aujourd’hui montre le parcours qui correspond à ces réponses. Vérifiez auprès du canton avant de vous fier à l’une ou l’autre version.",
     actionCaveat: "Étapes typiques selon l’orientation officielle — confirmez délais et formulaires auprès du canton.",
@@ -137,6 +143,8 @@ export const ui = {
     notAffiliated: "Non affiliato a SEM, Confederazione o a un cantone.",
     shareWarn: "Il link include le tue risposte. Chi lo apre può vederle.",
     shareConfirm: "Copia comunque",
+    shareFail: "Copia non riuscita. Seleziona il link e copialo tu.",
+    shareUrlLabel: "Link del risultato",
     mismatchTitle: "Questo link indicava un altro percorso",
     mismatchBody: "Il navigatore di oggi mostra il percorso che corrisponde a queste risposte. Conferma con il cantone prima di fare affidamento su una delle due versioni.",
     actionCaveat: "Passi tipici dalle indicazioni ufficiali — conferma tempi e formulari con il cantone.",
@@ -162,6 +170,8 @@ export const ui = {
     notAffiliated: "Betg collià cun il SEM, la Confederaziun u in chantun.",
     shareWarn: "La colliaziun cuntegna tias respostas. Tgi che l’avra po las vesair.",
     shareConfirm: "Copiar tuttina",
+    shareFail: "Copiar n’è betg reussì. Marchescha la colliaziun e copia ella sez.",
+    shareUrlLabel: "Colliaziun dal resultat",
     mismatchTitle: "Questa colliaziun numnava in’autra via",
     mismatchBody: "Il navigatur dad oz mussa la via che correspunda a questas respostas. Confermar tar il chantun avant che sa basar sin ina da las duas versiuns.",
     actionCaveat: "Pass tipics tenor orientaziun uffiziala — confermar termins e formulars tar il chantun.",
@@ -689,6 +699,7 @@ export function resolveRoute(a: Answers): RouteKey {
   const nat = effectiveNationality(a);
   if (nat === "swiss") return "swiss";
   if (a.arrangement === "familyRoute") {
+    if (a.sponsor === "sponsorOther") return "specialist";
     if (a.sponsor === "sponsorEu") return "familyEu";
     if (a.sponsor === "sponsorSwissC") return "familySwissC";
     return "familyThird";
@@ -834,11 +845,43 @@ const thirdDurationBadge: Record<Lang, { l: string; b: string }> = {
   rm: { l: "Permissiun L · stadi terz", b: "Permissiun B · stadi terz" },
 };
 
+const ukDurationBadge: Record<Lang, { l: string; b: string }> = {
+  en: { l: "Permit L · UK quota", b: "Permit B · UK quota" },
+  de: { l: "Bewilligung L · UK-Kontingent", b: "Bewilligung B · UK-Kontingent" },
+  fr: { l: "Permis L · contingent UK", b: "Permis B · contingent UK" },
+  it: { l: "Permesso L · contingente UK", b: "Permesso B · contingente UK" },
+  rm: { l: "Permissiun L · contingent UK", b: "Permissiun B · contingent UK" },
+};
+
+const ukEmployerCopy: Record<Lang, { title: string; summary: string }> = {
+  en: {
+    title: "UK labour-market admission",
+    summary: "The employer applies before entry and work. UK nationals remain outside free movement, so the separate UK quota applies. Approval still depends on qualifications, economic interest, precedence, pay conditions and an available quota place.",
+  },
+  de: {
+    title: "UK-Arbeitsmarktzulassung",
+    summary: "Der Arbeitgeber beantragt vor Einreise und Arbeit. Britische Staatsangehörige bleiben ausserhalb der Personenfreizügigkeit; es gilt das eigene UK-Kontingent. Qualifikation, Gesamtinteresse, Vorrang, Lohn und ein verfügbarer Kontingentsplatz entscheiden weiter.",
+  },
+  fr: {
+    title: "Admission au marché du travail UK",
+    summary: "L’employeur dépose avant l’entrée et le travail. Les ressortissants britanniques restent hors libre circulation ; le contingent UK distinct s’applique. Qualifications, intérêt économique, priorité, salaire et une place de contingent disponible restent déterminants.",
+  },
+  it: {
+    title: "Ammissione al mercato del lavoro UK",
+    summary: "Il datore chiede prima dell’ingresso e del lavoro. I cittadini britannici restano fuori dalla libera circolazione; vale il contingente UK distinto. Restano decisive qualifica, interesse complessivo, precedenza, salario e un posto di contingente disponibile.",
+  },
+  rm: {
+    title: "Admissiun al martgà da lavur UK",
+    summary: "Il patrun dumonda avant entrada e lavur. Burgais britannics restan ordaifer la libra circulaziun; il contingent UK separat vala. Qualificaziun, interess general, precedenza, salari ed in plaz dal contingent disponibel decidan vinavant.",
+  },
+};
+
 const labourQuotaRoutes = new Set<RouteKey>(["thirdEmployer", "thirdG", "thirdSelf", "graduateSearch", "existingLChange"]);
 
 const layers: Record<Lang, {
   visaRequired: string; visaExempt: string; schengen: string; unsure: string;
   family: string; familyEu: string; familySwissC: string; familyThird: string;
+  familyRegistered: string; familyChildEu: string; familyChildThird: string; familyParentEu: string; familyParentThird: string;
   weak: string;   uncertain: string; unmarried: string;
   ukQuota: string; thirdQuota: string; serviceQuota: string; recognition: string;
   studySideEu: string;
@@ -852,6 +895,11 @@ const layers: Record<Lang, {
     familyEu: "Eligible family members follow free-movement family rights. Once admitted, work access is normally on the issued permit; confirm the card wording with the canton.",
     familySwissC: "Joining a Swiss citizen or C holder is a family-residence filing first. A spouse normally has broad work access afterwards; still confirm with the canton whether a separate work permit is needed.",
     familyThird: "Family reunification for a third-country B or L sponsor depends on status, housing, means and the canton. Do not start work until the card or a written confirmation allows it.",
+    familyRegistered: "A registered partnership that the law treats as equivalent to marriage follows the spouse route. Confirm the partnership document with the canton.",
+    familyChildEu: "Children or grandchildren under 21, or older if they are financially dependent, can join an EU/EFTA sponsor. Once admitted they normally have work access; confirm age and dependency evidence with the canton.",
+    familyChildThird: "Unmarried children under 18 can usually join a Swiss, C, B or L sponsor if housing and means tests are met. Older children are not a standard national-law route. Do not start work until the card or a written confirmation allows it.",
+    familyParentEu: "Dependent parents or grandparents may join an EU/EFTA sponsor if they were already dependent before entry. They do not automatically gain a right to work. Students cannot sponsor parents. Housing must cover the household.",
+    familyParentThird: "Parents and grandparents are not a standard family-reunification category under national law for Swiss, C, B or L sponsors. Ask the canton about an individual or hardship review before relying on this route.",
     weak: "The selected profile does not match the usual highly-qualified third-country threshold. Approval is unlikely without a recognised exception or much stronger evidence.",
     uncertain: "The admission case is not yet clearly highly qualified. The canton will weigh qualifications, economic interest and evidence; a thin file is more likely to be refused.",
     unmarried: "An unmarried partner does not automatically qualify as a spouse. Ask the canton about an individual residence route before relying on family reunification.",
@@ -870,6 +918,11 @@ const layers: Record<Lang, {
     familyEu: "Berechtigte Familienangehörige folgen den Freizügigkeitsrechten. Nach Zulassung steht der Arbeitszugang in der Regel auf dem ausgestellten Ausweis; den Kartentext beim Kanton prüfen.",
     familySwissC: "Der Nachzug zu einer Schweizer Person oder C-Inhaberin ist zuerst ein Familiengesuch. Ehegatten haben danach meist breiten Arbeitszugang; trotzdem beim Kanton klären, ob eine separate Arbeitsbewilligung nötig ist.",
     familyThird: "Familiennachzug zu einem Drittstaat-B- oder L-Sponsor hängt von Status, Wohnung, Mitteln und Kanton ab. Nicht arbeiten, bis Karte oder schriftliche Bestätigung es erlaubt.",
+    familyRegistered: "Eine eingetragene Partnerschaft, die gesetzlich der Ehe gleichgestellt ist, folgt dem Ehegattenweg. Die Partnerschaftsurkunde beim Kanton bestätigen.",
+    familyChildEu: "Kinder oder Enkel unter 21, oder älter wenn finanziell abhängig, können zu einem EU/EFTA-Sponsor nachziehen. Nach Zulassung haben sie in der Regel Arbeitszugang; Alter und Abhängigkeit beim Kanton belegen.",
+    familyChildThird: "Unverheiratete Kinder unter 18 können zu einem Schweizer, C-, B- oder L-Sponsor meist nachziehen, wenn Wohnung und Mittel stimmen. Ältere Kinder sind kein Standardweg nach nationalem Recht. Nicht arbeiten, bis Karte oder schriftliche Bestätigung es erlaubt.",
+    familyParentEu: "Abhängige Eltern oder Grosseltern können zu einem EU/EFTA-Sponsor nachziehen, wenn die Abhängigkeit schon vor der Einreise bestand. Sie erhalten keinen automatischen Arbeitszugang. Studierende können keine Eltern nachziehen. Die Wohnung muss den Haushalt aufnehmen.",
+    familyParentThird: "Eltern und Grosseltern sind nach nationalem Recht für Schweizer, C-, B- oder L-Sponsoren keine Standardkategorie des Familiennachzugs. Vor Verlass auf diesen Weg den Kanton nach einer Einzel- oder Härtefallprüfung fragen.",
     weak: "Das Profil entspricht nicht der üblichen Hochqualifikationsschwelle für Drittstaaten. Ohne Ausnahme oder stärkere Nachweise ist eine Zulassung unwahrscheinlich.",
     uncertain: "Der Zulassungsfall ist noch nicht klar hochqualifiziert. Der Kanton wägt Qualifikation, wirtschaftliches Interesse und Nachweise; ein dünnes Dossier wird eher abgelehnt.",
     unmarried: "Unverheiratete Partner gelten nicht automatisch als Ehegatten. Vor Verlass auf Familiennachzug den Kanton nach einem individuellen Weg fragen.",
@@ -888,6 +941,11 @@ const layers: Record<Lang, {
     familyEu: "Les membres de famille éligibles suivent les droits de libre circulation. Une fois admis, l’accès au travail figure en principe sur le titre ; vérifiez le libellé auprès du canton.",
     familySwissC: "Rejoindre un Suisse ou un titulaire C est d’abord un dossier de séjour familial. Le conjoint a ensuite généralement un large accès au travail ; confirmez toutefois auprès du canton si un permis distinct est nécessaire.",
     familyThird: "Le regroupement auprès d’un sponsor B ou L d’État tiers dépend du statut, du logement, des moyens et du canton. Ne pas commencer à travailler avant la carte ou une confirmation écrite.",
+    familyRegistered: "Un partenariat enregistré assimilé au mariage suit la voie du conjoint. Faire confirmer l’acte de partenariat par le canton.",
+    familyChildEu: "Les enfants ou petits-enfants de moins de 21 ans, ou plus âgés s’ils sont à charge, peuvent rejoindre un sponsor UE/AELE. Une fois admis, ils ont en principe accès au travail ; confirmer l’âge et la dépendance auprès du canton.",
+    familyChildThird: "Les enfants célibataires de moins de 18 ans peuvent généralement rejoindre un sponsor suisse, C, B ou L si logement et moyens sont remplis. Les enfants plus âgés ne relèvent pas de la voie nationale ordinaire. Ne pas travailler avant la carte ou une confirmation écrite.",
+    familyParentEu: "Les parents ou grands-parents à charge peuvent rejoindre un sponsor UE/AELE s’ils l’étaient déjà avant l’entrée. Ils n’obtiennent pas automatiquement le droit de travailler. Les étudiants ne peuvent pas faire venir leurs parents. Le logement doit couvrir le ménage.",
+    familyParentThird: "Les parents et grands-parents ne sont pas une catégorie ordinaire de regroupement sous le droit national pour un sponsor suisse, C, B ou L. Demander au canton un examen individuel ou de cas de rigueur avant de s’y fier.",
     weak: "Le profil ne correspond pas au seuil habituel de haute qualification des États tiers. Sans exception ou preuves renforcées, l’admission est peu probable.",
     uncertain: "Le dossier n’est pas encore clairement hautement qualifié. Le canton pèsera qualifications, intérêt économique et preuves ; un dossier mince a plus de chances d’être refusé.",
     unmarried: "Un partenaire non marié n’est pas automatiquement assimilé au conjoint. Demandez au canton une voie individuelle avant de compter sur le regroupement.",
@@ -906,6 +964,11 @@ const layers: Record<Lang, {
     familyEu: "I familiari ammessi seguono i diritti di libera circolazione. Dopo l’ammissione l’accesso al lavoro è di regola sul titolo rilasciato; verificare il testo con il cantone.",
     familySwissC: "Il ricongiungimento a un cittadino svizzero o titolare C è prima una domanda di soggiorno familiare. Il coniuge ha poi di solito un ampio accesso al lavoro; confermare comunque con il cantone se serve un permesso distinto.",
     familyThird: "Il ricongiungimento a un sostenitore B o L di Stato terzo dipende da statuto, alloggio, mezzi e cantone. Non iniziare a lavorare prima della carta o di una conferma scritta.",
+    familyRegistered: "Un’unione registrata equiparata al matrimonio segue la via del coniuge. Confermare l’atto di unione con il cantone.",
+    familyChildEu: "Figli o nipoti sotto i 21 anni, o più grandi se a carico, possono raggiungere un sostenitore UE/AELS. Dopo l’ammissione hanno di regola accesso al lavoro; confermare età e dipendenza con il cantone.",
+    familyChildThird: "I figli non sposati sotto i 18 anni possono di solito raggiungere un sostenitore svizzero, C, B o L se alloggio e mezzi sono soddisfatti. I figli più grandi non sono una via ordinaria di diritto nazionale. Non lavorare prima della carta o di una conferma scritta.",
+    familyParentEu: "Genitori o nonni a carico possono raggiungere un sostenitore UE/AELS se lo erano già prima dell’ingresso. Non ottengono automaticamente il diritto di lavorare. Gli studenti non possono far venire i genitori. L’alloggio deve coprire il nucleo.",
+    familyParentThird: "Genitori e nonni non sono una categoria ordinaria di ricongiungimento nel diritto nazionale per un sostenitore svizzero, C, B o L. Chiedere al cantone un esame individuale o di caso di rigore prima di farvi affidamento.",
     weak: "Il profilo non corrisponde alla soglia usuale di alta qualifica per Stati terzi. Senza eccezione o prove più solide, l’ammissione è improbabile.",
     uncertain: "Il caso di ammissione non è ancora chiaramente altamente qualificato. Il cantone valuta qualifiche, interesse economico e prove; un dossier esile è più facilmente respinto.",
     unmarried: "Un partner non sposato non equivale automaticamente al coniuge. Chiedere al cantone una via individuale prima di contare sul ricongiungimento.",
@@ -924,6 +987,11 @@ const layers: Record<Lang, {
     familyEu: "Commembers da famiglia privilegiads suondan ils dretgs da libra circulaziun. Suenter l’admissiun è l’access da lavur per ordinari sin la permissiun dada; examinar il text tar il chantun.",
     familySwissC: "La reuniun tar ina persuna svizra u ina persuna cun C è l’emprim ina dumonda da dimora da famiglia. Il conjugal ha lura per ordinari vast access da lavur; confermar tuttina tar il chantun sche ina permissiun separada è necessaria.",
     familyThird: "La reuniun da famiglia tar in sponsur B u L da stadis terzs dependa dal status, da l’abitaziun, dals meds e dal chantun. Betg cumenzar a lavurar avant la carta u ina conferma scritta.",
+    familyRegistered: "In partenadi registrà ch’il dretg metta a pèr cun il lètg suonda la via dals conjugals. Confermar l’act dal partenadi tar il chantun.",
+    familyChildEu: "Uffants u uns-nifets sut 21 onns, u pli vegls sche dependents finanzialmain, pon suandar in sponsur UE/AELE. Suenter l’admissiun han els per ordinari access da lavur; confermar oldadad e dependencia tar il chantun.",
+    familyChildThird: "Uffants nunmaridads sut 18 onns pon per ordinari suandar in sponsur svizzer, C, B u L sche abitaziun e meds stattan. Uffants pli vegls n’èn betg ina via standard dal dretg naziunal. Betg lavurar avant la carta u ina conferma scritta.",
+    familyParentEu: "Geniturs u bap e mamma gronds dependents pon suandar in sponsur UE/AELE sche la dependencia existiva gia avant l’entrada. Els na recievan betg automaticamain il dretg da lavurar. Students na pon betg far vegnir geniturs. L’abitaziun sto cuzzar la chasa.",
+    familyParentThird: "Geniturs e bap e mamma gronds n’èn betg ina categoria standard da reuniun da famiglia tenor il dretg naziunal per sponsurs svizzers, C, B u L. Dumandar il chantun in examen individual u da cas da ristg avant che sa basar sin questa via.",
     weak: "Il profil na correspunda betg al lim usità d’auta qualificaziun per stadis terzs. Senza excepziun u cumprovas pli fermas è ina admissiun improbabla.",
     uncertain: "Il cas d’admissiun n’è betg anc cler autamain qualifitgà. Il chantun pesarà qualificaziuns, interess economic e cumprovas; in dossier magher vegn pli facilmain refusa.",
     unmarried: "In partenari nunmaridà n’è betg automaticamain egual a in conjugal. Dumandar il chantun ina via individuala avant che sa basar sin la reuniun da famiglia.",
@@ -935,12 +1003,214 @@ const layers: Record<Lang, {
   },
 };
 
+const employerActionText: Record<Lang, Partial<Record<string, string>>> = {
+  en: {
+    registerCommune: "The hire registers with the commune of residence within 14 days of arrival and before starting work.",
+    applyL: "The hire presents ID/passport and your written employment confirmation to apply for an L EU/EFTA permit.",
+    applyB: "The hire presents ID/passport and the 12-month or unlimited contract to apply for a B EU/EFTA permit.",
+    applyG: "The hire applies to the immigration/labour authority in the canton of work for a G permit.",
+    proveWeekly: "The hire documents the foreign main residence and the ability to return there at least once a week.",
+    registerArrival: "After entry, the hire registers at the commune within 14 days and before starting work.",
+    insurance: "The hire arranges mandatory Swiss health insurance within three months where Swiss residence rules apply.",
+    familyApply: "The family files reunification with the canton and provides civil-status, identity, housing and sponsor documents.",
+    universityCheck: "Ask the canton and the educational institution to confirm permitted hours, waiting periods and status conditions for this hire.",
+    contactCanton: "Contact the canton of work/residence with the full facts before the hire travels, signs or starts.",
+    applySettlement: "The permit holder asks the canton whether the residence period, integration and language minima for a C permit are met, and files only with their current checklist.",
+    registerInactive: "The person registers with the commune within 14 days and applies for a non-gainful residence permit with proof of means and insurance.",
+    proveMeans: "The person shows sufficient financial means for the household so that Swiss social assistance would not be required.",
+    applyJobseeker: "If the job search will last more than three months, the person applies for a short-stay L permit and documents ongoing search efforts and means.",
+    applyGraduateStay: "The graduate applies to the canton for the six-month job-search authorisation before the student permit expires, with the diploma, housing and means.",
+    proveSelf: "The person registers and submits evidence of genuine self-employment and ability to support the household before beginning activity.",
+  },
+  de: {
+    registerCommune: "Die beschäftigte Person meldet sich innert 14 Tagen nach Ankunft und vor Arbeitsbeginn bei der Wohngemeinde an.",
+    applyL: "Die beschäftigte Person legt Ausweis und deine schriftliche Arbeitsbestätigung für L EU/EFTA vor.",
+    applyB: "Die beschäftigte Person legt Ausweis und den Vertrag ab 12 Monaten/unbefristet für B EU/EFTA vor.",
+    applyG: "Die beschäftigte Person beantragt G bei der Migrations-/Arbeitsmarktbehörde des Arbeitskantons.",
+    proveWeekly: "Die beschäftigte Person belegt den ausländischen Hauptwohnsitz und die mindestens wöchentliche Rückkehr.",
+    registerArrival: "Nach der Einreise meldet sich die beschäftigte Person innert 14 Tagen und vor Arbeitsbeginn bei der Gemeinde an.",
+    insurance: "Die beschäftigte Person schliesst bei Schweizer Wohnsitz innert drei Monaten die obligatorische Krankenversicherung ab.",
+    familyApply: "Die Familie reicht den Nachzug mit Zivilstands-, Identitäts-, Wohnungs- und Sponsornachweisen beim Kanton ein.",
+    universityCheck: "Kanton und Hochschule zu Arbeitsstunden, Wartefristen und Statusbedingungen für diese Anstellung fragen.",
+    contactCanton: "Vor Reise, Vertragsabschluss oder Arbeitsbeginn der beschäftigten Person den Kanton mit allen Fakten kontaktieren.",
+    applySettlement: "Die Inhaberin oder der Inhaber klärt beim Kanton, ob Aufenthaltsdauer, Integration und Sprachminima für C erfüllt sind, und reicht nur mit der aktuellen Checkliste ein.",
+    registerInactive: "Die Person meldet sich innert 14 Tagen bei der Gemeinde an und beantragt eine Bewilligung ohne Erwerbstätigkeit mit Mittel- und Versicherungsnachweis.",
+    proveMeans: "Die Person weist ausreichende Mittel für den Haushalt nach, sodass keine Schweizer Sozialhilfe nötig wäre.",
+    applyJobseeker: "Dauert die Jobsuche länger als drei Monate, beantragt die Person L und belegt laufende Suche sowie Mittel.",
+    applyGraduateStay: "Die Absolventin oder der Absolvent beantragt die sechsmonatige Jobsuchebewilligung vor Ablauf der Studierendenbewilligung, mit Diplom, Wohnung und Mitteln.",
+    proveSelf: "Die Person weist echte Selbständigkeit und Unterhaltsfähigkeit vor Tätigkeitsbeginn nach.",
+  },
+  fr: {
+    registerCommune: "La personne embauchée s’inscrit à la commune de domicile dans les 14 jours suivant l’arrivée et avant de travailler.",
+    applyL: "La personne embauchée présente une pièce d’identité et votre confirmation d’emploi pour demander un permis L UE/AELE.",
+    applyB: "La personne embauchée présente une pièce d’identité et le contrat de 12 mois/illimité pour demander un permis B UE/AELE.",
+    applyG: "La personne embauchée demande le G auprès de l’autorité du canton de travail.",
+    proveWeekly: "La personne embauchée prouve la résidence principale étrangère et le retour au moins hebdomadaire.",
+    registerArrival: "Après l’entrée, la personne embauchée s’inscrit à la commune dans les 14 jours et avant le travail.",
+    insurance: "La personne embauchée souscrit l’assurance-maladie suisse dans les trois mois lorsque le séjour l’exige.",
+    familyApply: "La famille dépose le regroupement auprès du canton avec actes civils, identité, logement et documents du sponsor.",
+    universityCheck: "Faire confirmer par le canton et l’établissement les heures, délais et conditions du statut pour cet emploi.",
+    contactCanton: "Contacter le canton avec tous les faits avant que la personne embauchée voyage, signe ou commence.",
+    applySettlement: "Le titulaire demande au canton si la durée de séjour, l’intégration et les minima linguistiques pour un C sont remplis, et dépose uniquement avec leur liste actuelle.",
+    registerInactive: "La personne s’inscrit à la commune dans les 14 jours et demande un permis sans activité lucrative avec preuves de moyens et d’assurance.",
+    proveMeans: "La personne justifie de moyens suffisants pour le ménage afin de ne pas recourir à l’aide sociale suisse.",
+    applyJobseeker: "Si la recherche d’emploi dure plus de trois mois, la personne demande un L de courte durée et documente la recherche et les moyens.",
+    applyGraduateStay: "La personne diplômée demande au canton l’autorisation de recherche de six mois avant l’échéance du permis d’études, avec diplôme, logement et moyens.",
+    proveSelf: "La personne prouve une activité indépendante réelle et les moyens avant de commencer.",
+  },
+  it: {
+    registerCommune: "La persona assunta si iscrive al comune di domicilio entro 14 giorni dall’arrivo e prima di iniziare a lavorare.",
+    applyL: "La persona assunta presenta documento e la tua conferma scritta d’impiego per chiedere L UE/AELS.",
+    applyB: "La persona assunta presenta documento e il contratto di 12 mesi/indeterminato per chiedere B UE/AELS.",
+    applyG: "La persona assunta chiede il G all’autorità di migrazione/mercato del lavoro del cantone di lavoro.",
+    proveWeekly: "La persona assunta documenta il domicilio principale all’estero e il ritorno almeno settimanale.",
+    registerArrival: "Dopo l’ingresso, la persona assunta si iscrive al comune entro 14 giorni e prima di lavorare.",
+    insurance: "La persona assunta stipula l’assicurazione malattia obbligatoria entro tre mesi se vale il domicilio svizzero.",
+    familyApply: "La famiglia deposita il ricongiungimento con atti di stato civile, identità, alloggio e documenti del sostenitore.",
+    universityCheck: "Chiedere a cantone e istituto ore ammesse, termini di attesa e condizioni dello statuto per questa assunzione.",
+    contactCanton: "Contattare il cantone con tutti i fatti prima che la persona assunta viaggi, firmi o inizi.",
+    applySettlement: "Il titolare chiede al cantone se durata di soggiorno, integrazione e minimi linguistici per il C sono soddisfatti e deposita solo con la loro lista attuale.",
+    registerInactive: "La persona si iscrive al comune entro 14 giorni e chiede un permesso senza attività lucrativa con prove di mezzi e assicurazione.",
+    proveMeans: "La persona prova mezzi sufficienti per il nucleo così da non ricorrere all’aiuto sociale svizzero.",
+    applyJobseeker: "Se la ricerca di lavoro dura più di tre mesi, la persona chiede un L di breve durata e documenta ricerca e mezzi.",
+    applyGraduateStay: "Il diplomato chiede al cantone l’autorizzazione di ricerca di sei mesi prima della scadenza del permesso di studio, con diploma, alloggio e mezzi.",
+    proveSelf: "La persona prova un’attività indipendente reale e i mezzi di sussistenza prima di iniziare.",
+  },
+  rm: {
+    registerCommune: "La persuna engaschada s’annunzia tar la vischnanca da dimora entaifer 14 dis suenter l’entrada e davant da cumenzar a lavurar.",
+    applyL: "La persuna engaschada presenta legitimaziun e tia conferma scritta da lavur per L UE/AELE.",
+    applyB: "La persuna engaschada presenta legitimaziun e il contract da 12 mais/senza termin per B UE/AELE.",
+    applyG: "La persuna engaschada dumonda G tar l’autoritad da migraziun/martgà da lavur dal chantun da lavur.",
+    proveWeekly: "La persuna engaschada cumprova la dimora principala a l’exteriur ed il return almain emnaivel.",
+    registerArrival: "Suenter l’entrada s’annunzia la persuna engaschada tar la vischnanca entaifer 14 dis e davant da lavurar.",
+    insurance: "La persuna engaschada terminescha l’assicuranza da malsogna obligatorica entaifer trais mais tar dimora svizra.",
+    familyApply: "La famiglia depona la reuniun tar il chantun cun documents da stadi civil, identitad, abitaziun e sponsor.",
+    universityCheck: "Dumandar chantun ed instituzione davart uras, termins d’aspectativa e cundiziuns dal status per quest engaschi.",
+    contactCanton: "Contactar il chantun cun tut ils fatgs avant che la persuna engaschada viagia, suttascriva u cumenza.",
+    applySettlement: "La persuna cun permissiun dumonda il chantun sche durada da dimora, integraziun e lims da lingua per C èn ademplids e depona mo cun lur glista actuala.",
+    registerInactive: "La persuna s’annunzia tar la vischnanca entaifer 14 dis e dumonda ina permissiun senza activitad lucrativa cun cumprova da meds ed assicuranza.",
+    proveMeans: "La persuna mussa meds suffizients per la chasa uschia ch’i na dovra nagina agid social svizzer.",
+    applyJobseeker: "Sche la tschertga da lavur dura dapli che trais mais, dumonda la persuna L e cumprova tschertga e meds.",
+    applyGraduateStay: "L’absolvent dumonda al chantun la permissiun da tschertga da sis mais avant che la permissiun da studi scada, cun diplom, abitaziun e meds.",
+    proveSelf: "La persuna cumprova ina sulslevadad vera e la capacitad da mantegnair avant l’entschatta.",
+  },
+};
+
+const employerRouteText: Record<Lang, Partial<Record<RouteKey, [string, string]>>> = {
+  en: {
+    swiss: ["Hire a Swiss citizen", "No foreign-national work permit. Use ordinary employment, payroll and social-insurance steps."],
+    existingOpen: ["Hire someone who already has open work access", "A C or Ci status normally already allows the job. Confirm the card and any canton conditions before the start date."],
+    existingReview: ["Check the hire’s current permit first", "B, L and G can carry job, canton or duration conditions. Confirm the change with the competent canton before work starts."],
+    existingLChange: ["Change of job on a third-country L", "You apply before work starts. The hire may change job only in the same sector and profession if the current job cannot reasonably continue."],
+    existingBChange: ["Change of job on a B permit", "As a rule you can start the hire in the new job without a new permit. If the card is tied to a job or labour-market condition, ask the canton first."],
+    statusNotify: ["Report work for F or refugee B", "Recognised refugees and F holders may work throughout Switzerland once you report the employment."],
+    statusS: ["Report work for status S", "Status S holders may take the job once you have reported it to the canton of work."],
+    statusN: ["Get prior authorisation for permit N", "An asylum seeker may not start until the canton has authorised the work. You file and wait."],
+    euNotify: ["Notify a short EU/EFTA hire", "For up to three months you file the EasyGov notification; no residence permit is normally issued."],
+    euL: ["Hire on an L EU/EFTA permit", "A contract longer than three months but under twelve months. The hire registers and applies for L after arrival; you supply the written contract."],
+    euB: ["Hire on a B EU/EFTA permit", "A contract of at least twelve months or unlimited duration. The hire registers and applies for B; you supply the contract."],
+    euG: ["Hire a cross-border commuter", "An EU/EFTA commuter applies for G in the canton of work. You supply the contract; they must return home at least weekly."],
+    serviceFree: ["Possible notification-free posting", "The first eight working days in a general sector can be notification-free, unless a first-day sector rule applies."],
+    serviceNotify: ["Notify a posted assignment", "Eligible EU/EFTA services up to 90 working days: you or the posting company file EasyGov, normally eight days in advance."],
+    ukService: ["Notify a UK posted assignment", "Eligible UK-based posted or self-employed providers use the Services Mobility Agreement notification."],
+    thirdEmployer: ["Apply before the hire starts work", "You file the labour-market case before entry and work. Approval depends on qualifications, economic interest, precedence, pay and quotas."],
+    thirdG: ["Apply for a third-country G hire", "You file. The hire must live in a neighbouring border zone for at least six months and return weekly."],
+    thirdService: ["Apply for a posted-worker permit", "You file a cantonal work-permit application before the assignment starts. Over 90 days there is generally no entitlement."],
+    studySideJob: ["Hire a student for a side job", "After six months of recognised study, you apply for the side job with university confirmation that the hours will not delay the degree."],
+  },
+  de: {
+    swiss: ["Eine Schweizer Person anstellen", "Keine ausländerrechtliche Arbeitsbewilligung. Normales Arbeits-, Lohn- und Sozialversicherungsverfahren nutzen."],
+    existingOpen: ["Person mit offenem Arbeitszugang anstellen", "C oder Ci erlaubt die Stelle meist schon. Karte und kantonale Bedingungen vor dem Startdatum prüfen."],
+    existingReview: ["Zuerst die heutige Bewilligung prüfen", "B, L und G können Stellen-, Kantons- oder Dauerauflagen tragen. Die Änderung vor Arbeitsbeginn beim Kanton bestätigen."],
+    existingLChange: ["Stellenwechsel mit Drittstaat-L", "Du beantragst vor Arbeitsbeginn. Die Person darf nur in derselben Branche und demselben Beruf wechseln, wenn die heutige Stelle nicht zumutbar weitergeführt werden kann."],
+    existingBChange: ["Stellenwechsel mit B", "In der Regel kannst du die Person ohne neue Bewilligung einsetzen. Ist die Karte an eine Stelle oder Arbeitsmarktauflage gebunden, zuerst den Kanton fragen."],
+    statusNotify: ["Arbeit für F oder Flüchtling B melden", "Anerkannte Flüchtlinge und F dürfen nach deiner Meldung schweizweit arbeiten."],
+    statusS: ["Arbeit für Status S melden", "Mit Status S ist die Stelle möglich, sobald du sie im Arbeitskanton gemeldet hast."],
+    statusN: ["Bewilligung N vorab einholen", "Asylsuchende dürfen erst nach kantonaler Bewilligung beginnen. Du reichst ein und wartest."],
+    euNotify: ["Kurze EU/EFTA-Anstellung melden", "Bis drei Monate meldest du über EasyGov; normalerweise gibt es keine Aufenthaltsbewilligung."],
+    euL: ["Anstellung mit L EU/EFTA", "Vertrag über drei und unter zwölf Monaten. Die Person meldet sich an und beantragt L; du lieferst den schriftlichen Vertrag."],
+    euB: ["Anstellung mit B EU/EFTA", "Vertrag ab zwölf Monaten oder unbefristet. Die Person meldet sich an und beantragt B; du lieferst den Vertrag."],
+    euG: ["Grenzgänger/in anstellen", "Eine EU/EFTA-Pendlerin beantragt G im Arbeitskanton. Du lieferst den Vertrag; die wöchentliche Rückkehr muss möglich sein."],
+    serviceFree: ["Möglicherweise meldefreie Entsendung", "Die ersten acht Arbeitstage in einer allgemeinen Branche können meldefrei sein, ausser eine Pflicht gilt ab Tag eins."],
+    serviceNotify: ["Entsendung im Voraus melden", "Berechtigte EU/EFTA-Dienste bis 90 Arbeitstage: du oder die Entsendefirma meldet über EasyGov, meist acht Tage vorher."],
+    ukService: ["Britische Entsendung melden", "Berechtigte UK-Entsendungen oder Selbständige nutzen die Meldung des Mobilitätsabkommens."],
+    thirdEmployer: ["Vor Arbeitsbeginn beantragen", "Du reichst das Arbeitsmarktgesuch vor Einreise und Arbeit ein. Qualifikation, Gesamtinteresse, Vorrang, Lohn und Kontingente entscheiden."],
+    thirdG: ["Drittstaat-G beantragen", "Du reichst ein. Die Person muss mindestens sechs Monate in einer Nachbar-Grenzzone wohnen und wöchentlich zurückkehren."],
+    thirdService: ["Entsendebewilligung beantragen", "Du stellst vor Einsatzbeginn ein kantonaler Arbeitsgesuch. Über 90 Tage besteht in der Regel kein Anspruch."],
+    studySideJob: ["Studierenden-Nebenjob beantragen", "Nach sechs Monaten anerkanntem Studium beantragst du den Nebenjob mit Hochschulbestätigung, dass die Stunden den Abschluss nicht verzögern."],
+  },
+  fr: {
+    swiss: ["Embaucher un citoyen suisse", "Aucun permis migratoire de travail. Suivre les démarches ordinaires d’emploi, paie et assurances."],
+    existingOpen: ["Embaucher quelqu’un qui a déjà un large accès", "Un statut C ou Ci permet généralement déjà le poste. Vérifier la carte et les conditions cantonales avant la date de début."],
+    existingReview: ["Vérifier d’abord le permis actuel", "B, L et G peuvent porter des conditions de poste, canton ou durée. Faire confirmer le changement par le canton avant le travail."],
+    existingLChange: ["Changement d’emploi avec un L d’État tiers", "Vous déposez avant le travail. La personne ne peut changer que dans le même secteur et la même profession si l’emploi actuel ne peut raisonnablement continuer."],
+    existingBChange: ["Changement d’emploi avec un B", "En principe vous pouvez commencer sans nouveau permis. Si la carte est liée à un poste ou à une condition du marché du travail, demandez d’abord au canton."],
+    statusNotify: ["Annoncer le travail pour F ou réfugié B", "Les réfugiés reconnus et titulaires F peuvent travailler dans toute la Suisse une fois l’emploi annoncé."],
+    statusS: ["Annoncer le travail pour le statut S", "Les titulaires S peuvent prendre le poste une fois que vous l’avez annoncé au canton de travail."],
+    statusN: ["Obtenir l’autorisation préalable pour N", "Un demandeur d’asile ne peut commencer avant l’autorisation cantonale. Vous déposez et attendez."],
+    euNotify: ["Annoncer un emploi UE/AELE court", "Jusqu’à trois mois, vous faites l’annonce EasyGov ; aucun titre de séjour n’est normalement délivré."],
+    euL: ["Embaucher avec un L UE/AELE", "Contrat de plus de trois et moins de douze mois. La personne s’inscrit et demande le L ; vous fournissez le contrat écrit."],
+    euB: ["Embaucher avec un B UE/AELE", "Contrat d’au moins douze mois ou illimité. La personne s’inscrit et demande le B ; vous fournissez le contrat."],
+    euG: ["Embaucher un frontalier", "Un frontalier UE/AELE demande le G dans le canton de travail. Vous fournissez le contrat ; le retour hebdomadaire doit être possible."],
+    serviceFree: ["Détachement possiblement sans annonce", "Les huit premiers jours dans un secteur général peuvent être sans annonce, sauf règle dès le premier jour."],
+    serviceNotify: ["Annoncer une mission détachée", "Services UE/AELE éligibles jusqu’à 90 jours : vous ou l’entreprise détachante annoncez via EasyGov, normalement huit jours avant."],
+    ukService: ["Annoncer une mission britannique", "Les prestataires britanniques éligibles utilisent l’annonce de l’accord de mobilité des services."],
+    thirdEmployer: ["Déposer avant le début du travail", "Vous déposez le dossier du marché du travail avant l’entrée et le travail. Qualifications, intérêt économique, priorité, salaire et contingents décident."],
+    thirdG: ["Demander un G d’État tiers", "Vous déposez. La personne doit habiter une zone frontière voisine depuis six mois et rentrer chaque semaine."],
+    thirdService: ["Demander un permis de détachement", "Vous déposez une demande cantonale avant le début de la mission. Au-delà de 90 jours, il n’existe généralement aucun droit."],
+    studySideJob: ["Demander une activité accessoire étudiante", "Après six mois d’études reconnues, vous demandez l’activité accessoire avec confirmation de l’école que les heures ne retardent pas le diplôme."],
+  },
+  it: {
+    swiss: ["Assumere un cittadino svizzero", "Nessun permesso di lavoro per stranieri. Seguire le procedure ordinarie di impiego, salario e assicurazioni."],
+    existingOpen: ["Assumere chi ha già un ampio accesso", "Uno statuto C o Ci consente di regola già il posto. Confermare carta e condizioni cantonali prima della data d’inizio."],
+    existingReview: ["Verificare prima il permesso attuale", "B, L e G possono avere condizioni di posto, cantone o durata. Far confermare il cambiamento dal cantone prima del lavoro."],
+    existingLChange: ["Cambio di posto con L di Stato terzo", "Depositi prima del lavoro. La persona può cambiare solo nello stesso settore e professione se il posto attuale non può ragionevolmente continuare."],
+    existingBChange: ["Cambio di posto con B", "Di regola puoi far iniziare senza un nuovo permesso. Se la carta è legata a un posto o a una condizione del mercato del lavoro, chiedi prima al cantone."],
+    statusNotify: ["Notificare il lavoro per F o rifugiato B", "Rifugiati riconosciuti e titolari F possono lavorare in tutta la Svizzera dopo la tua notifica."],
+    statusS: ["Notificare il lavoro per lo statuto S", "Con lo statuto S il posto è possibile dopo che lo hai notificato al cantone di lavoro."],
+    statusN: ["Ottenere l’autorizzazione preventiva per N", "Un richiedente l’asilo può iniziare solo dopo l’autorizzazione cantonale. Depositi e attendi."],
+    euNotify: ["Notificare un impiego UE/AELS breve", "Fino a tre mesi notifichi su EasyGov; di solito non si rilascia un permesso di soggiorno."],
+    euL: ["Assumere con L UE/AELS", "Contratto di più di tre e meno di dodici mesi. La persona si iscrive e chiede L; tu fornisci il contratto scritto."],
+    euB: ["Assumere con B UE/AELS", "Contratto di almeno dodici mesi o indeterminato. La persona si iscrive e chiede B; tu fornisci il contratto."],
+    euG: ["Assumere un frontaliero", "Un frontaliero UE/AELS chiede il G nel cantone di lavoro. Tu fornisci il contratto; deve poter tornare almeno ogni settimana."],
+    serviceFree: ["Distacco forse senza notifica", "I primi otto giorni in un settore generale possono essere senza notifica, salvo obblighi dal primo giorno."],
+    serviceNotify: ["Notificare un distacco", "Servizi UE/AELS ammessi fino a 90 giorni: tu o l’impresa che distacca notificate su EasyGov, di solito otto giorni prima."],
+    ukService: ["Notificare un distacco britannico", "I prestatori britannici ammessi usano la notifica dell’accordo sulla mobilità dei servizi."],
+    thirdEmployer: ["Depositare prima dell’inizio del lavoro", "Depositi il dossier del mercato del lavoro prima dell’ingresso e del lavoro. Decidono qualifica, interesse complessivo, precedenza, salario e contingenti."],
+    thirdG: ["Chiedere un G di Stato terzo", "Depositi. La persona deve abitare da almeno sei mesi in una zona di frontiera vicina e tornare ogni settimana."],
+    thirdService: ["Chiedere un permesso di distacco", "Depositi una domanda cantonale prima dell’incarico. Oltre 90 giorni di regola non c’è un diritto."],
+    studySideJob: ["Chiedere un lavoro accessorio per uno studente", "Dopo sei mesi di studio riconosciuto, chiedi il lavoro accessorio con conferma dell’istituto che le ore non ritardano il diploma."],
+  },
+  rm: {
+    swiss: ["Engaschar ina persuna svizra", "Nagina permissiun da lavur per esters. Dovrar la procedura normala da lavur, salari ed assicuranzas."],
+    existingOpen: ["Engaschar ina persuna cun vast access da lavur", "C u Ci permettan per ordinari gia la plazza. Examinar carta e cundiziuns chantunalas avant la data d’entschatta."],
+    existingReview: ["Examinar l’emprim la permissiun actuala", "B, L e G pon portar cundiziuns da plazza, chantun u durada. Laschar confermar la midada dal chantun avant la lavur."],
+    existingLChange: ["Midada da plazza cun L da stadis terzs", "Ti deponas avant la lavur. La persuna dastga midar mo en la medema branscha e professiun sche la plazza actuala na po betg vegnir mantegnida."],
+    existingBChange: ["Midada da plazza cun B", "Per ordinari pos ti laschar cumenzar senza nova permissiun. Sche la carta è colliada cun ina plazza u ina cundiziun dal martgà da lavur, dumandar l’emprim il chantun."],
+    statusNotify: ["Annunziar la lavur per F u fugitiv B", "Fugitivs renconuschids e persunas cun F dastgan lavurar en tut la Svizra suenter tia annunzia."],
+    statusS: ["Annunziar la lavur per il status S", "Cun status S è la plazza pussaivla uschespert che ti l’has annunziada en il chantun da lavur."],
+    statusN: ["Obtegnair la permissiun preventiva per N", "Tschertgaders d’asil dastgan cumenzar pir suenter la permissiun chantunala. Ti deponas e spetgas."],
+    euNotify: ["Annunziar in engaschi curt UE/AELE", "Fin trais mais annunzias ti via EasyGov; per ordinari na vegn dada nagina permissiun da dimora."],
+    euL: ["Engaschar cun L UE/AELE", "Contract da dapli che trais e main che dudesch mais. La persuna s’annunzia e dumonda L; ti furnischas il contract scrit."],
+    euB: ["Engaschar cun B UE/AELE", "Contract d’almain dudesch mais u senza termin. La persuna s’annunzia e dumonda B; ti furnischas il contract."],
+    euG: ["Engaschar in pendular", "In pendular UE/AELE dumonda G en il chantun da lavur. Ti furnischas il contract; il return emnaivel sto esser pussaivel."],
+    serviceFree: ["Emessa eventualmain senza annunzia", "Ils emprims otg dis da lavur en ina branscha generala pon esser senza annunzia, nun ch’ina regla valia dal emprim di."],
+    serviceNotify: ["Annunziar ina emessa", "Servetschs UE/AELE autorisads fin 90 dis: ti u l’interpresa che trametta annunzia via EasyGov, per ordinari otg dis avant."],
+    ukService: ["Annunziar ina emessa britannica", "Purschiders britannics autorisads dovran l’annunzia da l’accord da mobilitad."],
+    thirdEmployer: ["Deponer avant l’entschatta da la lavur", "Ti deponas la dumonda dal martgà da lavur avant entrada e lavur. Qualificaziun, interess general, precedenza, salari e contingents decidan."],
+    thirdG: ["Dumandar in G da stadis terzs", "Ti deponas. La persuna sto habitar almain sis mais en ina zona da cunfin vischina e returnar emnavlamain."],
+    thirdService: ["Dumandar ina permissiun d’emessa", "Ti deponas ina dumonda chantunala avant l’incumbenza. Sur 90 dis n’exista per ordinari nagin dretg."],
+    studySideJob: ["Dumandar ina lavur accessora per in student", "Suenter sis mais da studi recunuschì dumondas ti la lavur accessora cun conferma da la scola che las uras na retardeschan betg il conclus."],
+  },
+};
+
 function buildActions(ids: string[], lang: Lang, fallback: Actor, audience?: string): ActionItem[] {
   const items = ids.map((id) => {
     const meta = actionMeta[id];
     const actor = meta?.actor ?? fallback;
     const whenKey = meta?.when;
-    const item: ActionItem = { text: actionText[lang][id], actor };
+    const override = audience === "employer" ? employerActionText[lang][id] : undefined;
+    const item: ActionItem = { text: override ?? actionText[lang][id], actor };
     if (whenKey) item.when = whenText[lang][whenKey];
     return item;
   });
@@ -959,6 +1229,25 @@ export function isRouteKey(value: string): value is RouteKey {
   return Object.prototype.hasOwnProperty.call(routeText.en, value);
 }
 
+function applyFamilyNotes(result: ResultModel, a: Answers, lang: Lang, key: RouteKey, nat: string) {
+  const note = layers[lang];
+  if (key === "familyEu") result.familyNote = note.familyEu;
+  else if (key === "familySwissC") result.familyNote = note.familySwissC;
+  else if (key === "familyThird") result.familyNote = note.familyThird;
+  else if (a.family === "familyYes") result.familyNote = note.family;
+
+  if (a.relationship === "registered") {
+    result.familyNote = [result.familyNote, note.familyRegistered].filter(Boolean).join(" ");
+  } else if (a.relationship === "child") {
+    result.familyNote = key === "familyEu" || nat === "eu" ? note.familyChildEu : note.familyChildThird;
+  } else if (a.relationship === "parent") {
+    if (key === "familyEu" || nat === "eu") result.familyNote = note.familyParentEu;
+    else result.warning = note.familyParentThird;
+  } else if (a.relationship === "unmarried") {
+    result.warning = note.unmarried;
+  }
+}
+
 export function getResult(a: Answers, lang: Lang, key: RouteKey = resolveRoute(a)): ResultModel {
   const [badge, title, summary] = routeText[lang][key];
   const def = routeDef[key];
@@ -974,24 +1263,30 @@ export function getResult(a: Answers, lang: Lang, key: RouteKey = resolveRoute(a
     sourceLinks: def.sourceIds.map((id) => ({ label: sources[id][0], url: localiseUrl(sources[id][1], lang) })),
     canton: cantonRow ? { code: cantonRow[0], name: cantonRow[1], url: cantonRow[2] } : undefined,
   };
+  const employerCopy = a.audience === "employer" ? employerRouteText[lang][key] : undefined;
+  if (employerCopy) {
+    result.title = employerCopy[0];
+    result.summary = employerCopy[1];
+  }
   if (key === "thirdEmployer") {
-    if (a.employmentDuration === "twelveplus") result.badge = thirdDurationBadge[lang].b;
+    if (nat === "uk") {
+      if (a.employmentDuration === "twelveplus") result.badge = ukDurationBadge[lang].b;
+      else if (a.employmentDuration === "under3" || a.employmentDuration === "three12") result.badge = ukDurationBadge[lang].l;
+      result.title = ukEmployerCopy[lang].title;
+      result.summary = ukEmployerCopy[lang].summary;
+    } else if (a.employmentDuration === "twelveplus") result.badge = thirdDurationBadge[lang].b;
     else if (a.employmentDuration === "under3" || a.employmentDuration === "three12") result.badge = thirdDurationBadge[lang].l;
   }
   if (key === "studySideJob" && nat === "eu") {
     result.summary = layers[lang].studySideEu;
-    result.actor = "applicant";
+    result.actor = a.audience === "employer" ? "both" : "applicant";
     result.actions = buildActions(["registerCommune", "universityCheck", "ensureConditions"], lang, "applicant", a.audience);
   }
   if (a.entryStatus === "visa") result.visaNote = layers[lang].visaRequired;
   if (a.entryStatus === "exempt") result.visaNote = layers[lang].visaExempt;
   if (a.entryStatus === "schengen") result.visaNote = layers[lang].schengen;
   if (a.entryStatus === "unsure") result.visaNote = layers[lang].unsure;
-  if (key === "familyEu") result.familyNote = layers[lang].familyEu;
-  else if (key === "familySwissC") result.familyNote = layers[lang].familySwissC;
-  else if (key === "familyThird") result.familyNote = layers[lang].familyThird;
-  else if (a.family === "familyYes") result.familyNote = layers[lang].family;
-  if (a.relationship === "unmarried") result.warning = layers[lang].unmarried;
+  applyFamilyNotes(result, a, lang, key, nat);
   if (a.qualified === "uncertain" && (key === "thirdEmployer" || key === "thirdSelf")) result.warning = layers[lang].uncertain;
   if (a.qualified === "weak" && (key === "thirdEmployer" || key === "thirdSelf")) result.warning = layers[lang].weak;
   if (labourQuotaRoutes.has(key)) {
