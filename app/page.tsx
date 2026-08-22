@@ -131,6 +131,51 @@ function SwissMark() {
   return <span className="swiss-mark" aria-hidden="true"><span /></span>;
 }
 
+function LanguageFlag({ code }: { code: Lang }) {
+  return (
+    <svg className="language-flag" viewBox="0 0 16 12" aria-hidden="true" focusable="false">
+      {code === "en" && (
+        <>
+          <rect width="16" height="12" fill="#012169" />
+          <path d="M0 0h16v12H0z" fill="#012169" />
+          <path d="M0 0l16 12M16 0L0 12" stroke="#fff" strokeWidth="2.4" />
+          <path d="M0 0l16 12M16 0L0 12" stroke="#c8102e" strokeWidth="1.2" />
+          <path d="M8 0v12M0 6h16" stroke="#fff" strokeWidth="4" />
+          <path d="M8 0v12M0 6h16" stroke="#c8102e" strokeWidth="2.4" />
+        </>
+      )}
+      {code === "de" && (
+        <>
+          <rect width="16" height="4" y="0" fill="#000" />
+          <rect width="16" height="4" y="4" fill="#dd0000" />
+          <rect width="16" height="4" y="8" fill="#ffce00" />
+        </>
+      )}
+      {code === "fr" && (
+        <>
+          <rect width="5.4" height="12" fill="#002395" />
+          <rect width="5.2" height="12" x="5.4" fill="#fff" />
+          <rect width="5.4" height="12" x="10.6" fill="#ed2939" />
+        </>
+      )}
+      {code === "it" && (
+        <>
+          <rect width="5.4" height="12" fill="#009246" />
+          <rect width="5.2" height="12" x="5.4" fill="#fff" />
+          <rect width="5.4" height="12" x="10.6" fill="#ce2b37" />
+        </>
+      )}
+      {code === "rm" && (
+        <>
+          <rect width="16" height="12" fill="#da291c" />
+          <rect x="6.4" y="2.2" width="3.2" height="7.6" fill="#fff" />
+          <rect x="3.4" y="4.4" width="9.2" height="3.2" fill="#fff" />
+        </>
+      )}
+    </svg>
+  );
+}
+
 function Brand({ onClick }: { onClick?: () => void }) {
   const content = <><SwissMark /><span className="brand-copy"><strong>Permit Pilot</strong></span></>;
   return onClick ? <button className="brand" onClick={onClick} aria-label="PermitPilot home">{content}</button> : <div className="brand">{content}</div>;
@@ -330,7 +375,10 @@ export default function Home() {
         </nav>
         <div className="language-switch" aria-label="Language">
           {languages.map(({ code, label, name }) => (
-            <button key={code} title={name} className={language === code ? "active" : ""} onClick={() => setLanguage(code)} aria-pressed={language === code}>{label}</button>
+            <button key={code} title={name} className={language === code ? "active" : ""} onClick={() => setLanguage(code)} aria-pressed={language === code}>
+              <LanguageFlag code={code} />
+              <span>{label}</span>
+            </button>
           ))}
         </div>
       </header>
