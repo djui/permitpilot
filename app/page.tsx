@@ -1,5 +1,20 @@
 import { type ReactNode, useEffect, useId, useMemo, useRef, useState } from "react";
 import {
+  Bars3Icon,
+  CalendarDaysIcon,
+  CheckIcon,
+  ChevronDownIcon,
+  ClockIcon,
+  ComputerDesktopIcon,
+  LinkIcon,
+  LockClosedIcon,
+  MoonIcon,
+  PencilSquareIcon,
+  PrinterIcon,
+  SunIcon,
+  XMarkIcon,
+} from "@heroicons/react/16/solid";
+import {
   Answers,
   Lang,
   buildSteps,
@@ -305,6 +320,7 @@ function LanguageSwitch({
       >
         <LanguageFlag code={current.code} />
         <span>{current.label}</span>
+        <ChevronDownIcon className="switch-caret" aria-hidden="true" />
       </button>
       {open && (
         <ul className="bar-menu" id={listId} role="listbox" aria-label={label}>
@@ -332,27 +348,8 @@ function LanguageSwitch({
 }
 
 function ThemeIcon({ mode }: { mode: ThemeMode }) {
-  if (mode === "light") {
-    return (
-      <svg className="theme-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-        <circle cx="8" cy="8" r="2.6" fill="none" stroke="currentColor" strokeWidth="1.5" />
-        <path d="M8 1.6v1.6M8 12.8v1.6M1.6 8h1.6M12.8 8h1.6M3.3 3.3l1.1 1.1M11.6 11.6l1.1 1.1M3.3 12.7l1.1-1.1M11.6 4.4l1.1-1.1" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" />
-      </svg>
-    );
-  }
-  if (mode === "dark") {
-    return (
-      <svg className="theme-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-        <path d="M10.2 2.4a6 6 0 1 0 3.4 9.8 5.2 5.2 0 0 1-7.2-7.1 6 6 0 0 0 3.8-2.7z" fill="currentColor" />
-      </svg>
-    );
-  }
-  return (
-    <svg className="theme-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-      <circle cx="8" cy="8" r="5.2" fill="none" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M8 2.8v10.4a5.2 5.2 0 0 0 0-10.4z" fill="currentColor" />
-    </svg>
-  );
+  const Icon = mode === "light" ? SunIcon : mode === "dark" ? MoonIcon : ComputerDesktopIcon;
+  return <Icon className="theme-icon" aria-hidden="true" />;
 }
 
 function ThemeSwitch({
@@ -387,6 +384,7 @@ function ThemeSwitch({
       >
         <ThemeIcon mode={mode} />
         <span>{labels[mode]}</span>
+        <ChevronDownIcon className="switch-caret" aria-hidden="true" />
       </button>
       {open && (
         <ul className="bar-menu" id={listId} role="listbox" aria-label={theme}>
@@ -461,7 +459,9 @@ function ShareControl({
         aria-live="polite"
         onClick={() => setOpen((value) => !value)}
       >
-        <i className={copied ? "action-icon check-icon" : "action-icon link-icon"} aria-hidden="true" />
+        {copied
+          ? <CheckIcon className="action-icon" aria-hidden="true" />
+          : <LinkIcon className="action-icon" aria-hidden="true" />}
         {copied ? copiedLabel : shareLabel}
       </button>
       {open && (
@@ -861,7 +861,10 @@ export default function Home() {
             aria-controls="primary-nav"
             onClick={() => setMenuOpen((open) => !open)}
           >
-            {t.menu}
+            {menuOpen
+              ? <XMarkIcon className="menu-icon" aria-hidden="true" />
+              : <Bars3Icon className="menu-icon" aria-hidden="true" />}
+            <span className="visually-hidden">{t.menu}</span>
           </button>
           <LanguageSwitch
             language={language}
@@ -896,9 +899,9 @@ export default function Home() {
                 <button type="button" className="secondary-button" onClick={() => startWizard("employer")}>{t.employerStart}<span aria-hidden="true">→</span></button>
               </div>
               <div className="microcopy">
-                <span><i className="clock-icon" aria-hidden="true" />{t.time}</span>
-                <span><i className="lock-icon" aria-hidden="true" />{t.privacy}</span>
-                <button type="button" className="verified-pill" onClick={goHistory}><i className="calendar-icon" aria-hidden="true" />{t.verified}</button>
+                <span><ClockIcon className="glyph" aria-hidden="true" />{t.time}</span>
+                <span><LockClosedIcon className="glyph" aria-hidden="true" />{t.privacy}</span>
+                <button type="button" className="verified-pill" onClick={goHistory}><CalendarDaysIcon className="glyph" aria-hidden="true" />{t.verified}</button>
               </div>
               <p className="hero-guard">{t.notAdvice} · {t.notLegalAdvice}</p>
             </div>
@@ -1038,7 +1041,7 @@ export default function Home() {
               <button type="button" className="primary-button wizard-next" disabled={!answers[current.id]} onClick={nextStep}>
                 {safeIndex === steps.length - 1 ? t.result : t.next}<span aria-hidden="true">→</span>
               </button>
-              <small><i className="lock-icon" aria-hidden="true" />{t.noData}</small>
+              <small><LockClosedIcon className="glyph" aria-hidden="true" />{t.noData}</small>
             </div>
           </div>
         </section>
@@ -1073,11 +1076,11 @@ export default function Home() {
                     onCopy={copyShareLink}
                   />
                   <button type="button" onClick={() => window.print()}>
-                    <i className="action-icon print-icon" aria-hidden="true" />
+                    <PrinterIcon className="action-icon" aria-hidden="true" />
                     {t.print}
                   </button>
                   <button type="button" onClick={changeAnswers}>
-                    <i className="action-icon change-icon" aria-hidden="true" />
+                    <PencilSquareIcon className="action-icon" aria-hidden="true" />
                     {t.change}
                   </button>
                 </div>
