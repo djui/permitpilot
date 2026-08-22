@@ -370,8 +370,8 @@ export default function Home() {
         <nav className="desktop-nav" aria-label="Primary navigation">
           <button onClick={() => navigateHomeSection("how")}>{t.how}</button>
           <button onClick={() => navigateHomeSection("sources")}>{t.sources}</button>
-          <button onClick={() => navigateHomeSection("about")}>{t.about}</button>
           <button onClick={goHistory}>{t.history}</button>
+          <button onClick={() => navigateHomeSection("about")}>{t.about}</button>
         </nav>
         <div className="language-switch" aria-label="Language">
           {languages.map(({ code, label, name }) => (

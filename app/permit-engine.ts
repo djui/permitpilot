@@ -42,7 +42,7 @@ export const cantons = [
 
 export const ui = {
   en: {
-    home: "Home", how: "How it works", sources: "Official sources", about: "About", history: "History", verified: "Rules checked 22 Aug 2026",
+    home: "Home", how: "How it works", sources: "Official sources", about: "About", history: "Changes", verified: "Rules checked 22 Aug 2026",
     eyebrow: "Swiss work & residence permits", titleA: "Your route into Switzerland,", titleB: "without the maze.",
     intro: "Answer a few plain-language questions. Get the likely permit route, who files what, and the official forms for your canton.",
     start: "Find my route", employerStart: "I’m hiring someone", time: "Takes about 3 minutes", privacy: "No login · answers stay on this device",
@@ -58,7 +58,7 @@ export const ui = {
     noData: "Your answers are processed in this browser and are not submitted.", sourceMethod: "Federal rules first, canton-specific filing second.",
   },
   de: {
-    home: "Start", how: "So funktioniert’s", sources: "Offizielle Quellen", about: "Über uns", history: "Verlauf", verified: "Regeln geprüft am 22. Aug. 2026",
+    home: "Start", how: "So funktioniert’s", sources: "Offizielle Quellen", about: "Über uns", history: "Änderungen", verified: "Regeln geprüft am 22. Aug. 2026",
     eyebrow: "Schweizer Arbeits- & Aufenthaltsbewilligungen", titleA: "Dein Weg in die Schweiz,", titleB: "ohne Behördendschungel.",
     intro: "Beantworte einige einfache Fragen. Du erhältst den voraussichtlichen Bewilligungsweg, Zuständigkeiten und offizielle Formulare für deinen Kanton.",
     start: "Meinen Weg finden", employerStart: "Ich stelle jemanden ein", time: "Dauert etwa 3 Minuten", privacy: "Kein Login · Antworten bleiben auf diesem Gerät",
@@ -74,7 +74,7 @@ export const ui = {
     noData: "Deine Antworten werden nur in diesem Browser verarbeitet.", sourceMethod: "Zuerst Bundesrecht, dann das kantonale Verfahren.",
   },
   fr: {
-    home: "Accueil", how: "Fonctionnement", sources: "Sources officielles", about: "À propos", history: "Historique", verified: "Règles vérifiées le 22 août 2026",
+    home: "Accueil", how: "Fonctionnement", sources: "Sources officielles", about: "À propos", history: "Changements", verified: "Règles vérifiées le 22 août 2026",
     eyebrow: "Permis de travail et de séjour suisses", titleA: "Votre chemin vers la Suisse,", titleB: "sans le labyrinthe.",
     intro: "Répondez à quelques questions simples. Obtenez la voie probable, les responsabilités et les formulaires officiels de votre canton.",
     start: "Trouver ma voie", employerStart: "Je recrute quelqu’un", time: "Environ 3 minutes", privacy: "Sans compte · réponses conservées sur cet appareil",
@@ -90,7 +90,7 @@ export const ui = {
     noData: "Vos réponses sont traitées uniquement dans ce navigateur.", sourceMethod: "D’abord les règles fédérales, puis le dépôt cantonal.",
   },
   it: {
-    home: "Inizio", how: "Come funziona", sources: "Fonti ufficiali", about: "Chi siamo", history: "Cronologia", verified: "Norme verificate il 22 ago 2026",
+    home: "Inizio", how: "Come funziona", sources: "Fonti ufficiali", about: "Chi siamo", history: "Modifiche", verified: "Norme verificate il 22 ago 2026",
     eyebrow: "Permessi svizzeri di lavoro e soggiorno", titleA: "Il tuo percorso verso la Svizzera,", titleB: "senza il labirinto.",
     intro: "Rispondi ad alcune domande semplici. Ottieni la via probabile, chi presenta cosa e i formulari ufficiali del tuo cantone.",
     start: "Trova il mio percorso", employerStart: "Sto assumendo qualcuno", time: "Circa 3 minuti", privacy: "Senza account · le risposte restano su questo dispositivo",
@@ -106,7 +106,7 @@ export const ui = {
     noData: "Le tue risposte sono elaborate solo in questo browser.", sourceMethod: "Prima il diritto federale, poi la procedura cantonale.",
   },
   rm: {
-    home: "Cumenzament", how: "Co funcziun’igl", sources: "Funtaunas uffizialas", about: "Davart nus", history: "Istorgia", verified: "Reglas verifitgadas ils 22 avust 2026",
+    home: "Cumenzament", how: "Co funcziun’igl", sources: "Funtaunas uffizialas", about: "Davart nus", history: "Midadas", verified: "Reglas verifitgadas ils 22 avust 2026",
     eyebrow: "Permissiuns svizras da lavur e dimora", titleA: "Tia via en Svizra,", titleB: "senza il labirint.",
     intro: "Responda a paucas dumondas simplas. Ti retschaivas la via probabla, tgi depona tge e ils formulars uffizials per tes chantun.",
     start: "Chattar mia via", employerStart: "Jau engaschi insatgi", time: "Circa 3 minutas", privacy: "Nagin login · las respostas restan sin quest apparat",
