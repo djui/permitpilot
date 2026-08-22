@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Answers,
   Lang,
@@ -9,7 +9,7 @@ import {
   languages,
   stepOrder,
   ui,
-  type ResultModel,
+  type RouteKey,
 } from "./permit-engine";
 import {
   formatHistoryDate,
@@ -21,8 +21,6 @@ import {
   decodeShareHash,
   encodeShareHash,
   isShareHash,
-  resultFromSnapshot,
-  snapshotFromResult,
 } from "./share";
 
 type Screen = "home" | "wizard" | "result" | "history";
@@ -142,18 +140,19 @@ export default function Home() {
   const [historyFilter, setHistoryFilter] = useState<"all" | HistoryKind>("all");
   const [answers, setAnswers] = useState<Answers>({});
   const [stepIndex, setStepIndex] = useState(0);
-  const [snapshot, setSnapshot] = useState<ResultModel | null>(null);
+  const [pinnedKey, setPinnedKey] = useState<RouteKey | null>(null);
   const [linkCopied, setLinkCopied] = useState(false);
   const [shareUrl, setShareUrl] = useState<string | null>(null);
-  const shareEncode = useRef<Promise<string> | null>(null);
   const t = ui[language];
   const x = extras[language];
   const h = historyUi[language];
   const steps = useMemo(() => buildSteps(answers, language), [answers, language]);
   const safeIndex = Math.min(stepIndex, Math.max(steps.length - 1, 0));
   const current = steps[safeIndex];
-  const liveResult = useMemo(() => getResult(answers, language), [answers, language]);
-  const result = snapshot ?? liveResult;
+  const result = useMemo(
+    () => getResult(answers, language, pinnedKey ?? undefined),
+    [answers, language, pinnedKey],
+  );
   const visibleHistory = historyFilter === "all"
     ? historyEntries
     : historyEntries.filter((entry) => entry.kind === historyFilter);
@@ -171,14 +170,14 @@ export default function Home() {
         void decodeShareHash(hash).then((decoded) => {
           if (currentGeneration !== generation) return;
           if (!decoded) {
-            setSnapshot(null);
+            setPinnedKey(null);
             setScreen("home");
             window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
             return;
           }
           setLanguage(decoded.lang);
           setAnswers(decoded.answers);
-          setSnapshot(resultFromSnapshot(decoded));
+          setPinnedKey(decoded.key);
           setShareUrl(window.location.href);
           setLinkCopied(false);
           setScreen("result");
@@ -202,10 +201,9 @@ export default function Home() {
   };
 
   const leaveResult = () => {
-    setSnapshot(null);
+    setPinnedKey(null);
     setLinkCopied(false);
     setShareUrl(null);
-    shareEncode.current = null;
     clearHash();
   };
 
@@ -247,18 +245,14 @@ export default function Home() {
     if (!current || !answers[current.id]) return;
     if (safeIndex >= steps.length - 1) {
       const next = getResult(answers, language);
-      setSnapshot(next);
+      const hash = encodeShareHash({ key: next.key, lang: language, answers });
+      const path = `${window.location.pathname}${window.location.search}${hash}`;
+      window.history.replaceState(null, "", path);
+      setPinnedKey(next.key);
       setLinkCopied(false);
-      setShareUrl(null);
+      setShareUrl(`${window.location.origin}${path}`);
       setScreen("result");
       window.scrollTo({ top: 0, behavior: "smooth" });
-      shareEncode.current = encodeShareHash(snapshotFromResult(next, language, answers)).then((hash) => {
-        const path = `${window.location.pathname}${window.location.search}${hash}`;
-        window.history.replaceState(null, "", path);
-        const url = `${window.location.origin}${path}`;
-        setShareUrl(url);
-        return url;
-      }).catch(() => window.location.href);
       return;
     }
     setStepIndex(safeIndex + 1);
@@ -284,7 +278,7 @@ export default function Home() {
 
   const copyShareLink = async () => {
     try {
-      const url = shareUrl ?? (shareEncode.current ? await shareEncode.current : window.location.href);
+      const url = shareUrl ?? window.location.href;
       await navigator.clipboard.writeText(url);
       setLinkCopied(true);
       window.setTimeout(() => setLinkCopied(false), 2000);

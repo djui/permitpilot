@@ -1,78 +1,107 @@
-import type { Answers, Lang, ResultModel } from "./permit-engine";
+import {
+  cantons,
+  isRouteKey,
+  stepOrder,
+  type Answers,
+  type Lang,
+  type ResultModel,
+  type RouteKey,
+} from "./permit-engine";
 
 const LANGS = new Set<Lang>(["en", "de", "fr", "it", "rm"]);
 const ACTORS = new Set<ResultModel["actor"]>(["applicant", "employer", "both", "authority"]);
+const CANTON_CODES = new Set<string>(cantons.map(([code]) => code));
+const ANSWER_KEYS = new Set<string>(stepOrder);
+const PARAM_VALUE = /^[A-Za-z0-9]+$/u;
 
-export type SharedDecisionV1 = {
-  v: 1;
+export type SharedRoute = {
+  key: RouteKey;
   lang: Lang;
   answers: Answers;
-} & ResultModel;
+};
 
 export function isShareHash(hash: string): boolean {
-  return hash.startsWith("#d.") && hash.length > 3;
+  if (hash.startsWith("#d.") && hash.length > 3) return true;
+  return parseReadablePath(hash) !== null;
 }
 
-export function snapshotFromResult(result: ResultModel, lang: Lang, answers: Answers): SharedDecisionV1 {
-  return {
-    v: 1,
-    lang,
-    answers: { ...answers },
-    key: result.key,
-    actor: result.actor,
-    badge: result.badge,
-    title: result.title,
-    summary: result.summary,
-    actions: result.actions,
-    docs: result.docs,
-    sourceLinks: result.sourceLinks,
-    canton: result.canton,
-    visaNote: result.visaNote,
-    familyNote: result.familyNote,
-    warning: result.warning,
-  };
-}
-
-export function resultFromSnapshot(snapshot: SharedDecisionV1): ResultModel {
-  return {
-    key: snapshot.key,
-    actor: snapshot.actor,
-    badge: snapshot.badge,
-    title: snapshot.title,
-    summary: snapshot.summary,
-    actions: snapshot.actions,
-    docs: snapshot.docs,
-    sourceLinks: snapshot.sourceLinks,
-    canton: snapshot.canton,
-    visaNote: snapshot.visaNote,
-    familyNote: snapshot.familyNote,
-    warning: snapshot.warning,
-  };
-}
-
-export async function encodeShareHash(decision: SharedDecisionV1): Promise<string> {
-  const bytes = new TextEncoder().encode(JSON.stringify(decision));
-  let packed: Uint8Array = bytes;
-  if (typeof CompressionStream === "function") {
-    try {
-      packed = await transformBytes(bytes, new CompressionStream("deflate-raw"));
-    } catch {
-      packed = bytes;
-    }
+export function encodeShareHash(share: SharedRoute): string {
+  const params = new URLSearchParams();
+  params.set("lang", share.lang);
+  for (const key of answerKeys(share.answers)) {
+    const value = share.answers[key];
+    if (value) params.set(key, value);
   }
-  return `#d.${bytesToBase64url(packed)}`;
+  const canton = share.answers.canton;
+  const path = canton ? `${share.key}/${canton.toLowerCase()}` : share.key;
+  return `#${path}?${params.toString()}`;
 }
 
-export async function decodeShareHash(hash: string): Promise<SharedDecisionV1 | null> {
+export async function decodeShareHash(hash: string): Promise<SharedRoute | null> {
   try {
-    if (!isShareHash(hash)) return null;
-    const bytes = base64urlToBytes(hash.slice(3));
-    if (!bytes) return null;
-    const parsed = await bytesToJson(bytes);
-    return parseV1(parsed);
+    if (hash.startsWith("#d.")) return await decodeSnapshotHash(hash);
+    return decodeReadableHash(hash);
   } catch {
     return null;
   }
+}
+
+function parseReadablePath(hash: string): { key: RouteKey; canton?: string; query: string } | null {
+  if (!hash.startsWith("#") || hash === "#history") return null;
+  const raw = hash.slice(1);
+  const queryIndex = raw.indexOf("?");
+  const path = queryIndex === -1 ? raw : raw.slice(0, queryIndex);
+  const query = queryIndex === -1 ? "" : raw.slice(queryIndex + 1);
+  const segments = path.split("/");
+  if (segments.length === 0 || segments.length > 2) return null;
+  const [keySegment, cantonSegment] = segments;
+  if (!keySegment || !isRouteKey(keySegment)) return null;
+  if (cantonSegment !== undefined) {
+    const canton = cantonSegment.toUpperCase();
+    if (!CANTON_CODES.has(canton)) return null;
+    return { key: keySegment, canton, query };
+  }
+  return { key: keySegment, query };
+}
+
+function decodeReadableHash(hash: string): SharedRoute | null {
+  const parsed = parseReadablePath(hash);
+  if (!parsed) return null;
+  const params = new URLSearchParams(parsed.query);
+  const lang = params.get("lang");
+  if (!lang || !LANGS.has(lang as Lang)) return null;
+
+  const answers: Answers = {};
+  for (const [key, value] of params.entries()) {
+    if (key === "lang") continue;
+    if (!ANSWER_KEYS.has(key) || !PARAM_VALUE.test(value)) return null;
+    answers[key] = value;
+  }
+
+  if (parsed.canton) {
+    if (answers.canton && answers.canton.toUpperCase() !== parsed.canton) return null;
+    answers.canton = parsed.canton;
+  } else if (answers.canton) {
+    const canton = answers.canton.toUpperCase();
+    if (!CANTON_CODES.has(canton)) return null;
+    answers.canton = canton;
+  }
+
+  return { key: parsed.key, lang: lang as Lang, answers };
+}
+
+function answerKeys(answers: Answers): string[] {
+  const extra = Object.keys(answers).filter((key) => !ANSWER_KEYS.has(key)).sort();
+  return [...stepOrder.filter((key) => key in answers), ...extra];
+}
+
+async function decodeSnapshotHash(hash: string): Promise<SharedRoute | null> {
+  const bytes = base64urlToBytes(hash.slice(3));
+  if (!bytes) return null;
+  const parsed = await bytesToJson(bytes);
+  const snapshot = parseV1(parsed);
+  if (!snapshot) return null;
+  return { key: snapshot.key, lang: snapshot.lang, answers: snapshot.answers };
 }
 
 async function bytesToJson(bytes: Uint8Array): Promise<unknown> {
@@ -87,18 +116,9 @@ async function bytesToJson(bytes: Uint8Array): Promise<unknown> {
   return JSON.parse(new TextDecoder().decode(bytes));
 }
 
-async function transformBytes(
-  bytes: Uint8Array,
-  transform: CompressionStream | DecompressionStream,
-): Promise<Uint8Array> {
+async function transformBytes(bytes: Uint8Array, transform: DecompressionStream): Promise<Uint8Array> {
   const stream = new Blob([bytes as BlobPart]).stream().pipeThrough(transform);
   return new Uint8Array(await new Response(stream).arrayBuffer()) as Uint8Array;
-}
-
-function bytesToBase64url(bytes: Uint8Array): string {
-  let binary = "";
-  for (const byte of bytes) binary += String.fromCharCode(byte);
-  return btoa(binary).replaceAll("+", "-").replaceAll("/", "_").replace(/=+$/u, "");
 }
 
 function base64urlToBytes(payload: string): Uint8Array | null {
@@ -127,7 +147,7 @@ function asStringArray(value: unknown): string[] | null {
   return value;
 }
 
-function parseV1(data: unknown): SharedDecisionV1 | null {
+function parseV1(data: unknown): (SharedRoute & ResultModel) | null {
   if (!isRecord(data) || data.v !== 1) return null;
   if (typeof data.lang !== "string" || !LANGS.has(data.lang as Lang)) return null;
   if (!isRecord(data.answers) || !Object.values(data.answers).every((value) => typeof value === "string")) return null;
@@ -139,7 +159,7 @@ function parseV1(data: unknown): SharedDecisionV1 | null {
   const summary = asNonEmptyString(data.summary);
   const actions = asStringArray(data.actions);
   const docs = asStringArray(data.docs);
-  if (!key || !actor || !ACTORS.has(actor as ResultModel["actor"]) || !badge || !title || !summary || !actions || !docs) {
+  if (!key || !isRouteKey(key) || !actor || !ACTORS.has(actor as ResultModel["actor"]) || !badge || !title || !summary || !actions || !docs) {
     return null;
   }
   if (!Array.isArray(data.sourceLinks)) return null;
@@ -153,11 +173,11 @@ function parseV1(data: unknown): SharedDecisionV1 | null {
     sourceLinks.push({ label, url });
   }
 
-  const snapshot: SharedDecisionV1 = {
+  return {
     v: 1,
     lang: data.lang as Lang,
     answers: { ...data.answers as Answers },
-    key: key as ResultModel["key"],
+    key,
     actor: actor as ResultModel["actor"],
     badge,
     title,
@@ -165,32 +185,5 @@ function parseV1(data: unknown): SharedDecisionV1 | null {
     actions,
     docs,
     sourceLinks,
-  };
-
-  if (data.canton !== undefined) {
-    if (!isRecord(data.canton)) return null;
-    const code = asNonEmptyString(data.canton.code);
-    const name = asNonEmptyString(data.canton.name);
-    const url = asNonEmptyString(data.canton.url);
-    if (!code || !name || !url) return null;
-    snapshot.canton = { code, name, url };
-  }
-
-  if (data.visaNote !== undefined) {
-    const visaNote = asNonEmptyString(data.visaNote);
-    if (!visaNote) return null;
-    snapshot.visaNote = visaNote;
-  }
-  if (data.familyNote !== undefined) {
-    const familyNote = asNonEmptyString(data.familyNote);
-    if (!familyNote) return null;
-    snapshot.familyNote = familyNote;
-  }
-  if (data.warning !== undefined) {
-    const warning = asNonEmptyString(data.warning);
-    if (!warning) return null;
-    snapshot.warning = warning;
-  }
-
-  return snapshot;
+  } as SharedRoute & ResultModel;
 }

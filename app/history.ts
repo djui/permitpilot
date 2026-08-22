@@ -22,11 +22,11 @@ export const historyEntries: HistoryEntry[] = [
       rm: "Colliaziuns da resultat per parter",
     },
     body: {
-      en: "You can copy a link to a result and send it to someone else. They see the same route as when the link was created, even if the navigator’s wording or logic later changes. The link contains this result; there is no account or short address. The existing disclaimer still applies.",
-      de: "Du kannst einen Link zum Ergebnis kopieren und weitergeben. Die Empfängerin oder der Empfänger sieht denselben Weg wie zum Zeitpunkt der Link-Erstellung – auch wenn sich später Texte oder die Logik ändern. Der Link enthält dieses Ergebnis; es gibt kein Konto und keine Kurz-URL. Der bestehende Hinweis gilt weiter.",
-      fr: "Vous pouvez copier un lien vers un résultat et l’envoyer. La personne voit le même parcours qu’au moment de la création du lien, même si les textes ou la logique changent plus tard. Le lien contient ce résultat ; il n’y a ni compte ni adresse courte. L’avertissement existant s’applique toujours.",
-      it: "Puoi copiare un link al risultato e inviarlo. Chi lo apre vede lo stesso percorso di quando il link è stato creato, anche se in seguito cambiano i testi o la logica. Il link contiene questo risultato; non c’è account né indirizzo breve. Resta valido l’avviso già presente.",
-      rm: "Ti pos copiar ina colliaziun al resultat e trametter ella. Tgi che l’avra vesain la medema via sco en il mument da la creaziun da la colliaziun, era sche texts u la logica midan pli tard. La colliaziun cuntegna quest resultat; i na dat nagin conto e nagina adressa curta. L’avis existant resta valaivel.",
+      en: "You can copy a link to a result and send it to someone else. They open the same route type as when the link was created. Wording, paperwork and official links follow today’s navigator. There is no account or short address. The existing disclaimer still applies.",
+      de: "Du kannst einen Link zum Ergebnis kopieren und weitergeben. Geöffnet wird derselbe Wegtyp wie bei der Link-Erstellung. Texte, Unterlagen und offizielle Links folgen dem heutigen Navigator. Es gibt kein Konto und keine Kurz-URL. Der bestehende Hinweis gilt weiter.",
+      fr: "Vous pouvez copier un lien vers un résultat et l’envoyer. La personne ouvre le même type de parcours qu’au moment de la création du lien. Les textes, documents et liens officiels suivent le navigateur d’aujourd’hui. Il n’y a ni compte ni adresse courte. L’avertissement existant s’applique toujours.",
+      it: "Puoi copiare un link al risultato e inviarlo. Chi lo apre vede lo stesso tipo di percorso di quando il link è stato creato. Testi, documenti e link ufficiali seguono il navigatore di oggi. Non c’è account né indirizzo breve. Resta valido l’avviso già presente.",
+      rm: "Ti pos copiar ina colliaziun al resultat e trametter ella. Tgi che l’avra vesain il medem tip da via sco en il mument da la creaziun da la colliaziun. Texts, documents e colliaziuns uffizialas suondan il navigatur dad oz. I na dat nagin conto e nagina adressa curta. L’avis existant resta valaivel.",
     },
   },
   {
