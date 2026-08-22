@@ -2,7 +2,10 @@
 /dist
 /dist-pages
 
-.cursor/
+.cursor/*
+!.cursor/rules/
+!.cursor/rules/**
+
 .DS_Store
 
 .env*
