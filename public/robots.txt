@@ -1,5 +1,5 @@
 # PermitPilot — unofficial Swiss permit navigator
-# https://djui.github.io/permitpilot/
+# https://permitpilot.ch/
 # Not a government site. Result links use URL hashes and are not host paths.
 
 User-agent: *

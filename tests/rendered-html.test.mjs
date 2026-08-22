@@ -8,6 +8,7 @@ test("static GitHub Pages build includes robots.txt", async () => {
   assert.match(robots, /User-agent: \*/);
   assert.match(robots, /Allow: \//);
   assert.match(robots, /unofficial/i);
+  assert.match(robots, /https:\/\/permitpilot\.ch\//);
 });
 
 test("static GitHub Pages build includes the PermitPilot shell", async () => {
@@ -22,6 +23,13 @@ test("static GitHub Pages build includes the PermitPilot shell", async () => {
   assert.match(html, /Content-Security-Policy/);
   assert.doesNotMatch(html, /og\.png/);
   assert.match(html, /id="root"/);
-  assert.match(html, /\/permitpilot\/assets\/index-.*\.js/);
-  assert.match(html, /href="\/permitpilot\/favicon\.svg"/);
+  assert.match(html, /\/assets\/index-.*\.js/);
+  assert.match(html, /href="\/favicon\.svg"/);
+  assert.match(html, /og:url" content="https:\/\/permitpilot\.ch\/"/);
+});
+
+test("static GitHub Pages build includes the custom-domain CNAME", async () => {
+  const cname = await readFile(new URL("../dist-pages/CNAME", import.meta.url), "utf8");
+
+  assert.equal(cname.trim(), "permitpilot.ch");
 });

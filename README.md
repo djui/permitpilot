@@ -30,12 +30,11 @@ Then open [http://localhost:5173/](http://localhost:5173/).
 ## Build
 
 ```bash
-npm run build        # local static site, served from /
-npm run build:pages  # GitHub Pages static site, served from /permitpilot/
+npm run build        # static site, served from /
 ```
 
 The GitHub Pages workflow publishes `dist-pages` after every push to `main`.
-The production URL is `https://djui.github.io/permitpilot/`.
+The production URL is `https://permitpilot.ch/`.
 
 ## Important
 
@@ -48,7 +47,7 @@ decision.
 
 The site Legal page covers privacy (answers stay in the browser; a copied
 result link contains those answers; GitHub Pages may log IPs) and the limits
-of reliance. The production site is `https://djui.github.io/permitpilot/`.
+of reliance. The production site is `https://permitpilot.ch/`.
 
 ## Contributing
 

@@ -1,8 +1,6 @@
 import react from "@vitejs/plugin-react";
 import { defineConfig, type Plugin } from "vite";
 
-const pagesBase = process.env.GITHUB_PAGES === "1" ? "/permitpilot/" : "/";
-
 const productionCsp = [
   "default-src 'self'",
   "script-src 'self'",
@@ -28,7 +26,7 @@ function htmlCsp(): Plugin {
 }
 
 export default defineConfig(({ command }) => ({
-  base: pagesBase,
+  base: "/",
   plugins: [react(), ...(command === "build" ? [htmlCsp()] : [])],
   build: {
     outDir: "dist-pages",
