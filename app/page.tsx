@@ -107,7 +107,7 @@ function SwissMark() {
 }
 
 function Brand({ onClick }: { onClick?: () => void }) {
-  const content = <><SwissMark /><span className="brand-copy"><strong>Permit</strong><span>Pilot</span></span></>;
+  const content = <><SwissMark /><span className="brand-copy"><strong>Permit Pilot</strong></span></>;
   return onClick ? <button className="brand" onClick={onClick} aria-label="PermitPilot home">{content}</button> : <div className="brand">{content}</div>;
 }
 
