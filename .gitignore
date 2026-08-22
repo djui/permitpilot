@@ -1,6 +1,10 @@
 /node_modules
+/dist
 /dist-pages
+
+.cursor/
 .DS_Store
+
+.env*
 *.tsbuildinfo
 npm-debug.log*
-.env*
