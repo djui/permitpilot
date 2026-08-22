@@ -4,8 +4,9 @@ Primary pages only. Prefer the language of the page; do not treat a news recap a
 
 ## Federal and national
 
-- Working in Switzerland · ch.ch — https://www.ch.ch/en/foreign-nationals-in-switzerland/working-in-switzerland/
-- Family reunification · ch.ch — https://www.ch.ch/en/foreign-nationals-in-switzerland/living-in-switzerland/family-reunification/
+- Working in Switzerland · SEM — https://www.sem.admin.ch/sem/en/home/overview-arbeit.html
+- Family reunification · SEM — https://www.sem.admin.ch/sem/en/home/themen/fza_schweiz-eu-efta/eu-efta_buerger_schweiz/faq.html
+- Swiss government portal · ch.ch — https://www.ch.ch/
 - EU/EFTA free movement FAQ · SEM — https://www.sem.admin.ch/sem/en/home/themen/fza_schweiz-eu-efta/eu-efta_buerger_schweiz/faq.html
 - 90-day notification procedure · SEM — https://www.sem.admin.ch/sem/en/home/themen/fza_schweiz-eu-efta/meldeverfahren.html
 - Online notification · EasyGov — https://www.easygov.swiss/easygov/

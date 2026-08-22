@@ -41,7 +41,7 @@ export const cantons = [
 
 export const ui = {
   en: {
-    home: "Home", how: "How it works", sources: "Official sources", about: "About", history: "History", verified: "Rules checked 20 Aug 2026",
+    home: "Home", how: "How it works", sources: "Official sources", about: "About", history: "History", verified: "Rules checked 22 Aug 2026",
     eyebrow: "Swiss work & residence permits", titleA: "Your route into Switzerland,", titleB: "without the maze.",
     intro: "Answer a few plain-language questions. Get the likely permit route, who files what, and the official forms for your canton.",
     start: "Find my route", employerStart: "I’m hiring someone", time: "Takes about 3 minutes", privacy: "No login · answers stay on this device",
@@ -52,12 +52,12 @@ export const ui = {
     resultEyebrow: "Your likely route", confidence: "Source-backed guidance", resultIntro: "Based on the answers you gave. The canton remains the deciding authority.",
     responsibilities: "Your action plan", paperwork: "Paperwork to prepare", officialLinks: "Official starting points", cantonOffice: "Your cantonal authority",
     applicant: "Applicant", employer: "Employer", both: "Applicant + employer", authority: "Authority", open: "Open official page", print: "Print summary", change: "Change answers", restart: "Start again",
-    why: "Why this route", visaLayer: "Entry and visa layer", familyLayer: "Bringing family", reviewed: "Information last reviewed 20 August 2026",
+    why: "Why this route", visaLayer: "Entry and visa layer", familyLayer: "Bringing family", reviewed: "Information last reviewed 22 August 2026",
     disclaimerTitle: "Before you rely on this", disclaimer: "This navigator organises official information; it does not issue a permit or replace advice from the competent canton. Rules, forms and quotas can change.",
     noData: "Your answers are processed in this browser and are not submitted.", sourceMethod: "Federal rules first, canton-specific filing second.",
   },
   de: {
-    home: "Start", how: "So funktioniert’s", sources: "Offizielle Quellen", about: "Über uns", history: "Verlauf", verified: "Regeln geprüft am 20. Aug. 2026",
+    home: "Start", how: "So funktioniert’s", sources: "Offizielle Quellen", about: "Über uns", history: "Verlauf", verified: "Regeln geprüft am 22. Aug. 2026",
     eyebrow: "Schweizer Arbeits- & Aufenthaltsbewilligungen", titleA: "Dein Weg in die Schweiz,", titleB: "ohne Behördendschungel.",
     intro: "Beantworte einige einfache Fragen. Du erhältst den voraussichtlichen Bewilligungsweg, Zuständigkeiten und offizielle Formulare für deinen Kanton.",
     start: "Meinen Weg finden", employerStart: "Ich stelle jemanden ein", time: "Dauert etwa 3 Minuten", privacy: "Kein Login · Antworten bleiben auf diesem Gerät",
@@ -68,12 +68,12 @@ export const ui = {
     resultEyebrow: "Dein voraussichtlicher Weg", confidence: "Quellenbasierte Orientierung", resultIntro: "Auf Grundlage deiner Antworten. Die zuständige kantonale Behörde entscheidet.",
     responsibilities: "Dein Aktionsplan", paperwork: "Unterlagen vorbereiten", officialLinks: "Offizielle Startpunkte", cantonOffice: "Zuständige kantonale Behörde",
     applicant: "Antragstellende Person", employer: "Arbeitgeber", both: "Person + Arbeitgeber", authority: "Behörde", open: "Offizielle Seite öffnen", print: "Zusammenfassung drucken", change: "Antworten ändern", restart: "Neu starten",
-    why: "Warum dieser Weg", visaLayer: "Einreise und Visum", familyLayer: "Familiennachzug", reviewed: "Informationen zuletzt geprüft am 20. August 2026",
+    why: "Warum dieser Weg", visaLayer: "Einreise und Visum", familyLayer: "Familiennachzug", reviewed: "Informationen zuletzt geprüft am 22. August 2026",
     disclaimerTitle: "Bevor du dich darauf verlässt", disclaimer: "Dieser Navigator ordnet offizielle Informationen. Er erteilt keine Bewilligung und ersetzt keine Auskunft des zuständigen Kantons. Regeln, Formulare und Kontingente können sich ändern.",
     noData: "Deine Antworten werden nur in diesem Browser verarbeitet.", sourceMethod: "Zuerst Bundesrecht, dann das kantonale Verfahren.",
   },
   fr: {
-    home: "Accueil", how: "Fonctionnement", sources: "Sources officielles", about: "À propos", history: "Historique", verified: "Règles vérifiées le 20 août 2026",
+    home: "Accueil", how: "Fonctionnement", sources: "Sources officielles", about: "À propos", history: "Historique", verified: "Règles vérifiées le 22 août 2026",
     eyebrow: "Permis de travail et de séjour suisses", titleA: "Votre chemin vers la Suisse,", titleB: "sans le labyrinthe.",
     intro: "Répondez à quelques questions simples. Obtenez la voie probable, les responsabilités et les formulaires officiels de votre canton.",
     start: "Trouver ma voie", employerStart: "Je recrute quelqu’un", time: "Environ 3 minutes", privacy: "Sans compte · réponses conservées sur cet appareil",
@@ -84,12 +84,12 @@ export const ui = {
     resultEyebrow: "Votre parcours probable", confidence: "Orientation fondée sur les sources", resultIntro: "D’après vos réponses. L’autorité cantonale reste décisionnaire.",
     responsibilities: "Votre plan d’action", paperwork: "Documents à préparer", officialLinks: "Points de départ officiels", cantonOffice: "Votre autorité cantonale",
     applicant: "Candidat", employer: "Employeur", both: "Candidat + employeur", authority: "Autorité", open: "Ouvrir la page officielle", print: "Imprimer le résumé", change: "Modifier les réponses", restart: "Recommencer",
-    why: "Pourquoi ce parcours", visaLayer: "Entrée et visa", familyLayer: "Regroupement familial", reviewed: "Informations vérifiées le 20 août 2026",
+    why: "Pourquoi ce parcours", visaLayer: "Entrée et visa", familyLayer: "Regroupement familial", reviewed: "Informations vérifiées le 22 août 2026",
     disclaimerTitle: "Avant de vous y fier", disclaimer: "Ce navigateur organise l’information officielle. Il ne délivre aucun permis et ne remplace pas l’avis du canton compétent. Les règles, formulaires et contingents peuvent changer.",
     noData: "Vos réponses sont traitées uniquement dans ce navigateur.", sourceMethod: "D’abord les règles fédérales, puis le dépôt cantonal.",
   },
   es: {
-    home: "Inicio", how: "Cómo funciona", sources: "Fuentes oficiales", about: "Acerca de", history: "Historial", verified: "Normas verificadas el 20 ago 2026",
+    home: "Inicio", how: "Cómo funciona", sources: "Fuentes oficiales", about: "Acerca de", history: "Historial", verified: "Normas verificadas el 22 ago 2026",
     eyebrow: "Permisos suizos de trabajo y residencia", titleA: "Tu camino hacia Suiza,", titleB: "sin el laberinto.",
     intro: "Responde unas preguntas sencillas. Obtén la vía probable, quién presenta cada trámite y los formularios oficiales de tu cantón.",
     start: "Encontrar mi vía", employerStart: "Voy a contratar a alguien", time: "Unos 3 minutos", privacy: "Sin cuenta · respuestas solo en este dispositivo",
@@ -100,7 +100,7 @@ export const ui = {
     resultEyebrow: "Tu ruta probable", confidence: "Orientación basada en fuentes", resultIntro: "Según tus respuestas. La autoridad cantonal toma la decisión final.",
     responsibilities: "Tu plan de acción", paperwork: "Documentación a preparar", officialLinks: "Puntos de partida oficiales", cantonOffice: "Tu autoridad cantonal",
     applicant: "Solicitante", employer: "Empleador", both: "Solicitante + empleador", authority: "Autoridad", open: "Abrir página oficial", print: "Imprimir resumen", change: "Cambiar respuestas", restart: "Empezar de nuevo",
-    why: "Por qué esta ruta", visaLayer: "Entrada y visado", familyLayer: "Reagrupación familiar", reviewed: "Información verificada el 20 de agosto de 2026",
+    why: "Por qué esta ruta", visaLayer: "Entrada y visado", familyLayer: "Reagrupación familiar", reviewed: "Información verificada el 22 de agosto de 2026",
     disclaimerTitle: "Antes de confiar en el resultado", disclaimer: "Este navegador organiza información oficial; no concede permisos ni sustituye la orientación del cantón competente. Las normas, formularios y cupos pueden cambiar.",
     noData: "Tus respuestas se procesan únicamente en este navegador.", sourceMethod: "Primero las normas federales; después, el trámite cantonal.",
   },
@@ -345,7 +345,7 @@ const docText: Record<Lang, Record<string, string>> = {
 };
 
 const sources = {
-  general: ["Working in Switzerland · ch.ch", "https://www.ch.ch/en/foreign-nationals-in-switzerland/working-in-switzerland/"],
+  general: ["Working in Switzerland · SEM", "https://www.sem.admin.ch/sem/en/home/overview-arbeit.html"],
   eu: ["EU/EFTA free movement FAQ · SEM", "https://www.sem.admin.ch/sem/en/home/themen/fza_schweiz-eu-efta/eu-efta_buerger_schweiz/faq.html"],
   notify: ["90-day notification procedure · SEM", "https://www.sem.admin.ch/sem/en/home/themen/fza_schweiz-eu-efta/meldeverfahren.html"],
   easygov: ["Online notification · EasyGov", "https://www.easygov.swiss/easygov/"],
@@ -353,7 +353,7 @@ const sources = {
   procedure: ["Third-country application procedure · SEM", "https://www.sem.admin.ch/sem/en/home/themen/arbeit/nicht-eu_efta-angehoerige/verfahrensablauf.html"],
   documents: ["Official application document checklist · SEM", "https://www.sem.admin.ch/sem/en/home/themen/arbeit/nicht-eu_efta-angehoerige/verfahrensablauf/gesuchsunterlagen.html"],
   entry: ["Entry and nationality checker · SEM", "https://www.sem.admin.ch/sem/en/home/themen/einreise.html"],
-  family: ["Family reunification · ch.ch", "https://www.ch.ch/en/foreign-nationals-in-switzerland/living-in-switzerland/family-reunification/"],
+  family: ["Family reunification · SEM", "https://www.sem.admin.ch/sem/en/home/themen/fza_schweiz-eu-efta/eu-efta_buerger_schweiz/faq.html"],
   self: ["Foreign founders and self-employment · SME Portal", "https://www.kmu.admin.ch/en/foreign-national-setting-up-a-business"],
   asylum: ["Employment for asylum and protection statuses · SEM", "https://www.sem.admin.ch/sem/en/home/themen/arbeit/erwerbstaetige_asylbereich.html"],
   gThird: ["Third-country G permit · SEM", "https://www.sem.admin.ch/sem/en/home/themen/aufenthalt/nicht_eu_efta/ausweis_g__grenzgaengerbewilligung.html"],

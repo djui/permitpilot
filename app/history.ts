@@ -12,6 +12,26 @@ export type HistoryEntry = {
 
 export const historyEntries: HistoryEntry[] = [
   {
+    date: "2026-08-22",
+    kind: "rules",
+    source: {
+      label: "SEM",
+      url: "https://www.sem.admin.ch/sem/en/home/overview-arbeit.html",
+    },
+    title: {
+      en: "Rules re-checked; official starting links updated",
+      de: "Regeln erneut geprüft; offizielle Startlinks aktualisiert",
+      fr: "Règles revérifiées ; liens officiels mis à jour",
+      es: "Normas reexaminadas; enlaces oficiales actualizados",
+    },
+    body: {
+      en: "The navigator’s routes were checked again on 22 August 2026 against SEM, EasyGov and cantonal guidance. No further federal admission-rule change has been encoded. The 2026 quotas remain as decided by the Federal Council on 19 November 2025. ch.ch topic pages for working and family reunification no longer resolve; those result links now open the SEM working overview and free-movement FAQ. The canton remains the deciding authority.",
+      de: "Die Wege im Navigator wurden am 22. August 2026 erneut mit SEM, EasyGov und kantonalen Angaben abgeglichen. Es ist keine weitere bundesrechtliche Zulassungsänderung hinterlegt. Die Kontingente 2026 bleiben wie am 19. November 2025 vom Bundesrat beschlossen. Die ch.ch-Themenseiten zu Arbeit und Familiennachzug sind nicht mehr erreichbar; die Ergebnislinks führen jetzt zur SEM-Übersicht Arbeit und zur Freizügigkeits-FAQ. Der Kanton bleibt die entscheidende Behörde.",
+      fr: "Les parcours du navigateur ont été revérifiés le 22 août 2026 auprès du SEM, d’EasyGov et des indications cantonales. Aucun autre changement fédéral d’admission n’a été encodé. Les contingents 2026 restent ceux décidés par le Conseil fédéral le 19 novembre 2025. Les pages thématiques ch.ch sur le travail et le regroupement familial ne répondent plus ; ces liens ouvrent désormais l’aperçu SEM du travail et la FAQ sur la libre circulation. Le canton reste l’autorité décisionnaire.",
+      es: "Las rutas del navegador se contrastaron de nuevo el 22 de agosto de 2026 con SEM, EasyGov y la orientación cantonal. No se ha incorporado ningún otro cambio federal de admisión. Los cupos de 2026 siguen siendo los decididos por el Consejo Federal el 19 de noviembre de 2025. Las páginas temáticas de ch.ch sobre trabajo y reagrupación familiar ya no responden; esos enlaces abren ahora la visión general laboral de SEM y la FAQ de libre circulación. El cantón sigue siendo la autoridad que decide.",
+    },
+  },
+  {
     date: "2026-08-20",
     kind: "product",
     title: {
@@ -83,7 +103,7 @@ export function formatHistoryDate(date: string, lang: Lang): string {
 export const historyUi = {
   en: {
     title: "What has changed",
-    lead: "Permit-rule updates and PermitPilot product changes, kept apart. Rules last reviewed 20 August 2026.",
+    lead: "Permit-rule updates and PermitPilot product changes, kept apart. Rules last reviewed 22 August 2026.",
     all: "All",
     rules: "Permit rules",
     product: "PermitPilot",
@@ -91,7 +111,7 @@ export const historyUi = {
   },
   de: {
     title: "Was sich geändert hat",
-    lead: "Änderungen bei den Bewilligungsregeln und bei PermitPilot, getrennt geführt. Regeln zuletzt geprüft am 20. August 2026.",
+    lead: "Änderungen bei den Bewilligungsregeln und bei PermitPilot, getrennt geführt. Regeln zuletzt geprüft am 22. August 2026.",
     all: "Alle",
     rules: "Bewilligungsregeln",
     product: "PermitPilot",
@@ -99,7 +119,7 @@ export const historyUi = {
   },
   fr: {
     title: "Ce qui a changé",
-    lead: "Mises à jour des règles de permis et de PermitPilot, tenues séparément. Règles vérifiées le 20 août 2026.",
+    lead: "Mises à jour des règles de permis et de PermitPilot, tenues séparément. Règles vérifiées le 22 août 2026.",
     all: "Tout",
     rules: "Règles de permis",
     product: "PermitPilot",
@@ -107,7 +127,7 @@ export const historyUi = {
   },
   es: {
     title: "Qué ha cambiado",
-    lead: "Cambios en las normas de permisos y en PermitPilot, por separado. Normas revisadas el 20 de agosto de 2026.",
+    lead: "Cambios en las normas de permisos y en PermitPilot, por separado. Normas revisadas el 22 de agosto de 2026.",
     all: "Todo",
     rules: "Normas de permiso",
     product: "PermitPilot",
